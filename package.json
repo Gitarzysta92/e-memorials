@@ -1,0 +1,31 @@
+{
+  "name": "e-memorials",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "app": "nodemon --inspect index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gitarzysta92/e-memorials.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gitarzysta92/e-memorials/issues"
+  },
+  "homepage": "https://github.com/Gitarzysta92/e-memorials#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.0",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.16.1",
+    "handlebars": "^4.1.2",
+    "mysql": "^2.17.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "uuid": "^3.3.2"
+  }
+}
