@@ -1,14 +1,50 @@
-<form action="/authenticate" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
-    </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-    </div>
-    <div>
-        <input type="submit" value="Log In"/>
-    </div>
-</form>
+{{> header this.navigation }}
+
+<main>
+	<div class="container login">
+		<div class="row">
+			<div class="col-12 fh flex in-column center-center light" >
+				<div class="company-logo">
+					<img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+				</div>
+				<div class="company-destription">
+					<p class="sentence">{{description.text}}</p>
+				</div>
+				<div class="sign-in_form">
+					<form action="/authenticate" method="post">
+						<div>
+							<input
+								type="text"
+								name="username"
+								placeholder="{{form.username.placeholder}}"
+							/>
+						</div>
+						<div>
+							<input
+								type="password"
+								name="password"
+								placeholder="{{form.password.placeholder}}"
+							/>
+						</div>
+						<div>
+							<input 
+								type="submit" 
+								value="{{form.button.text}}"
+								class="button {{form.button.meta.class}}"
+								/>
+						</div>
+					</form>
+					<div class="sign-up_link">{{> link}}</div>
+					{{#if form.alert}}
+							<div class="alert-box">
+									{{form.alert}}
+							</div>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
 

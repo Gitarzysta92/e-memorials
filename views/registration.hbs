@@ -1,0 +1,91 @@
+{{> header this.navigation }}
+
+<main>
+	<div class="container registration">
+		<div class="row">
+			<div class="col-12 flex in-column center-center light" >
+				<div class="company-logo">
+					<img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+				</div>
+				<div class="company-destription">
+					<p class="sentence">{{description.text}}</p>
+				</div>
+				<div class="sign-in_form">
+					<form action="/authenticate" method="post">
+						<div class="row">
+							<div class="col-md-6 col-sm-12">
+								<label for='name'>{{form.name}}:</label>
+								<input type="text" name="name" />
+							</div>
+							<div class="col-md-6 col-sm-12">
+								<label for='surname'>{{form.surname}}:</label>
+								<input type="text" name="surname" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-sm-12">
+								<label for='email'>{{form.email}}:</label>
+								<input type="email" name="email" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-sm-12">
+								<label for='password'>{{form.password}}:</label>
+								<input type="password" name="password" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-sm-12">
+								Dane korespondencyjne
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6 col-sm-12">
+								<label for='street'>{{form.street}}</label>
+								<input type="text" name="street" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 col-sm-12">
+								<label for='city'>{{form.city}}</label>
+								<input type="text" name="city" />
+							</div>
+							<div class="col-md-6 col-sm-12">
+								<label for='postalCode'>{{form.postalCode}}</label>
+								<input type="text" name="postalCode" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6 col-sm-12">
+								<label for='phone'>{{form.phone}}</label>
+								<input type="tel" name="phone" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<label for="policy">{{form.policy.text}}</label>
+								<input type="checkbox" name="policy" {{form.policy.checked}}>
+							</div>
+						</div>
+						<div>
+							<input 
+								type="submit" 
+								value="{{form.button.text}}"
+								class="button {{form.button.meta.class}}"
+								/>
+						</div>
+					</form>
+					<div class="policy_link">{{> link}}</div>
+					{{#if form.alert}}
+							<div class="alert-box">
+									{{form.alert}}
+							</div>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+

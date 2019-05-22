@@ -15,7 +15,7 @@ module.exports = function(server) {
 	
 	// App authentication endpoints
 	server.get('/login', controller.login);
-	//server.get('/registration', controller.registration);
+	server.get('/registration', controller.registration);
 
 	server.post('/authenticate', passport.authenticate('local', {
 		successRedirect: '/memorium',

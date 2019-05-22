@@ -20,6 +20,7 @@ body {
 
 main {
     background: url('../images/bg.jpg');
+    background-attachment: fixed;
 }
 
 // Utils
@@ -65,7 +66,12 @@ main {
         &.solid {
             background-color: $primary-white;
             color: $primary-blue;
+            &.blue {
+                background-color: $primary-blue;
+                color: $primary-white;
+            }
         }
+
     }
 }
 
@@ -100,11 +106,13 @@ p {
         font-weight: 600;
         padding: 15px 20px;
         border-radius: 40px;
-        line-height: 4em;
     }
     &:hover {
         text-decoration: none;   
     }
+}
+a.button {
+    line-height: 4em;
 }
 
 // links
@@ -113,10 +121,29 @@ p {
 }
 
 
+
+// form
+
+form {
+    input {
+        display: block;
+        width: 100%;
+        border-radius: 100px;
+        padding: 10px 20px;
+        border: none;
+        font-size: 1.7em;
+        margin-bottom: 20px;
+    }
+}
+
+
+
+
+
+//###########
 //
 // MAIN STYLE
 //
-
 
 header, footer {
     position: absolute;
@@ -208,4 +235,31 @@ footer {
 
 
 
+// Login page section
 
+.login {
+    .sentence {
+        max-width: 350px;
+        padding: 30px 0;
+        text-align: center;
+        font-size: 2em;
+    }
+   .sign-in_form {
+       width: 350px;
+   }
+   .sign-up_link {
+        text-align: center;
+   }
+}
+
+
+// Registration page section
+
+.registration {
+    .sentence {
+        max-width: 350px;
+        padding: 30px 0;
+        text-align: center;
+        font-size: 2em;
+    }
+}

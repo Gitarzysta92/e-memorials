@@ -9,6 +9,7 @@ body {
 
 main {
   background: url("../images/bg.jpg");
+  background-attachment: fixed;
 }
 
 .fh {
@@ -50,6 +51,10 @@ main {
   background-color: #dcdbdb;
   color: #4d7b86;
 }
+.light .button.solid.blue {
+  background-color: #4d7b86;
+  color: #dcdbdb;
+}
 
 p {
   margin: 0;
@@ -72,14 +77,27 @@ p {
   font-weight: 600;
   padding: 15px 20px;
   border-radius: 40px;
-  line-height: 4em;
 }
 .button:hover {
   text-decoration: none;
 }
 
+a.button {
+  line-height: 4em;
+}
+
 .link {
   line-height: 20px;
+}
+
+form input {
+  display: block;
+  width: 100%;
+  border-radius: 100px;
+  padding: 10px 20px;
+  border: none;
+  font-size: 1.7em;
+  margin-bottom: 20px;
 }
 
 header, footer {
@@ -160,6 +178,26 @@ footer {
 .home .company-steps .step:last-child .circle {
   background-color: #4d7b86;
   color: #dcdbdb;
+}
+
+.login .sentence {
+  max-width: 350px;
+  padding: 30px 0;
+  text-align: center;
+  font-size: 2em;
+}
+.login .sign-in_form {
+  width: 350px;
+}
+.login .sign-up_link {
+  text-align: center;
+}
+
+.registration .sentence {
+  max-width: 350px;
+  padding: 30px 0;
+  text-align: center;
+  font-size: 2em;
 }
 
 /*# sourceMappingURL=main.css.map */
