@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "app": "nodemon --inspect index.js"
+    "app": "nodemon --inspect index.js",
+    "sass": "sass --watch src/scss:public/css"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,8 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "sass": "^1.20.1"
   }
 }

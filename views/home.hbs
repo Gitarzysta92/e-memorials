@@ -1,1 +1,33 @@
-{{title}}
+{{> header this.navigation }}
+
+<main>
+    <div class="container home">
+        <div class="row">
+            <div class="col-12 fh flex in-column center-center light">
+                <div class="company-logo">
+                    <img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+                </div>
+                <div class="company-description">
+                    <div class="row">
+                        <div class="col-8 flex center-center">
+                            <p class="sentence">{{description.text}}</p>
+                        </div>
+                        <div class="col-4 flex start-center">
+                            {{> button this.description}}
+                        </div>
+                    </div>
+                </div>
+                <div class="company-steps flex in-row">
+                    {{#each steps}}
+                    <div class="step">
+                        <div class="circle">{{number}}</div>
+                        {{text}}
+                    </div>
+                    {{/each}}
+                </div>
+                <div class="sign-up">{{> button}}</div>
+                <div class="sign-in">{{> link}}</div>
+            </div>
+        </div>
+    </div>
+</main>

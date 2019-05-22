@@ -1,0 +1,165 @@
+html, body, main {
+  height: 100%;
+}
+
+body {
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 10px;
+}
+
+main {
+  background: url("../images/bg.jpg");
+}
+
+.fh {
+  height: 100vh;
+}
+
+.flex {
+  display: flex;
+}
+.flex.in-column {
+  flex-direction: column;
+}
+.flex.in-row {
+  flex-direction: row;
+}
+.flex.center-center {
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+.flex.start-center {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.light {
+  color: #dcdbdb;
+}
+.light a {
+  color: #dcdbdb;
+}
+.light .button {
+  color: #dcdbdb;
+}
+.light .button.outlined {
+  border-color: #dcdbdb;
+}
+.light .button.solid {
+  background-color: #dcdbdb;
+  color: #4d7b86;
+}
+
+p {
+  margin: 0;
+}
+
+.sentence {
+  font-style: italic;
+}
+
+.button {
+  border-radius: 30px;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 1.5em;
+}
+.button.outlined {
+  border: 2px solid;
+}
+.button.solid {
+  font-weight: 600;
+  padding: 15px 20px;
+  border-radius: 40px;
+  line-height: 4em;
+}
+.button:hover {
+  text-decoration: none;
+}
+
+.link {
+  line-height: 20px;
+}
+
+header, footer {
+  position: absolute;
+}
+
+header {
+  top: 0;
+  z-index: 9999;
+}
+header .main-nav {
+  position: relative;
+  top: 20px;
+  left: 20px;
+  background-color: #dcdbdb;
+  border-radius: 100px;
+  padding: 10px 20px;
+}
+header .main-nav ul {
+  list-style: none;
+  margin: 0;
+}
+header .main-nav ul li {
+  display: inline-block;
+  font-size: 1.3em;
+  padding: 0 10px;
+}
+header .main-nav ul li.active {
+  font-weight: 900;
+}
+header .main-nav ul li a {
+  color: #4d7b86;
+}
+
+footer {
+  color: #dcdbdb;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+  bottom: 0;
+}
+
+.home .company-description {
+  margin-top: 30px;
+}
+.home .company-description .sentence {
+  text-align: right;
+  font-size: 2em;
+}
+.home .company-steps {
+  padding: 50px 0;
+  width: 650px;
+}
+.home .company-steps .step {
+  text-align: center;
+  width: 25%;
+  font-size: 1.4em;
+}
+.home .company-steps .step .circle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 5px 0;
+  border-radius: 100px;
+  border: 3px solid;
+  font-size: 16px;
+  margin: 0 auto 10px auto;
+}
+.home .company-steps .step:not(:last-child) .circle::after {
+  content: "";
+  top: 49%;
+  left: 100%;
+  position: absolute;
+  width: 125px;
+  height: 3px;
+  background-color: #fff;
+}
+.home .company-steps .step:last-child .circle {
+  background-color: #4d7b86;
+  color: #dcdbdb;
+}
+
+/*# sourceMappingURL=main.css.map */

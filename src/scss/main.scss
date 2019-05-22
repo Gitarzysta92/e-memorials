@@ -1,0 +1,211 @@
+// Color palette
+
+$white: #fff;
+$black: #000;
+
+$primary-white: #dcdbdb;
+$primary-blue: #4d7b86;
+$secondary-blue: #0f8ea5;
+
+html, body, main {
+    height: 100%;
+}
+
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 10px; 
+}
+
+
+
+main {
+    background: url('../images/bg.jpg');
+}
+
+// Utils
+
+.fh {
+    height: 100vh
+}
+
+// flex items positioning
+.flex {
+    display: flex;
+    &.in-column {
+        flex-direction: column;
+    }
+    &.in-row {
+        flex-direction: row;
+    }
+    &.center-center {
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+    }
+    &.start-center {
+        align-items: center;
+        justify-content: flex-start
+    }
+}
+
+//
+// COLOR SCHEME
+//
+
+.light {
+    color: $primary-white;
+    a {
+        color: $primary-white;
+    }
+    .button {
+        color: $primary-white;
+        &.outlined {
+            border-color: $primary-white;
+        }
+        &.solid {
+            background-color: $primary-white;
+            color: $primary-blue;
+        }
+    }
+}
+
+
+//
+// TYPOGRAPHY
+//
+
+p {
+    margin: 0;
+}
+
+.sentence {
+    font-style: italic;
+}
+
+
+//
+// UI ELEMENTS
+//
+
+// buttons
+.button {
+    border-radius: 30px;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.5em;
+    &.outlined {
+        border: 2px solid;
+    }
+    &.solid {
+        font-weight: 600;
+        padding: 15px 20px;
+        border-radius: 40px;
+        line-height: 4em;
+    }
+    &:hover {
+        text-decoration: none;   
+    }
+}
+
+// links
+.link {
+    line-height: 20px;
+}
+
+
+//
+// MAIN STYLE
+//
+
+
+header, footer {
+    position: absolute;
+}
+
+header {
+    top: 0;
+    z-index: 9999;
+    .main-nav {
+        position: relative;
+        top: 20px;
+        left: 20px;
+        background-color: $primary-white;
+        border-radius: 100px;
+        padding: 10px 20px;
+        ul {
+            list-style: none;
+            margin: 0;
+            li {
+                display: inline-block;
+                font-size: 1.3em;
+                padding: 0 10px;
+                &.active {
+                    font-weight: 900;
+                }
+                a {
+                    color: $primary-blue;
+                }
+            }
+        }
+    }
+}
+
+footer {
+    color: $primary-white;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    bottom: 0;
+}
+
+
+
+
+// Home page section
+.home {
+    .company-description {
+        margin-top: 30px;
+        .sentence {
+            text-align: right;
+            font-size: 2em;
+        }
+    }
+    .company-steps {
+        padding: 50px 0;
+        width: 650px;
+        .step {
+            text-align: center;
+            width: 25%;
+            font-size: 1.4em;
+            .circle {
+                position: relative;
+                width: 40px;
+                height: 40px;
+                padding: 5px 0;
+                border-radius: 100px;
+                border: 3px solid;
+                font-size: 16px;
+                margin: 0 auto 10px auto;
+            }
+        }
+        .step:not(:last-child) .circle {
+            &::after {
+                content: "";
+                top: 49%;
+                left: 100%;
+                position: absolute;
+                width: 125px;
+                height: 3px;
+                background-color: #fff;
+            }
+        }
+        .step:last-child .circle {
+            background-color: $primary-blue;
+            color: $primary-white;
+        }
+    }
+}
+
+
+
+

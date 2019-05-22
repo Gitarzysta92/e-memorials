@@ -1,0 +1,20 @@
+<header>
+  {{#if navItems}}
+    <nav class="main-nav flex in-row center-center">
+      <img src="/images/icon_folder.png" />
+      <ul>
+          {{#each navItems}}
+          <li class="{{meta.class}}">
+            <a href="{{url}}" title="{{title}}">{{text}}</a>
+          </li>
+          {{/each}}
+      </ul>
+    </nav>
+  {{/if}}
+
+  {{#if signOut}}
+    <form action="/logout" method="post">
+      <input type="submit" name="upvote" value="Upvote" />
+    </form>
+  {{/if}}
+</header>
