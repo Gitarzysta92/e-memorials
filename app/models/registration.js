@@ -22,7 +22,7 @@ module.exports = {
             checked: false
         },
         button: {
-            text: 'Wybierz pakiet',
+            text: 'Przejdź do wyboru pakietu',
             alt: false,
             url: false,
             meta: {

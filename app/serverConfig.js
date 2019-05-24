@@ -14,7 +14,11 @@ const cookieParser = require('cookie-parser');
 module.exports = function(expressInstance, dirs) {
     const server = expressInstance;
     const { layouts, partials } = dirs;
-
+    server.use(cors());
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({ extended: false }));
+    server.use(cookieParser());
+    server.use(express.static('public/'));
     server.set('trust proxy', 1);
     server.set('view engine', 'hbs');
 
@@ -24,22 +28,14 @@ module.exports = function(expressInstance, dirs) {
         layoutsDir: layouts,
         partialsDir: partials
     }));
-
-
-    server.use(cors());
-    
     //server.use(logger('dev'));
-    //server.use(cookieParser());
-	server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({ extended: false }));
-    server.use(express.static('public/'));
     server.use(session({
         genid: (req) => uuid(),
         secret: 'asd',
         name: 'session',
         cookie: { 
             maxAge: 60000,
-            domain: '127.0.0.1:3000',
+            domain: '127.0.0.1',
             httpOnly: false,
             secure: false
          },
@@ -51,7 +47,7 @@ module.exports = function(expressInstance, dirs) {
     server.use(passport.session());
 
     server.use(function(req, res, next) {
-        //console.log('middle', req);
+      //  console.log(req.cookies);
         next();
     });
 

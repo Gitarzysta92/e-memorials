@@ -16,6 +16,7 @@ module.exports = function(server) {
 	// App authentication endpoints
 	server.get('/login', controller.login);
 	server.get('/registration', controller.registration);
+	server.get('/registration/second-step', controller.registrationSecondStep);
 
 	server.post('/authenticate', passport.authenticate('local', {
 		successRedirect: '/memorium',
@@ -27,7 +28,10 @@ module.exports = function(server) {
 		res.redirect('/');
 	});
 
-	server.post('/register', controller.register);
+	server.post('/register', controller.registerFirstStep);
+	server.post('/endpoint', function(req, res) {
+		//console.log(req);
+	});
 
 	function isAuthenticated(req, res, next) {
 		if (req.user) {

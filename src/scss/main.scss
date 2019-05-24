@@ -98,11 +98,12 @@ p {
 //
 
 // buttons
-.button {
+.button, button {
     border-radius: 30px;
     padding: 10px 20px;
     text-decoration: none;
     font-size: 1.5em;
+    border: none;
     &.outlined {
         border: 2px solid;
     }
@@ -114,7 +115,13 @@ p {
     &:hover {
         text-decoration: none;   
     }
+
+    &.small {
+        padding: 10px 15px;
+        font-size: 1em;
+    }
 }
+
 
 
 // links
@@ -153,7 +160,7 @@ form {
     }
 }
 
-.sign-in_form {
+.sign-in_form, .promo-code_form {
     width: 450px;
 }
 
@@ -161,6 +168,9 @@ form {
 .section-title_small {
     font-size: 1.5rem;
     text-align: center;
+    small {
+        font-weight: 300;
+    }
 }
 
 
@@ -289,3 +299,50 @@ footer {
         font-size: 2em;
     }
 }
+
+.registration-second-step {
+    .inner-container {
+        margin: 200px 0 100px 0;
+    }
+    .section-user-plan {
+        padding: 50px 0;
+        font-size: 2em;
+        width: 600px;
+        ul {
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+            li {
+                padding: 5px 0;
+                font-size: 1rem;
+            }
+            li:nth-child(odd) {
+                background-color: rgba(0,0,0, 0.1)
+            }
+        }
+       .basic-price {
+           strong { font-size: 1.3em; }
+       }
+       .pricing-plan {
+            padding: 20px;
+            cursor: pointer;
+            border-radius: 15px;
+            text-align: center;
+            &.active {
+                background-color: $secondary-blue;
+            }
+            &:hover {
+                background-color: $primary-blue;
+            }
+       }
+    }
+
+    .company-logo {
+        margin-bottom: 30px;
+    }
+
+    .promo-code_form {
+        padding: 30px 0; 
+    }
+}
+

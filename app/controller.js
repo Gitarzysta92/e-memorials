@@ -1,30 +1,50 @@
 const homeModel = require('./models/home');
 const signinModel = require('./models/sign-in');
 const regModel = require('./models/registration');
-const navigation = require('./models/navigation')
+const navigation = require('./models/navigation');
+
+const registration = require('../lib/registration/index');
 
 
 // website get
 module.exports.home = function(req, res) {
 	const dataModel = createModel(req, homeModel);
-	console.log(res);
 	res.render('home', dataModel);
 }
+
 
 module.exports.qanda = function(req, res) {
 	const dataModel = createModel(req, homeModel);
 	res.render('home', dataModel);
 }
 
+
 module.exports.login = function(req, res) {
 	const dataModel = createModel(req, signinModel);
 	res.render('login', dataModel);
 }
 
+
 module.exports.registration = function(req, res) {
-	const dataModel = createModel(req, regModel);
+	const storedProcess = registration.getProcess(req.cookies.regToken) || false;
+	const submittedFormFirstStep  = storedProcess ? storedProcess.firstStep : false;
+	const dataModel = createModel(req, regModel, [	
+		injectToModel(submittedFormFirstStep)
+	]);
 	res.render('registration', dataModel);
 }
+
+
+module.exports.registrationSecondStep = function(req, res) {
+	const storedProcess = registration.getProcess(req.cookies.regToken) || false;
+	const submittedFormSecondStep  = storedProcess ? storedProcess.SecondStep : false;
+	const dataModel = createModel(req, regModel, [
+		injectToModel(submittedFormSecondStep)
+	]);
+	res.render('registration-second-step', dataModel);
+}
+
+
 module.exports.userPanel = function(req, res) {
 	res.render('login');
 }
@@ -32,29 +52,31 @@ module.exports.userPanel = function(req, res) {
 
 // Post actions
 
-module.exports.register = function(req, res) {
-	console.log(req.sessionID);
-	//73ec7005-6bf4-440e-8f43-103aaaac19c4
+module.exports.submitRegistrationFirstStep = function(req, res) {
+	const token = 'token';
+
+	if (!req.cookies.regToken) {
+		res.cookie('regToken', token, { maxAge: 1000 * 60 * 1 });
+		registration.initProcess({
+			id: token,
+			body: req.body
+		});
+	}
+	res.redirect('registration/second-step');
 }
-
-
-
-
-
-
-
 
 //
 // Output context creator for handlebars templates
 //
 
-const createModel = function(req, model) {
+const createModel = function(req, model, directives = []) {
 	return _iterateOverDirectives({
 		request: req, 
 		model: JSON.parse(JSON.stringify(model))
 	},[
 		getNavigationFor('unsigned-in-user'),
-		setNavigationCurrentElement('active')
+		setNavigationCurrentElement('active'),
+		...directives
 	]);
 }
 
@@ -97,13 +119,15 @@ const setNavigationCurrentElement = function(byCssClass) {
 			navigation.navItems.length > 0;
 
 		if (!(navExists || path)) return;	
-		
-		const preparedNavItems = navigation.navItems.map(current => {
-			const cssClass = current.meta.class;
-			if (current.url === path) {
-				current.meta.class = cssClass.concat(' ', activeClass);
+		const pathPart = '/' + path.split('/')[1];
+		console.log(pathPart);
+		const preparedNavItems = navigation.navItems.map(model => {
+			const cssClass = model.meta.class;
+
+			if (model.url ===  pathPart) {
+				model.meta.class = cssClass.concat(' ', activeClass);
 			}
-			return current;
+			return model;
 		})
 
 		navigation.navItems = preparedNavItems;

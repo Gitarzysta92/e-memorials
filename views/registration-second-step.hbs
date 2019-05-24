@@ -1,0 +1,71 @@
+{{> header this.navigation }}
+
+<main>
+	<div class="container registration-second-step">
+		<div class="row">
+			<div class="inner-container col-12 flex in-column center-center light" >
+				<div class="company-logo">
+					<img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+				</div>
+				<div class="section-title_small">
+					<h5>Wybierz plan dla siebie</h5>
+				</div>
+				<div class="section-user-plan">
+					<div class="row">
+						<div id="basic-plan" class="col-md-6 col-sm-12 pricing-plan">
+							<h3>Plan podstawowy</h3>
+							<ul>
+								<li>Profil na 10 lat</li>
+								<li>Miejsce na 200 zdjęć</li>
+							</ul>
+							<div class="basic-price">Cena: <strong>99 zł</strong></div>
+						</div>
+						<div id="advanced-plan" class="col-md-6 col-sm-12 pricing-plan active">
+							<h3>Plan premium</h3>
+							<ul>
+								<li>Profil na 20 lat</li>
+								<li>Miejsce na 500 zdjęć</li>
+							</ul>
+							<div class="basic-price">Cena: <strong>160 zł</strong></div>
+						</div>
+					</div>
+				</div>
+				<div class="section-title_small">
+					<h6>Wykorzystaj kod promocyjny<br>
+					<small>lorem ipsum sit dolor</small>
+					</h6>
+				</div>
+				<div class="promo-code_form">
+					<form action="/register" method="post">
+						<div class="row">
+							<div class="col-md-8 col-sm-12">
+								<input type="text" name="name" placeholder="Tutaj wpisz kod promocyjny" />
+							</div>
+							<div class="col-md-4 col-sm-12">
+								<button 
+									type="submit" 
+									value="{{form.button.text}}"
+									class="button small {{form.button.meta.class}}"
+								/>Użyj kodu
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="user-plan_form">
+					<button 
+					type="submit" 
+					value="{{form.button.text}}"
+					class="button {{form.button.meta.class}}"
+					/>Przejdź do płatności
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+
+
+

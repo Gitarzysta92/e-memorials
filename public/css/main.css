@@ -66,22 +66,27 @@ p {
   font-style: italic;
 }
 
-.button {
+.button, button {
   border-radius: 30px;
   padding: 10px 20px;
   text-decoration: none;
   font-size: 1.5em;
+  border: none;
 }
-.button.outlined {
+.button.outlined, button.outlined {
   border: 2px solid;
 }
-.button.solid {
+.button.solid, button.solid {
   font-weight: 600;
   padding: 15px 20px;
   border-radius: 40px;
 }
-.button:hover {
+.button:hover, button:hover {
   text-decoration: none;
+}
+.button.small, button.small {
+  padding: 10px 15px;
+  font-size: 1em;
 }
 
 .link {
@@ -113,13 +118,16 @@ form .inline input[type=checkbox] {
   width: 20px;
 }
 
-.sign-in_form {
+.sign-in_form, .promo-code_form {
   width: 450px;
 }
 
 .section-title_small {
   font-size: 1.5rem;
   text-align: center;
+}
+.section-title_small small {
+  font-weight: 300;
 }
 
 header {
@@ -221,6 +229,48 @@ footer {
   padding: 30px 0;
   text-align: center;
   font-size: 2em;
+}
+
+.registration-second-step .inner-container {
+  margin: 200px 0 100px 0;
+}
+.registration-second-step .section-user-plan {
+  padding: 50px 0;
+  font-size: 2em;
+  width: 600px;
+}
+.registration-second-step .section-user-plan ul {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+}
+.registration-second-step .section-user-plan ul li {
+  padding: 5px 0;
+  font-size: 1rem;
+}
+.registration-second-step .section-user-plan ul li:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.registration-second-step .section-user-plan .basic-price strong {
+  font-size: 1.3em;
+}
+.registration-second-step .section-user-plan .pricing-plan {
+  padding: 20px;
+  cursor: pointer;
+  border-radius: 15px;
+  text-align: center;
+}
+.registration-second-step .section-user-plan .pricing-plan.active {
+  background-color: #0f8ea5;
+}
+.registration-second-step .section-user-plan .pricing-plan:hover {
+  background-color: #4d7b86;
+}
+.registration-second-step .company-logo {
+  margin-bottom: 30px;
+}
+.registration-second-step .promo-code_form {
+  padding: 30px 0;
 }
 
 /*# sourceMappingURL=main.css.map */
