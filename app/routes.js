@@ -4,7 +4,7 @@ const passport = require('passport');
 module.exports = function(server) {
 	// Website endpoints
 	server.get('/', controller.home );
-	//server.get('/quanda', constroller.quandas);
+	server.get('/qanda', controller.qanda);
 	//server.get('/quanda/:slug', controller.quanda);
 	//server.get('/contact', controller.contact);
 	
@@ -26,6 +26,8 @@ module.exports = function(server) {
 		req.logout();
 		res.redirect('/');
 	});
+
+	server.post('/register', controller.register);
 
 	function isAuthenticated(req, res, next) {
 		if (req.user) {

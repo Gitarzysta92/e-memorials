@@ -7,6 +7,7 @@ const session = require('express-session');
 const exthbs = require('express-handlebars');
 const express = require('express');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 
 
@@ -27,7 +28,8 @@ module.exports = function(expressInstance, dirs) {
 
     server.use(cors());
     
-	//server.use(logger('dev'));
+    //server.use(logger('dev'));
+    //server.use(cookieParser());
 	server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(express.static('public/'));
@@ -35,7 +37,12 @@ module.exports = function(expressInstance, dirs) {
         genid: (req) => uuid(),
         secret: 'asd',
         name: 'session',
-        cookie: { maxAge: 60000 },
+        cookie: { 
+            maxAge: 60000,
+            domain: '127.0.0.1:3000',
+            httpOnly: false,
+            secure: false
+         },
         resave: false,
         saveUninitialized: false
 
@@ -44,7 +51,7 @@ module.exports = function(expressInstance, dirs) {
     server.use(passport.session());
 
     server.use(function(req, res, next) {
-        console.log('middle', req);
+        //console.log('middle', req);
         next();
     });
 

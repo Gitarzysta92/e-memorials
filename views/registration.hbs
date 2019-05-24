@@ -3,7 +3,7 @@
 <main>
 	<div class="container registration">
 		<div class="row">
-			<div class="col-12 flex in-column center-center light" >
+			<div class="inner-container col-12 flex in-column center-center light" >
 				<div class="company-logo">
 					<img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
 				</div>
@@ -11,7 +11,7 @@
 					<p class="sentence">{{description.text}}</p>
 				</div>
 				<div class="sign-in_form">
-					<form action="/authenticate" method="post">
+					<form action="/register" method="post">
 						<div class="row">
 							<div class="col-md-6 col-sm-12">
 								<label for='name'>{{form.name}}:</label>
@@ -35,8 +35,8 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-12 col-sm-12">
-								Dane korespondencyjne
+							<div class="col-12 col-sm-12 section-title_small">
+								<h5>Dane korespondencyjne</h5>
 							</div>
 						</div>
 						<div class="row">
@@ -62,9 +62,9 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-12">
-								<label for="policy">{{form.policy.text}}</label>
+							<div class="col-sm-12 inline">			
 								<input type="checkbox" name="policy" {{form.policy.checked}}>
+								<label for="policy">{{form.policy.text}}</label>
 							</div>
 						</div>
 						<div>

@@ -7,8 +7,9 @@ $primary-white: #dcdbdb;
 $primary-blue: #4d7b86;
 $secondary-blue: #0f8ea5;
 
-html, body, main {
-    height: 100%;
+html, body {
+    position: relative;
+    width: 100%;
 }
 
 body {
@@ -21,6 +22,7 @@ body {
 main {
     background: url('../images/bg.jpg');
     background-attachment: fixed;
+    min-height: 100%;
 }
 
 // Utils
@@ -28,6 +30,8 @@ main {
 .fh {
     height: 100vh
 }
+
+
 
 // flex items positioning
 .flex {
@@ -111,13 +115,15 @@ p {
         text-decoration: none;   
     }
 }
-a.button {
-    line-height: 4em;
-}
+
 
 // links
 .link {
     line-height: 20px;
+}
+
+.sign-up_link {
+    margin: 10px 0;
 }
 
 
@@ -125,19 +131,37 @@ a.button {
 // form
 
 form {
+    font-size: 1.4em;
     input {
         display: block;
         width: 100%;
         border-radius: 100px;
         padding: 10px 20px;
         border: none;
-        font-size: 1.7em;
         margin-bottom: 20px;
+    }
+    label {
+        margin-bottom: 5px;
+    }
+    .inline {
+        label, input {
+            display: inline-block;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+        }
     }
 }
 
+.sign-in_form {
+    width: 450px;
+}
 
-
+// titles
+.section-title_small {
+    font-size: 1.5rem;
+    text-align: center;
+}
 
 
 //###########
@@ -145,11 +169,9 @@ form {
 // MAIN STYLE
 //
 
-header, footer {
-    position: absolute;
-}
 
 header {
+    position: fixed;
     top: 0;
     z-index: 9999;
     .main-nav {
@@ -178,6 +200,7 @@ header {
 }
 
 footer {
+    position: absolute;
     color: $primary-white;
     text-align: center;
     width: 100%;
@@ -256,6 +279,9 @@ footer {
 // Registration page section
 
 .registration {
+    .inner-container {
+        margin: 200px 0 100px 0;
+    }
     .sentence {
         max-width: 350px;
         padding: 30px 0;

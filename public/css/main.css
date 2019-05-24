@@ -1,5 +1,6 @@
-html, body, main {
-  height: 100%;
+html, body {
+  position: relative;
+  width: 100%;
 }
 
 body {
@@ -10,6 +11,7 @@ body {
 main {
   background: url("../images/bg.jpg");
   background-attachment: fixed;
+  min-height: 100%;
 }
 
 .fh {
@@ -82,29 +84,46 @@ p {
   text-decoration: none;
 }
 
-a.button {
-  line-height: 4em;
-}
-
 .link {
   line-height: 20px;
 }
 
+.sign-up_link {
+  margin: 10px 0;
+}
+
+form {
+  font-size: 1.4em;
+}
 form input {
   display: block;
   width: 100%;
   border-radius: 100px;
   padding: 10px 20px;
   border: none;
-  font-size: 1.7em;
   margin-bottom: 20px;
 }
+form label {
+  margin-bottom: 5px;
+}
+form .inline label, form .inline input {
+  display: inline-block;
+}
+form .inline input[type=checkbox] {
+  width: 20px;
+}
 
-header, footer {
-  position: absolute;
+.sign-in_form {
+  width: 450px;
+}
+
+.section-title_small {
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 header {
+  position: fixed;
   top: 0;
   z-index: 9999;
 }
@@ -133,6 +152,7 @@ header .main-nav ul li a {
 }
 
 footer {
+  position: absolute;
   color: #dcdbdb;
   text-align: center;
   width: 100%;
@@ -193,6 +213,9 @@ footer {
   text-align: center;
 }
 
+.registration .inner-container {
+  margin: 200px 0 100px 0;
+}
 .registration .sentence {
   max-width: 350px;
   padding: 30px 0;

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Gitarzysta92/e-memorials#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "express": "^4.17.0",
     "express-handlebars": "^3.1.0",

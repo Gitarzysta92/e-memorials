@@ -20,7 +20,6 @@ module.exports = (function() {
 	}
 
 	function _runApp() {
-		console.log(_services);
 		_services.startUp.server();
 	}
 
@@ -55,7 +54,6 @@ function initServer(port, callback, dirs) {
 
 function serverListenNotify(text) {
 	return function() {
-		console.log(text);
 	}
 }
 
