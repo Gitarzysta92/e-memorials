@@ -28,10 +28,10 @@ module.exports = function(server) {
 		res.redirect('/');
 	});
 
-	server.post('/register', controller.registerFirstStep);
-	server.post('/endpoint', function(req, res) {
-		//console.log(req);
-	});
+	server.post('/register', controller.submitRegistrationFirstStep);
+	server.post('/register/check-promo-code', controller.checkPromoCode);
+
+
 
 	function isAuthenticated(req, res, next) {
 		if (req.user) {

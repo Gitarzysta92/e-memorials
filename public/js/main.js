@@ -1,18 +1,37 @@
 
-
 const headers = {
 	'Content-Type': 'application/json'
 }
-const url = 'http://localhost:3000/endpoint';
+const url = 'http://localhost:3000/register/check-promo-code';
 
 
+document.addEventListener("DOMContentLoaded", function() {
+	console.log('Your document is ready!');
 
 
-(function(){
-	apiCaller('post', url, headers, {
-		test: 'test'
+	const promoForm = document.getElementById('promo-form');
+	const basicPrice = document.getElementById('basic-price');
+	const premiumPrice = document.getElementById('premium-price');
+	
+	
+	
+	promoForm.addEventListener('submit', function(event){
+		event.preventDefault();
+		const givenCode = event.target[0].value;
+		apiCaller('post', url, headers, {
+			promoCode: givenCode
+		}).then(data => {
+			console.log(data);
+			const { basic, premium } = data;
+			basicPrice.innerHTML = basic;
+			premiumPrice.innerHTML = premium;
+		})
 	})
-})()
+});
+
+
+
+
 
 
 

@@ -18,7 +18,7 @@
 								<li>Profil na 10 lat</li>
 								<li>Miejsce na 200 zdjęć</li>
 							</ul>
-							<div class="basic-price">Cena: <strong>99 zł</strong></div>
+							<div class="price">Cena: <strong><span id="basic-price">99</span> zł</strong></div>
 						</div>
 						<div id="advanced-plan" class="col-md-6 col-sm-12 pricing-plan active">
 							<h3>Plan premium</h3>
@@ -26,8 +26,11 @@
 								<li>Profil na 20 lat</li>
 								<li>Miejsce na 500 zdjęć</li>
 							</ul>
-							<div class="basic-price">Cena: <strong>160 zł</strong></div>
+							<div class="price">Cena: <strong><span id="premium-price">160</span> zł</strong></div>
 						</div>
+					</div>
+					<div id="alert-box" class="">
+						
 					</div>
 				</div>
 				<div class="section-title_small">
@@ -36,13 +39,14 @@
 					</h6>
 				</div>
 				<div class="promo-code_form">
-					<form action="/register" method="post">
+					<form id="promo-form">
 						<div class="row">
 							<div class="col-md-8 col-sm-12">
 								<input type="text" name="name" placeholder="Tutaj wpisz kod promocyjny" />
 							</div>
 							<div class="col-md-4 col-sm-12">
-								<button 
+								<button
+									id="promo-button" 
 									type="submit" 
 									value="{{form.button.text}}"
 									class="button small {{form.button.meta.class}}"

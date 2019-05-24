@@ -251,7 +251,7 @@ footer {
 .registration-second-step .section-user-plan ul li:nth-child(odd) {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.registration-second-step .section-user-plan .basic-price strong {
+.registration-second-step .section-user-plan .price strong {
   font-size: 1.3em;
 }
 .registration-second-step .section-user-plan .pricing-plan {
