@@ -2,31 +2,15 @@ module.exports = {
     logged: {
         navItems: [
             {
-                url: '/',
-                title: 'Strona główna',
-                text: 'Strona główna',
+                url: '',
+                title: 'Twój profil',
+                text: 'Twój profil',
                 meta: {
                     class: ''
                 }
             },
             {
-                url: '/',
-                title: 'Logowanie',
-                text: 'Logowanie',
-                meta: {
-                    class: ''
-                }
-            },
-            {
-                url: '/',
-                title: 'Rejestracja',
-                text: 'Rejestracja',
-                meta: {
-                    class: ''
-                }
-            },
-            {
-                url: '/',
+                url: '/qanda',
                 title: 'Pytania i odpowiedzi',
                 text: 'Pytania i odpowiedzi',
                 meta: {
@@ -34,7 +18,7 @@ module.exports = {
                 }
             },
         ],
-        singnOut: false
+        signOut: true
     },
     notLogged: {
         navItems: [
@@ -70,7 +54,15 @@ module.exports = {
                     class: ''
                 }
             },
+            {
+                url: '/contact',
+                title: 'Kontakt',
+                text: 'Kontakt',
+                meta: {
+                    class: ''
+                }
+            },
         ],
-        singnOut: false
+        singOut: false
     }
 }

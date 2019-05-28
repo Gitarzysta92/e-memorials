@@ -1,0 +1,28 @@
+{{> header this.navigation }}
+
+<main>
+    <div class="container qanda">
+        <div class="row">
+            <div class="inner-container col-12 flex in-column center-center light">
+                <div class="company-logo">
+                    <img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+                </div>
+                <div class="page-description">
+                    <div class="col-12 section-title_medium flex center-center">
+                        <h2>{{description.text}}</h2>
+                    </div>
+                </div>
+                <div class="questions-accordion">
+                    <ul>
+                        {{#each questions}}
+                        <li class="">
+                            <div class="question">{{question}}</div>
+                            <div class="answer">{{answer}}</div>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

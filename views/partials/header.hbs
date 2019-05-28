@@ -1,20 +1,24 @@
 <header>
   {{#if navItems}}
-    <nav class="main-nav flex in-row center-center">
-      <img src="/images/icon_folder.png" />
-      <ul>
-          {{#each navItems}}
-          <li class="{{meta.class}}">
-            <a href="{{url}}" title="{{title}}">{{text}}</a>
-          </li>
-          {{/each}}
-      </ul>
-    </nav>
+    <div style="display: inline-block">
+      <nav class="main-nav flex in-row center-center">
+        <img src="/images/icon_folder.png" />
+        <ul>
+            {{#each navItems}}
+            <li class="{{meta.class}}">
+              <a href="{{url}}" title="{{title}}">{{text}}</a>
+            </li>
+            {{/each}}
+        </ul>
+      </nav>
+    </div>
   {{/if}}
 
   {{#if signOut}}
-    <form action="/logout" method="post">
-      <input type="submit" name="upvote" value="Upvote" />
-    </form>
+    <div class="logout">
+      <form action="/logout" method="post">
+        <button class="button nav" type="submit" value="logout" />Wyloguj się</button>
+      </form>
+    </div>
   {{/if}}
 </header>

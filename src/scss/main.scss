@@ -1,11 +1,17 @@
 // Color palette
-
 $white: #fff;
 $black: #000;
+$darkGrey: #717171;
 
 $primary-white: #dcdbdb;
 $primary-blue: #4d7b86;
 $secondary-blue: #0f8ea5;
+
+// Grid container width
+$defaultWidth: 1000px;
+$narrowWidth: 600px; 
+$mobileWidth: 100%;
+
 
 html, body {
     position: relative;
@@ -17,20 +23,18 @@ body {
     font-size: 10px; 
 }
 
-
-
 main {
     background: url('../images/bg.jpg');
     background-attachment: fixed;
     min-height: 100%;
+    &.disable-video {
+        background: none;
+    }
 }
+
 
 // Utils
-
-.fh {
-    height: 100vh
-}
-
+.fh { height: 100vh }
 
 
 // flex items positioning
@@ -50,6 +54,10 @@ main {
     &.start-center {
         align-items: center;
         justify-content: flex-start
+    }
+    &.end-center {
+        align-items: center;
+        justify-content: flex-end;
     }
 }
 
@@ -75,8 +83,10 @@ main {
                 color: $primary-white;
             }
         }
-
     }
+}
+button.nav {
+    color: $primary-blue;  
 }
 
 
@@ -84,13 +94,9 @@ main {
 // TYPOGRAPHY
 //
 
-p {
-    margin: 0;
-}
-
-.sentence {
-    font-style: italic;
-}
+h6 {font-size: 1.4rem;}
+p { margin: 0 }
+.sentence { font-style: italic }
 
 
 //
@@ -120,6 +126,11 @@ p {
         padding: 10px 15px;
         font-size: 1em;
     }
+    &.nav {
+        font-size: 1em;
+        padding: 15px 30px;
+        font-weight: 400;
+    }
 }
 
 
@@ -139,10 +150,11 @@ p {
 
 form {
     font-size: 1.4em;
-    input {
+    input, textarea {
+        color: $darkGrey;
         display: block;
         width: 100%;
-        border-radius: 100px;
+        border-radius: 20px;
         padding: 10px 20px;
         border: none;
         margin-bottom: 20px;
@@ -173,6 +185,14 @@ form {
     }
 }
 
+.section-title_medium {
+    font-size: 2rem;
+    text-align: center;
+    small {
+        font-weight: 300;
+    }
+}
+
 
 //###########
 //
@@ -184,6 +204,7 @@ header {
     position: fixed;
     top: 0;
     z-index: 9999;
+    width: 100%;
     .main-nav {
         position: relative;
         top: 20px;
@@ -206,6 +227,12 @@ header {
                 }
             }
         }
+    }
+    .logout {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: inline-block;
     }
 }
 
@@ -346,3 +373,120 @@ footer {
     }
 }
 
+
+// Questions and answers
+.qanda {
+    .inner-container {
+        margin: 200px 0 100px 0;
+    }
+    .section-title_medium {
+        margin-top: 50px;
+    }
+    .questions-accordion {
+        max-width: 650px;
+        padding: 10px 0;
+        ul {
+            list-style: none;
+            li {
+                display: block;
+                padding: 20px 30px;
+                margin: 5px 0;
+                border-radius: 15px;
+                cursor: pointer;
+                &:nth-child(odd) {
+                    background-color: rgba(0,0,0,0.1);
+                }
+                &:hover {
+                    background-color: $primary-blue;
+                }
+                &.active {
+                    background-color: $secondary-blue;
+                    .answer {
+                        margin-top: 20px;
+                        height: auto;
+                    }
+                }
+                .question {
+                    font-size: 1.2rem;
+                }
+                .answer {
+                    height: 0px;
+                    font-size: 1rem;
+                    overflow: hidden;
+                }
+            } 
+        }
+    }
+}
+
+// Contact
+.contact {
+    .inner-container {
+        margin: 200px 0 100px 0;
+    }
+    .section-title_small {
+        margin: 20px 0;
+    }
+    .contact-data {
+        margin: 50px 0;
+        font-size: 1rem;
+    }
+}
+
+// User Panel
+.user-panel {
+    .welcome-section {
+        width: 100%;
+        height: 600px;
+        background: url('../images/bg.jpg');
+        background-attachment: fixed;
+        .inner-container {
+            width: $defaultWidth;
+            .avatar {
+                width: 300px;
+                height: 300px;
+                border-radius: 400px;
+                overflow: hidden;
+                background-color: $primary-white;
+            }
+            .sentence {
+                font-weight: 300;
+                font-size: 2rem;
+            }
+            .details, .edit {
+                padding: 30px 0;
+            }
+            .details {
+                .name {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                }
+                .date {
+                    font-size: 1rem;
+                }
+            }
+            .edit {
+                text-align: right;
+            }
+        }
+    }
+    .user-content {
+        margin: 0 auto;
+        width: $defaultWidth;
+        color: $darkGrey;
+        .user-text, .user-files, .user-gallery {
+            padding: 50px 0;
+        }
+        .user-text {
+            p { 
+                padding: 20px 0;
+                font-size: 1rem;
+                line-height: 1.8rem;
+            }
+        }
+        .user-files {
+            box-sizing: border-box;
+            padding: 50px 0 50px 50px;
+        }
+    }
+}

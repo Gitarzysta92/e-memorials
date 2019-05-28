@@ -15,14 +15,15 @@ const userModel = {
 
 passport.use(new LocalStrategy({
 		usernameField: 'username',
-		passwordFiled: 'password'
+		passwordFiled: 'password',
+		passReqToCallback: true
 	},
-	function(username, password, done) {
+	function(req, username, password, done) {
 		console.log('strategy', username, password);
 		if (username === userModel.username && password === userModel.password) {
 			return done(null, userModel);	
 		}
-		return done(null, false, {message: 'Oops! Mauvais password.'});
+		return done(null, false, req.flash('error-message', 'Zły adres e-mail lub login'));
 	}
 ));
 

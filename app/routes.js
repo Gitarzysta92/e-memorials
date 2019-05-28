@@ -5,11 +5,11 @@ module.exports = function(server) {
 	// Website endpoints
 	server.get('/', controller.home );
 	server.get('/qanda', controller.qanda);
-	//server.get('/quanda/:slug', controller.quanda);
-	//server.get('/contact', controller.contact);
+	server.get('/contact', controller.contact);
 	
 	// App main endpoints
 	server.get('/memorium', isAuthenticated, controller.userPanel);
+	//server.get('/memorium', controller.userPanel);
 	//server.get('/memorium/list', isAuthenticated, controller.)
 	//server.get('/memorium/:id', isAuthenticated, controller.userProfile);
 	
@@ -20,8 +20,9 @@ module.exports = function(server) {
 
 	server.post('/authenticate', passport.authenticate('local', {
 		successRedirect: '/memorium',
-		failureRedirect: '/login'
-	}), function() {});
+		failureRedirect: '/login',
+		failureFlash: true
+	}));
 
 	server.post('/logout', function(req, res){
 		req.logout();
@@ -29,11 +30,18 @@ module.exports = function(server) {
 	});
 
 	server.post('/register', controller.submitRegistrationFirstStep);
+	server.post('/register/next-step', controller.submitRegistrationSecondStep);
 	server.post('/register/check-promo-code', controller.checkPromoCode);
+
+
+	// temporary functionality
+	server.post('validatePayment', controller.validatePayment);
+	
 
 
 
 	function isAuthenticated(req, res, next) {
+		console.log(req.user);
 		if (req.user) {
 			next()
 		} else {

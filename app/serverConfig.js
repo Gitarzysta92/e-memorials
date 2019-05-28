@@ -8,6 +8,7 @@ const exthbs = require('express-handlebars');
 const express = require('express');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const flash = require('express-flash-messages');
 
 
 
@@ -17,7 +18,7 @@ module.exports = function(expressInstance, dirs) {
     server.use(cors());
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: false }));
-    server.use(cookieParser());
+    server.use(cookieParser('memo'));
     server.use(express.static('public/'));
     server.set('trust proxy', 1);
     server.set('view engine', 'hbs');
@@ -31,11 +32,10 @@ module.exports = function(expressInstance, dirs) {
     //server.use(logger('dev'));
     server.use(session({
         genid: (req) => uuid(),
-        secret: 'asd',
+        secret: 'memo',
         name: 'session',
         cookie: { 
-            maxAge: 60000,
-            domain: '127.0.0.1',
+            maxAge: 600000,
             httpOnly: false,
             secure: false
          },
@@ -45,11 +45,16 @@ module.exports = function(expressInstance, dirs) {
     }));
     server.use(passport.initialize());
     server.use(passport.session());
+    server.use(flash())
 
     server.use(function(req, res, next) {
-      //  console.log(req.cookies);
+        console.log(req.flash());
         next();
     });
+
+  //  server.use(function(req, res, next) {
+    //    res.loca
+   // });
 
 
 	return server; 

@@ -2,7 +2,10 @@
 const headers = {
 	'Content-Type': 'application/json'
 }
-const url = 'http://localhost:3000/register/check-promo-code';
+const url = {
+	checkPromoCode: 'http://localhost:3000/register/check-promo-code',
+	submitSecondStep: 'http://localhost:3000/register/next-step'
+};
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -12,26 +15,83 @@ document.addEventListener("DOMContentLoaded", function() {
 	const promoForm = document.getElementById('promo-form');
 	const basicPrice = document.getElementById('basic-price');
 	const premiumPrice = document.getElementById('premium-price');
+	const submitSecondStep = document.getElementById('second-step-submit')
+	const questions = document.querySelectorAll('.questions-accordion li');
 	
+	// question accordion
+	const questionCallback = function(event) {
+		const active = 'active';
+		const isActive =  Object.values(this.classList).find(curr => curr === active);
+		if (isActive) {
+			this.classList.remove(active);
+		} else {
+			this.classList += active;
+		}
+	}
+	questions.forEach(current => current.addEventListener('click',questionCallback))
+
+
+
+function displayAlert(message) {
+	const alertBox = document.getElementById('alert-box');
+	alertBox && (alertBox.innerHTML = message);
+}
+
+
+	const subscription = (function(){
+		const plan = {
+			type: 'premium-plan',
+			buttons: [
+				document.getElementById('basic-plan'),
+				document.getElementById('premium-plan')
+			]
+		}
+
+		const toggleActive =  function(context) {
+			plan.buttons.forEach(current => {
+				if(current.id === context.id) {
+					context.classList.add('active');
+				} else {
+					current.classList.remove('active');
+				}
+			});
+		}
+		
+		const changePlanType = function(event) {
+			plan.type = this.dataset.plan;
+			toggleActive(this);
+		}
+
+		plan.buttons.forEach(current => {
+			current && current.addEventListener('click', changePlanType);
+		});
+		return plan; 
+	})()
+
+
+
 	
-	
-	promoForm.addEventListener('submit', function(event){
+	promoForm && promoForm.addEventListener('submit', function(event){
 		event.preventDefault();
 		const givenCode = event.target[0].value;
-		apiCaller('post', url, headers, {
+		apiCaller('post', url.checkPromoCode, headers, {
 			promoCode: givenCode
 		}).then(data => {
-			console.log(data);
 			const { basic, premium } = data;
 			basicPrice.innerHTML = basic;
 			premiumPrice.innerHTML = premium;
 		})
 	})
+
+
+
+
+	submitSecondStep && submitSecondStep.addEventListener('click', function(){
+		apiCaller('post', url.submitSecondStep, headers, {
+			subscription: subscription.type
+		}).then(redirect => window.location.replace(redirect.url))
+	});
 });
-
-
-
-
 
 
 
@@ -44,7 +104,6 @@ function apiCaller(method, url, headers, body) {
     headers: { ...headers },
     body: JSON.stringify(body)
   };
-
   return fetch(url, requestOptions).then(handleResponse);
 }
 
@@ -52,43 +111,10 @@ function handleResponse(response) {
   if (!response.ok) {
     const error = response.statusText;
     return response.json().then(current => {
+			displayAlert(current.message);
       if (current.message) throw new Error(current.message);
     });
     
-  }
+	}
   return response.json();
 }
-
-
-
-// Depending on current path, set "Active" class on matched navigation element
-
-const setNavigationCurrentElement = function(byCssClass) {
-	return function(request, model) {
-		const activeClass = byCssClass;
-
-		const { navigation } = model;
-		const { path } = request;
-		const navExists = navigation && 
-			navigation.hasOwnProperty('navItems') &&
-			Array.isArray(navigation.navItems) &&
-			navigation.navItems.length > 0;
-
-		if (!(navExists || path)) return;	
-		const pathPart = '/' + path.split('/')[1];
-		console.log(pathPart);
-		const preparedNavItems = navigation.navItems.map(model => {
-			const cssClass = model.meta.class;
-
-			if (model.url ===  pathPart) {
-				model.meta.class = cssClass.concat(' ', activeClass);
-			}
-			return model;
-		})
-
-		navigation.navItems = preparedNavItems;
-		return Object.assign(model, navigation);
-	}
-}
-
-	

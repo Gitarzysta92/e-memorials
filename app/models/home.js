@@ -8,7 +8,7 @@ module.exports = {
         text: `Miejsce gdzie możesz pielnęgnować 
         pamięć o bliskich, którzy odeszli.`,
         button: {
-            url: '/quanda',
+            url: '/qanda',
             title: 'Questions and answers',
             text: 'więcej informacji',
             meta: {
@@ -36,8 +36,8 @@ module.exports = {
         },
     ],
     button: {
-        url: '/test',
-        title: 'test',
+        url: '/registration',
+        title: 'Dodaj swojego bliskiego',
         text: 'Dodaj swojego bliskiego',
         meta: {
             class: 'solid',
@@ -47,11 +47,8 @@ module.exports = {
     },
     link: {
         pre: 'Masz już konto?',
-        url: 'test',
-        title: 'test',
+        url: '/login',
+        title: 'Masz już konto?',
         text: 'Zaloguj się'
-    },
-    helpers: {
-        stepNumber: data => data,
     }
 }

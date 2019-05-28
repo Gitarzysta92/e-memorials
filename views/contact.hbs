@@ -1,0 +1,68 @@
+{{> header this.navigation }}
+
+<main>
+	<div class="container contact">
+		<div class="row">
+			<div class="inner-container col-12 flex in-column center-center light" >
+				<div class="company-logo">
+					<img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+				</div>
+				<div class="company-contact">
+					<div class="section-title_small">
+						<h5>{{contact.title}}</h5>
+					</div>
+					<div class="contact-data">
+
+								phone: +48 155 634 823<br>
+								email: kontakt@memorium.pl<br>
+	
+								Adress: Lorem ipsum dolor<br>
+								sit amet <br>
+	
+					</div>
+				</div>
+				<div class="sign-in_form">
+					<form action="/contact" method="post">
+						<div class="row">
+							<div class="col-md-6 col-sm-12">
+								<label for='name'>{{form.name}}:</label>
+								<input type="text" name="name" />
+							</div>
+							<div class="col-md-6 col-sm-12">
+								<label for='surname'>{{form.surname}}:</label>
+								<input type="text" name="surname" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-sm-12">
+								<label for='email'>{{form.email}}:</label>
+								<input type="email" name="email" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-sm-12">
+								<textarea name="message" rows="10" cols="50">{{form.textarea}}</textarea>
+							</div>
+						</div>
+						<div>
+							<input 
+								type="submit" 
+								value="{{form.button.text}}"
+								class="button {{form.button.meta.class}}"
+								/>
+						</div>
+					</form>
+					<div class="policy_link">{{> link}}</div>
+					{{#if form.alert}}
+							<div class="alert-box">
+									{{form.alert}}
+							</div>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+
