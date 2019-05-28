@@ -5,7 +5,7 @@ const LocalStrategy = require('passport-local');
 
 
 const userModel = {
-	username: 'test',
+	username: 'test@test.pl',
 	password: 'test'
 }
 

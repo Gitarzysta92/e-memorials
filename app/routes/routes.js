@@ -1,28 +1,21 @@
-const controller =  require('./controller.js');
-const passport = require('passport');
 
-module.exports = function(server) {
+
+module.exports = function(server, controller) {
 	// Website endpoints
 	server.get('/', controller.home );
 	server.get('/qanda', controller.qanda);
 	server.get('/contact', controller.contact);
 	
 	// App main endpoints
-	server.get('/memorium', isAuthenticated, controller.userPanel);
-	//server.get('/memorium', controller.userPanel);
-	//server.get('/memorium/list', isAuthenticated, controller.)
-	//server.get('/memorium/:id', isAuthenticated, controller.userProfile);
+	server.get('/memorium', isAuthenticated, controller.redirectTouserPanel);
+	server.get('/memorium/:id', isAuthenticated, controller.userPanel);
 	
 	// App authentication endpoints
 	server.get('/login', controller.login);
 	server.get('/registration', controller.registration);
 	server.get('/registration/second-step', controller.registrationSecondStep);
 
-	server.post('/authenticate', passport.authenticate('local', {
-		successRedirect: '/memorium',
-		failureRedirect: '/login',
-		failureFlash: true
-	}));
+	server.post('/authenticate', controller.authenticate);
 
 	server.post('/logout', function(req, res){
 		req.logout();

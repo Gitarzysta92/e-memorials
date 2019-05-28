@@ -1,8 +1,9 @@
-const { server, instance } = require('./server.js');
-const serverConfig =  require('./serverConfig.js');
-const routes = require('./routes.js');
+const { server, instance } = require('./server/server.js');
+const serverConfig =  require('./server/serverConfig.js');
+const routes = require('./routes/routes.js');
+const controller =  require('./controller.js');
 
-require('./passport');
+require('./passport/passport.js');
 //require('./sqlConnect');
 
 
@@ -58,5 +59,5 @@ function serverListenNotify(text) {
 }
 
 function createRoutes(expressInstance) {
-	return routes(expressInstance);
+	return routes(expressInstance, controller);
 }

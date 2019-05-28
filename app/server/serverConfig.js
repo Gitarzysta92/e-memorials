@@ -48,14 +48,9 @@ module.exports = function(expressInstance, dirs) {
     server.use(flash())
 
     server.use(function(req, res, next) {
-        console.log(req.flash());
+       // console.log(req.flash());
         next();
     });
-
-  //  server.use(function(req, res, next) {
-    //    res.loca
-   // });
-
 
 	return server; 
 }

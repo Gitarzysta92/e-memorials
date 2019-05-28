@@ -1,13 +1,16 @@
+const passport = require('passport');
+
 const homeModel = require('./models/home');
 const signinModel = require('./models/sign-in');
 const regModel = require('./models/registration');
 const qandaModel = require('./models/qanda');
 const contactModel = require('./models/contact');
-const userPanelModel = require('./models/panelModel');
+
 
 const composer = require('../lib/model-compositor/composer');
 const registration = require('../lib/registration/reg-session');
 const promotions = require('../lib/promo-code/code-validator');
+const database = require('../lib/database-service/db-queries');
 
 const createModel = composer.getPreset['not-signed-in'];
 const createModelSingedIn = composer.getPreset['signed-in']
@@ -29,10 +32,23 @@ module.exports.contact = function(req, res) {
 	res.render('contact', dataModel);
 }
 
+module.exports.redirectTouserPanel = function(req, res) {
+	const profileID = '1';
+	res.redirect('/memorium/'+ profileID);	
+}
+
 module.exports.userPanel = function(req, res) {
-	const dataModel = createModelSingedIn(req, userPanelModel);
-	console.log(dataModel);
-	res.render('userPanel', dataModel );
+	console.log('request', req.params.id);
+	const pageID = req.params.id;
+	const userPanelModel = database.getPageDataBy(pageID);
+	
+	if (userPanelModel) {
+		const dataModel = createModelSingedIn(req, userPanelModel);
+		console.log('datamodel', dataModel);
+		res.render('userPanel', dataModel );
+	} else {
+		res.render('404', {message: 'Cannot find the page'})
+	}
 }
 
 module.exports.login = function(req, res) {
@@ -70,8 +86,24 @@ module.exports.registrationSecondStep = function(req, res) {
 	res.render('registration-second-step', dataModel);
 }
 
+
+
 // need to be fixed
 // POST actions
+module.exports.authenticate = function(req, res, next) {
+	passport.authenticate('local', function(err, user, info){
+		const profileID = '1';
+		if (err) { return next(err) }
+		if (!user) { return res.redirect('/login'); }
+		req.logIn(user, function(err) {
+			if (err) { return next(err) }
+			return res.redirect('/memorium/'+ profileID);	
+		});
+	})(req, res, next);
+}
+
+
+
 module.exports.submitRegistrationFirstStep = function(req, res) {
 	const isProcessAlreadyExists = registration.getProcess(req.cookies.regToken) || false;
 	if (isProcessAlreadyExists) {
@@ -114,9 +146,6 @@ module.exports.checkPromoCode = function(req, res) {
 
 module.exports.validatePayment = function(req, res) {
 	const { accept, regToken } = req.body;
-
-
-
 }
 
 
