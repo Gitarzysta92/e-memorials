@@ -1,11 +1,11 @@
 const passport = require('passport');
 
+const defaultPanelModel = require('./models/panelModel');
 const homeModel = require('./models/home');
 const signinModel = require('./models/sign-in');
 const regModel = require('./models/registration');
 const qandaModel = require('./models/qanda');
 const contactModel = require('./models/contact');
-
 
 const composer = require('../lib/model-compositor/composer');
 const registration = require('../lib/registration/reg-session');
@@ -13,7 +13,7 @@ const promotions = require('../lib/promo-code/code-validator');
 const database = require('../lib/database-service/db-queries');
 
 const createModel = composer.getPreset['not-signed-in'];
-const createModelSingedIn = composer.getPreset['signed-in']
+const createModelSingedIn = composer.getPreset['signed-in'];
 
 
 // GET actions
@@ -23,24 +23,45 @@ module.exports.home = function(req, res) {
 }
 
 module.exports.qanda = function(req, res) {
-	const dataModel = createModel(req, qandaModel);
+	const dataModel = req.user 
+		? createModelSingedIn(req, qandaModel) 
+		: createModel(req, qandaModel);
+
 	res.render('qanda', dataModel);
 }
+
 
 module.exports.contact = function(req, res) {
 	const dataModel = createModel(req, contactModel);
 	res.render('contact', dataModel);
 }
 
-module.exports.redirectTouserPanel = function(req, res) {
-	const profileID = '1';
-	res.redirect('/memorium/'+ profileID);	
+
+module.exports.userPanel = async function(req, res) {
+	const userID = await database.getUserID(req.user);
+	const userPanelModel = await database.getPanelByUserID(userID);
+	if (!userPanelModel) {
+		await database.createNewProfile(defaultPanelModel, userID);
+		res.redirect('/memorium/edit-profile');
+		return
+	}
+	const dataModel = createModelSingedIn(req, userPanelModel);
+	console.log(dataModel);
+	res.render('userPanel', dataModel)
 }
 
-module.exports.userPanel = function(req, res) {
+module.exports.editProfile = async function(req, res) {
+	const userID = await database.getUserID(req.user);
+	const userPanelModel = await database.getPanelByUserID(userID);
+	const dataModel = createModelSingedIn(req, userPanelModel);
+	res.render('userPanel', dataModel)
+}
+
+
+module.exports.userProfile = function(req, res) {
 	console.log('request', req.params.id);
 	const pageID = req.params.id;
-	const userPanelModel = database.getPageDataBy(pageID);
+//	const userPanelModel = database.getPageDataBy(pageID);
 	
 	if (userPanelModel) {
 		const dataModel = createModelSingedIn(req, userPanelModel);
@@ -68,6 +89,7 @@ module.exports.login = function(req, res) {
 	}
 }
 
+
 module.exports.registration = function(req, res) {
 	const storedProcess = registration.getProcess(req.cookies.regToken) || false;
 	const submittedFormFirstStep  = storedProcess ? storedProcess.firstStep : false;
@@ -76,6 +98,7 @@ module.exports.registration = function(req, res) {
 	]);
 	res.render('registration', dataModel);
 }
+
 
 module.exports.registrationSecondStep = function(req, res) {
 	const storedProcess = registration.getProcess(req.cookies.regToken) || false;
@@ -92,16 +115,14 @@ module.exports.registrationSecondStep = function(req, res) {
 // POST actions
 module.exports.authenticate = function(req, res, next) {
 	passport.authenticate('local', function(err, user, info){
-		const profileID = '1';
 		if (err) { return next(err) }
 		if (!user) { return res.redirect('/login'); }
 		req.logIn(user, function(err) {
 			if (err) { return next(err) }
-			return res.redirect('/memorium/'+ profileID);	
+			return res.redirect('/memorium');	
 		});
 	})(req, res, next);
 }
-
 
 
 module.exports.submitRegistrationFirstStep = function(req, res) {
@@ -116,11 +137,12 @@ module.exports.submitRegistrationFirstStep = function(req, res) {
 	res.redirect('registration/second-step');
 }
 
+
 module.exports.submitRegistrationSecondStep = function(req, res) {
 	if (req.cookies.regToken) {
-		registration.updateStep(req.cookies.regToken, { secondStep: req.body })
+		const process = registration.updateStep(req.cookies.regToken, { secondStep: req.body })
 		res.send({
-			url: 'http://google.pl',
+			url: 'http://localhost:3000/register/' + process.ID,
 			regToken: req.cookies.regToken
 		});
 	} else {
@@ -128,8 +150,20 @@ module.exports.submitRegistrationSecondStep = function(req, res) {
 	}	
 }
 
-module.exports.submitRegistrationLastStep = function(req, res) {
+
+module.exports.registrationFinalization = function(req, res) {
+	const regProcess = registration.getProcess(req.params.id);
+	if (!process) {
+		res.render('404', {message: 'Cannot find the page'})
+		return;
+	}
+	const registrationData = regProcess.serializeData();
+	database.createNewUser(registrationData).then(data => {
+		console.log(data);
+	}).catch(err => console.log(err));
+	res.send('as');
 }
+
 
 module.exports.checkPromoCode = function(req, res) {
 	if (!req.cookies.regToken) {
@@ -142,7 +176,6 @@ module.exports.checkPromoCode = function(req, res) {
 	promoPrices ? res.send(promoPrices) 
 		: res.status(404).send({message: 'Podany e-mail promocyjny jest nieprawidłowy.'});
 }
-
 
 module.exports.validatePayment = function(req, res) {
 	const { accept, regToken } = req.body;

@@ -168,8 +168,16 @@ form {
         }
         input[type="checkbox"] {
             width: 20px;
+            vertical-align: text-bottom;
+        }
+        &.checkbox {
+            padding: 10px 15px;
+            label {
+                width: 90%;
+            }
         }
     }
+    
 }
 
 .sign-in_form, .promo-code_form {

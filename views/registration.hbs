@@ -15,23 +15,23 @@
 						<div class="row">
 							<div class="col-md-6 col-sm-12">
 								<label for='name'>{{form.name}}:</label>
-								<input type="text" name="name" />
+								<input required type="text" name="name" />
 							</div>
 							<div class="col-md-6 col-sm-12">
 								<label for='surname'>{{form.surname}}:</label>
-								<input type="text" name="surname" />
+								<input required type="text" name="surname" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-12 col-sm-12">
 								<label for='email'>{{form.email}}:</label>
-								<input type="email" name="email" />
+								<input required type="email" name="email" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-12 col-sm-12">
 								<label for='password'>{{form.password}}:</label>
-								<input type="password" name="password" />
+								<input required type="password" name="password" />
 							</div>
 						</div>
 						<div class="row">
@@ -42,29 +42,29 @@
 						<div class="row">
 							<div class="col-6 col-sm-12">
 								<label for='street'>{{form.street}}</label>
-								<input type="text" name="street" />
+								<input required type="text" name="street" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 col-sm-12">
 								<label for='city'>{{form.city}}</label>
-								<input type="text" name="city" />
+								<input required type="text" name="city" />
 							</div>
 							<div class="col-md-6 col-sm-12">
 								<label for='postalCode'>{{form.postalCode}}</label>
-								<input type="text" name="postalCode" />
+								<input required type="text" name="postalCode" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-6 col-sm-12">
 								<label for='phone'>{{form.phone}}</label>
-								<input type="tel" name="phone" />
+								<input required type="tel" name="phone" />
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-12 inline">			
-								<input type="checkbox" name="policy" {{form.policy.checked}}>
-								<label for="policy">{{form.policy.text}}</label>
+							<div class="col-sm-12 inline checkbox">			
+								<input required type="checkbox" name="policy" {{form.policy.checked}}>
+								<label for="policy">{{form.policy.text}}<a href="{{form.policy.url}}">{{form.policy.linkText}}</a></label>
 							</div>
 						</div>
 						<div>

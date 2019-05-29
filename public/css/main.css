@@ -137,6 +137,13 @@ form .inline label, form .inline input {
 }
 form .inline input[type=checkbox] {
   width: 20px;
+  vertical-align: text-bottom;
+}
+form .inline.checkbox {
+  padding: 10px 15px;
+}
+form .inline.checkbox label {
+  width: 90%;
 }
 
 .sign-in_form, .promo-code_form {

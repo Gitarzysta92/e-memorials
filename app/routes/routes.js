@@ -1,5 +1,3 @@
-
-
 module.exports = function(server, controller) {
 	// Website endpoints
 	server.get('/', controller.home );
@@ -7,8 +5,10 @@ module.exports = function(server, controller) {
 	server.get('/contact', controller.contact);
 	
 	// App main endpoints
-	server.get('/memorium', isAuthenticated, controller.redirectTouserPanel);
-	server.get('/memorium/:id', isAuthenticated, controller.userPanel);
+	server.get('/memorium/:id', controller.userProfile);
+	server.get('/memorium', isAuthenticated, controller.userPanel);
+	server.get('/memorium/edit-profile', isAuthenticated, controller.editProfile);
+	
 	
 	// App authentication endpoints
 	server.get('/login', controller.login);
@@ -25,6 +25,7 @@ module.exports = function(server, controller) {
 	server.post('/register', controller.submitRegistrationFirstStep);
 	server.post('/register/next-step', controller.submitRegistrationSecondStep);
 	server.post('/register/check-promo-code', controller.checkPromoCode);
+	server.get('/register/:id', controller.registrationFinalization);
 
 
 	// temporary functionality
@@ -34,7 +35,6 @@ module.exports = function(server, controller) {
 
 
 	function isAuthenticated(req, res, next) {
-		console.log(req.user);
 		if (req.user) {
 			next()
 		} else {

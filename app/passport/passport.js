@@ -1,16 +1,24 @@
+const uuid = require('uuid/v4');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const database = require('../../lib/database-service/db-queries');
 
 
+const users = { list: [] }
 
-
-const userModel = {
-	username: 'test@test.pl',
-	password: 'test'
+users.add = function({username, password}) {
+	const userID = uuid();
+	users.list.push({
+		id: userID,
+		username,
+		password
+	});
+	return userID;
 }
 
-
-
+users.getById = function(id) {
+	return { username, password } = users.list.find(current => current.id === id);	
+}
 
 
 passport.use(new LocalStrategy({
@@ -18,10 +26,11 @@ passport.use(new LocalStrategy({
 		passwordFiled: 'password',
 		passReqToCallback: true
 	},
-	function(req, username, password, done) {
-		console.log('strategy', username, password);
-		if (username === userModel.username && password === userModel.password) {
-			return done(null, userModel);	
+	async	function(req, username, password, done) {
+		const userPass = await database.getUserPassword(username);
+		console.log('strategy', username, password, userPass);
+		if (password === userPass) {
+			return done(null, { username, password });	
 		}
 		return done(null, false, req.flash('error-message', 'Zły adres e-mail lub login'));
 	}
@@ -29,36 +38,14 @@ passport.use(new LocalStrategy({
 
 passport.serializeUser(function(user, done) {
 	console.log('serialize', user.username);
-	done(null, user.username);
+	const userID = users.add(user);
+	done(null, userID);
   });
   
-  passport.deserializeUser(function(username, done) {
-	if (username === userModel.username) {
+passport.deserializeUser(function(userID, done) {
+	const user = users.getById(userID);
+	if (user) {
 		console.log('deserialize',username);
-		done(null, userModel);	
+		done(null, user);	
 	}
-  });
-
-
-
-/*
-passport.use(new LocalStrategy({
-	usernameField: 'user[email]',
-	passwordField: 'user[password]'
-}, (email, password, done) => {
-	console.log(email);
-	User.findOne({ email })
-		.then((user) => {
-			if (!user || !user.validatePassword(password)) {
-				return done(null, false, {
-					errors: {
-						'email or password': 'is invaild'
-					}
-				});
-			}
-			return done(null, user);
-		}).catch(done);
-		return done(null, 'asd');
-}));
-
-*/
+});

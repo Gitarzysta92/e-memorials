@@ -18,7 +18,9 @@ module.exports = {
         postalCode: 'Kod pocztowy',
         phone: 'Telefon',
         policy: {
-            text: 'asasd',
+            text: 'Oświadczam, że znam i akceptuję postanowienia ',
+            linkText: 'Regulaminu E-Memorials.',
+            url: '/',
             checked: false
         },
         button: {

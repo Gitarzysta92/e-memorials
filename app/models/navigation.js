@@ -2,7 +2,7 @@ module.exports = {
     logged: {
         navItems: [
             {
-                url: '',
+                url: '/memorium',
                 title: 'Twój profil',
                 text: 'Twój profil',
                 meta: {
