@@ -13,6 +13,10 @@ $narrowWidth: 600px;
 $mobileWidth: 100%;
 
 
+//Break points
+$mobile: 768px;
+
+
 html, body {
     position: relative;
     width: 100%;
@@ -24,9 +28,10 @@ body {
 }
 
 main {
-    background: url('../images/bg.jpg');
+    background: #333;
     background-attachment: fixed;
     min-height: 100%;
+    overflow: hidden;
     &.disable-video {
         background: none;
     }
@@ -36,6 +41,10 @@ main {
 // Utils
 .fh { height: 100vh }
 
+.bg-video {
+    position: fixed;
+    opacity: 0.4;
+}
 
 // flex items positioning
 .flex {
@@ -53,7 +62,8 @@ main {
     }
     &.start-center {
         align-items: center;
-        justify-content: flex-start
+        justify-content: flex-start;
+        @media (max-width: $mobile) { & {justify-content: center}}
     }
     &.end-center {
         align-items: center;
@@ -90,6 +100,13 @@ button.nav {
 }
 
 
+.dark {
+    input, textarea {
+        border: 1px solid $darkGrey;
+    }
+}
+
+
 //
 // TYPOGRAPHY
 //
@@ -108,7 +125,7 @@ p { margin: 0 }
     border-radius: 30px;
     padding: 10px 20px;
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 1.1rem;
     border: none;
     &.outlined {
         border: 2px solid;
@@ -124,10 +141,10 @@ p { margin: 0 }
 
     &.small {
         padding: 10px 15px;
-        font-size: 1em;
+        font-size: 1rem;
     }
     &.nav {
-        font-size: 1em;
+        font-size: 1rem;
         padding: 15px 30px;
         font-weight: 400;
     }
@@ -150,15 +167,6 @@ p { margin: 0 }
 
 form {
     font-size: 1.4em;
-    input, textarea {
-        color: $darkGrey;
-        display: block;
-        width: 100%;
-        border-radius: 20px;
-        padding: 10px 20px;
-        border: none;
-        margin-bottom: 20px;
-    }
     label {
         margin-bottom: 5px;
     }
@@ -176,8 +184,17 @@ form {
                 width: 90%;
             }
         }
-    }
-    
+    }   
+}
+
+input, textarea {
+    color: $darkGrey;
+    display: block;
+    width: 100%;
+    border-radius: 20px;
+    padding: 10px 20px;
+    border: none;
+    margin-bottom: 20px;
 }
 
 .sign-in_form, .promo-code_form {
@@ -210,6 +227,14 @@ form {
 
 header {
     position: fixed;
+    @media (max-width: $mobile) { 
+        & {
+            position: relative;
+        }
+        div:first-child {
+            width: 100%;
+        }
+    }
     top: 0;
     z-index: 9999;
     width: 100%;
@@ -217,6 +242,13 @@ header {
         position: relative;
         top: 20px;
         left: 20px;
+        @media (max-width: $mobile) { 
+            & {
+                top: 0;
+                left: 0;
+                border-radius: 0;
+            }
+        }
         background-color: $primary-white;
         border-radius: 100px;
         padding: 10px 20px;
@@ -225,6 +257,7 @@ header {
             margin: 0;
             li {
                 display: inline-block;
+                @media (max-width: $mobile) { & {display: block;}}
                 font-size: 1.3em;
                 padding: 0 10px;
                 &.active {
@@ -241,6 +274,7 @@ header {
         top: 20px;
         right: 20px;
         display: inline-block;
+        @media (max-width: $mobile) { & {top: 70px}}
     }
 }
 
@@ -260,17 +294,36 @@ footer {
 .home {
     .company-description {
         margin-top: 30px;
+        width: 650px;
+        @media (max-width: $mobile) { & {width: 100%}}
         .sentence {
             text-align: right;
+            @media (max-width: $mobile) { & {text-align:center}}
             font-size: 2em;
+        }
+        [class^="col-"] {
+            padding: 15px 0;
         }
     }
     .company-steps {
         padding: 50px 0;
         width: 650px;
+        @media (max-width: $mobile) { 
+            & {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
         .step {
             text-align: center;
             width: 25%;
+            @media (max-width: $mobile) { 
+                & {
+                    width: 50%;
+                    padding: 20px 0;
+                }
+            }
             font-size: 1.4em;
             .circle {
                 position: relative;
@@ -292,6 +345,7 @@ footer {
                 width: 125px;
                 height: 3px;
                 background-color: #fff;
+                @media (max-width: $mobile) { & {display: none}}
             }
         }
         .step:last-child .circle {
@@ -343,6 +397,7 @@ footer {
         padding: 50px 0;
         font-size: 2em;
         width: 600px;
+        @media (max-width: $mobile) { & {width: 100%}}
         ul {
             margin: 20px 0;
             padding: 0;
@@ -443,38 +498,58 @@ footer {
 
 // User Panel
 .user-panel {
+    @media (max-width: $mobile) { 
+        h6 {
+            text-align: center;
+        }
+    }
     .welcome-section {
         width: 100%;
         height: 600px;
+        @media (max-width: $mobile) { & {height: auto}}
         background: url('../images/bg.jpg');
         background-attachment: fixed;
         .inner-container {
             width: $defaultWidth;
+            overflow: hidden;
+            @media (max-width: $defaultWidth) { & {width: 100%}}
             .avatar {
                 width: 300px;
                 height: 300px;
                 border-radius: 400px;
                 overflow: hidden;
                 background-color: $primary-white;
+                @media (max-width: $mobile) { 
+                    & {
+                        margin: 50px auto;
+                    }
+                }
             }
             .sentence {
                 font-weight: 300;
                 font-size: 2rem;
+                @media (max-width: $mobile) { & {text-align: center}}
             }
             .details, .edit {
-                padding: 30px 0;
+                margin: 30px 0;
             }
             .details {
                 .name {
                     font-size: 1.5rem;
                     font-weight: 600;
+                    @media (max-width: $mobile) { & {text-align: center}}
                 }
                 .date {
                     font-size: 1rem;
+                    @media (max-width: $mobile) { & {text-align: center}}
+                }
+                .type {
+                    @media (max-width: $mobile) { & {text-align: center}} 
                 }
             }
             .edit {
                 text-align: right;
+                @media (max-width: $mobile) { & {text-align: center}}
             }
         }
     }
@@ -482,19 +557,40 @@ footer {
         margin: 0 auto;
         width: $defaultWidth;
         color: $darkGrey;
+        @media (max-width: $mobile) { 
+            & {
+                width: 100%
+            }
+            .gallery-wrapper, .button-wrapper {
+                text-align:center;
+                width: 100%;
+            }
+        }
         .user-text, .user-files, .user-gallery {
-            padding: 50px 0;
+            margin: 50px 0;
         }
         .user-text {
             p { 
                 padding: 20px 0;
                 font-size: 1rem;
                 line-height: 1.8rem;
+                @media (max-width: $mobile) { & {padding: 20px 20px}}
             }
         }
         .user-files {
             box-sizing: border-box;
             padding: 50px 0 50px 50px;
+            @media (max-width: $mobile) { & {padding: 20px 20px}}
         }
+    }
+}
+
+// Edit profile
+.profile-editor {
+    padding: 200px 0;
+    box-sizing: border-box;
+    font-size: 1rem;
+    .inner-container {
+        margin: 50px 0 50px 0;
     }
 }

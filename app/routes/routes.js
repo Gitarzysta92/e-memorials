@@ -5,10 +5,9 @@ module.exports = function(server, controller) {
 	server.get('/contact', controller.contact);
 	
 	// App main endpoints
-	server.get('/memorium/:id', controller.userProfile);
 	server.get('/memorium', isAuthenticated, controller.userPanel);
 	server.get('/memorium/edit-profile', isAuthenticated, controller.editProfile);
-	
+	server.get('/memorium/:id', controller.userProfile);
 	
 	// App authentication endpoints
 	server.get('/login', controller.login);

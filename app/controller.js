@@ -1,4 +1,5 @@
 const passport = require('passport');
+const uuid = require('uuid/v4');
 
 const defaultPanelModel = require('./models/panelModel');
 const homeModel = require('./models/home');
@@ -42,11 +43,12 @@ module.exports.userPanel = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	const userPanelModel = await database.getPanelByUserID(userID);
 	if (!userPanelModel) {
-		await database.createNewProfile(defaultPanelModel, userID);
-		res.redirect('/memorium/edit-profile');
-		return
+		await database.createNewProfile(defaultPanelModel, userID, uuid());
+		return res.redirect('/memorium/edit-profile');
 	}
-	const dataModel = createModelSingedIn(req, userPanelModel);
+	const dataModel = createModelSingedIn(req, defaultPanelModel,[
+		userPanelModel
+	]);
 	console.log(dataModel);
 	res.render('userPanel', dataModel);
 }
@@ -57,7 +59,7 @@ module.exports.editProfile = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	const userPanelModel = await database.getPanelByUserID(userID);
 	const dataModel = createModelSingedIn(req, userPanelModel);
-	res.render('userPanel', dataModel)
+	res.render('editProfile', dataModel)
 }
 
 
@@ -81,12 +83,9 @@ module.exports.login = function(req, res) {
 	console.log(req.flash('signinAlert'));
 	const signinAlert = req.flash('signinAlert') || false;
 	const dataModel = createModel(req, signinModel, [
-		{ 
-			form: {
-				alert: signinAlert
-			}
-		}
+		{ alert: signinAlert }
 	]);
+	console.log(dataModel);
 	if (req.user) {
 		res.redirect('/memorium');
 	} else {
@@ -96,21 +95,17 @@ module.exports.login = function(req, res) {
 
 
 module.exports.registration = function(req, res) {
-	const storedProcess = registration.getProcess(req.cookies.regToken) || false;
-	const submittedFormFirstStep  = storedProcess ? storedProcess.firstStep : false;
-	const dataModel = createModel(req, regModel, [	
-		{ form: submittedFormFirstStep }
-	]);
+	//const storedProcess = registration.getProcess(req.cookies.regToken) || false;
+	//const submittedFormFirstStep  = storedProcess ? storedProcess.firstStep : false;
+	const dataModel = createModel(req, regModel);
 	res.render('registration', dataModel);
 }
 
 
 module.exports.registrationSecondStep = function(req, res) {
-	const storedProcess = registration.getProcess(req.cookies.regToken) || false;
-	const submittedFormSecondStep  = storedProcess ? storedProcess.SecondStep : false;
-	const dataModel = createModel(req, regModel, [
-		{ form: submittedFormSecondStep }
-	]);
+	//const storedProcess = registration.getProcess(req.cookies.regToken) || false;
+	//const submittedFormSecondStep  = storedProcess ? storedProcess.SecondStep : false;
+	const dataModel = createModel(req, regModel );
 	res.render('registration-second-step', dataModel);
 }
 
@@ -166,7 +161,7 @@ module.exports.registrationFinalization = function(req, res) {
 	database.createNewUser(registrationData).then(data => {
 		console.log(data);
 	}).catch(err => console.log(err));
-	res.send('as');
+	res.redirect('/memorium');
 }
 
 

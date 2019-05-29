@@ -8,6 +8,7 @@ const exthbs = require('express-handlebars');
 const express = require('express');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 const flash = require('express-flash-messages');
 
 
@@ -22,7 +23,7 @@ module.exports = function(expressInstance, dirs) {
     server.use(express.static('public/'));
     server.set('trust proxy', 1);
     server.set('view engine', 'hbs');
-
+    server.use(flash())
     server.engine('hbs', exthbs({
         extname: '.hbs',
         defaultLayout: 'default',
@@ -45,8 +46,11 @@ module.exports = function(expressInstance, dirs) {
     }));
     server.use(passport.initialize());
     server.use(passport.session());
-    server.use(flash())
-
+    
+    server.use(fileUpload({
+        useTempFiles : true,
+        tempFileDir : '/tmp/'
+    }));
     server.use(function(req, res, next) {
        // console.log(req.flash());
         next();
