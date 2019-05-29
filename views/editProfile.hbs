@@ -1,0 +1,68 @@
+{{> header this.navigation }}
+
+<main class="disable-video">
+    <div class="user-panel">
+        <div class="welcome-section flex light in-column end-center">
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="avatar">
+                            <form ref="avatarForm"
+                                id="avatarForm"
+                            enctype="multipart/form-data">
+                                <input type="file" name="avatar" />
+                                <button type="submit">Wgraj avatar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-12 flex center-center">
+                        <h2 class="sentence">{{sentence}}</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 details">
+                        <div class="name">{{name}}</div>
+                        <div class="date">{{birth}} - {{dead}}</div>
+                        <div class="type">{{privateKey}}</div>
+                    </div>
+                    <div class="col-md-6 edit">
+                        <a class="button outlined">Edytuj profil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-content">
+            <div class="row">
+                <div class="col-md-8 col-sm-12 user-text">
+                    <h6>Opis</h6>
+                    <p>{{content.text}}</p>
+                </div>
+                <div class="col-md-4 col-sm-12 user-files">
+                    <h6>Pliki</h6>
+                    <ul>
+                        {{#each content.files}}
+                            <li><a href="{{url}}" title={{title}} >{{text}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 user-gallery">
+                    <h6>Galeria</h6>
+                    <div class="row">
+                        <div class="gallery-wrapper">
+                        {{#each content.images}}
+                            <div class="col-md-4 col-sm-12">
+                                <img src="{{url}}" alt="{{alt}}" title="{{title}}"/>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div class="button-wrapper">
+                        <button class="button solid">Załaduj więcej zdjęć</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

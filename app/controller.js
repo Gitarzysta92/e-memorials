@@ -26,7 +26,6 @@ module.exports.qanda = function(req, res) {
 	const dataModel = req.user 
 		? createModelSingedIn(req, qandaModel) 
 		: createModel(req, qandaModel);
-
 	res.render('qanda', dataModel);
 }
 
@@ -35,6 +34,8 @@ module.exports.contact = function(req, res) {
 	const dataModel = createModel(req, contactModel);
 	res.render('contact', dataModel);
 }
+
+
 
 
 module.exports.userPanel = async function(req, res) {
@@ -47,8 +48,10 @@ module.exports.userPanel = async function(req, res) {
 	}
 	const dataModel = createModelSingedIn(req, userPanelModel);
 	console.log(dataModel);
-	res.render('userPanel', dataModel)
+	res.render('userPanel', dataModel);
 }
+
+
 
 module.exports.editProfile = async function(req, res) {
 	const userID = await database.getUserID(req.user);
@@ -56,6 +59,8 @@ module.exports.editProfile = async function(req, res) {
 	const dataModel = createModelSingedIn(req, userPanelModel);
 	res.render('userPanel', dataModel)
 }
+
+
 
 
 module.exports.userProfile = function(req, res) {
