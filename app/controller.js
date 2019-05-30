@@ -1,6 +1,7 @@
 const passport = require('passport');
 const uuid = require('uuid/v4');
 
+
 const defaultPanelModel = require('./models/panelModel');
 const homeModel = require('./models/home');
 const signinModel = require('./models/sign-in');
@@ -8,6 +9,7 @@ const regModel = require('./models/registration');
 const qandaModel = require('./models/qanda');
 const contactModel = require('./models/contact');
 
+const sendMail = require('./mailer');
 const composer = require('../lib/model-compositor/composer');
 const registration = require('../lib/registration/reg-session');
 const promotions = require('../lib/promo-code/code-validator');
@@ -179,6 +181,19 @@ module.exports.checkPromoCode = function(req, res) {
 
 module.exports.validatePayment = function(req, res) {
 	const { accept, regToken } = req.body;
+}
+
+
+
+module.exports.sendFormMessage = function(req, res) {
+	const body = req.body;
+	sendMail.contactForm(body);
+}
+
+
+
+module.exports.serveStaticJsBundle = function(req, res) {
+	res.sendFile(__dirname + '/public.js');
 }
 
 
