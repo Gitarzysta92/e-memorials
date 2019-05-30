@@ -9,9 +9,10 @@ body {
 }
 
 main {
-  background: url("../images/bg.jpg");
+  background: #333;
   background-attachment: fixed;
   min-height: 100%;
+  overflow: hidden;
 }
 main.disable-video {
   background: none;
@@ -19,6 +20,37 @@ main.disable-video {
 
 .fh {
   height: 100vh;
+}
+@media (max-width: 992px) {
+  .fh {
+    height: auto;
+  }
+}
+
+.bg-video {
+  top: 0;
+  position: fixed;
+  opacity: 0.4;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 100px 0;
+    padding: 0 40px;
+  }
+}
+
+.inner-container {
+  margin: 200px 0 100px 0;
+}
+@media (max-width: 768px) {
+  .inner-container {
+    margin: 0;
+  }
+}
+
+img {
+  max-width: 100%;
 }
 
 .flex {
@@ -38,6 +70,11 @@ main.disable-video {
 .flex.start-center {
   align-items: center;
   justify-content: flex-start;
+}
+@media (max-width: 768px) {
+  .flex.start-center {
+    justify-content: center;
+  }
 }
 .flex.end-center {
   align-items: center;
@@ -69,6 +106,10 @@ button.nav {
   color: #4d7b86;
 }
 
+.dark input, .dark textarea {
+  border: 1px solid #717171;
+}
+
 h6 {
   font-size: 1.4rem;
 }
@@ -85,7 +126,7 @@ p {
   border-radius: 30px;
   padding: 10px 20px;
   text-decoration: none;
-  font-size: 1.5em;
+  font-size: 1.1rem;
   border: none;
 }
 .button.outlined, button.outlined {
@@ -101,10 +142,10 @@ p {
 }
 .button.small, button.small {
   padding: 10px 15px;
-  font-size: 1em;
+  font-size: 1rem;
 }
 .button.nav, button.nav {
-  font-size: 1em;
+  font-size: 1rem;
   padding: 15px 30px;
   font-weight: 400;
 }
@@ -119,15 +160,6 @@ p {
 
 form {
   font-size: 1.4em;
-}
-form input, form textarea {
-  color: #717171;
-  display: block;
-  width: 100%;
-  border-radius: 20px;
-  padding: 10px 20px;
-  border: none;
-  margin-bottom: 20px;
 }
 form label {
   margin-bottom: 5px;
@@ -146,8 +178,23 @@ form .inline.checkbox label {
   width: 90%;
 }
 
+input, textarea {
+  color: #717171;
+  display: block;
+  width: 100%;
+  border-radius: 20px;
+  padding: 10px 20px;
+  border: none;
+  margin-bottom: 20px;
+}
+
 .sign-in_form, .promo-code_form {
   width: 450px;
+}
+@media (max-width: 768px) {
+  .sign-in_form, .promo-code_form {
+    width: 100%;
+  }
 }
 
 .section-title_small {
@@ -172,6 +219,14 @@ header {
   z-index: 9999;
   width: 100%;
 }
+@media (max-width: 768px) {
+  header {
+    position: relative;
+  }
+  header div:first-child {
+    width: 100%;
+  }
+}
 header .main-nav {
   position: relative;
   top: 20px;
@@ -179,6 +234,13 @@ header .main-nav {
   background-color: #dcdbdb;
   border-radius: 100px;
   padding: 10px 20px;
+}
+@media (max-width: 768px) {
+  header .main-nav {
+    top: 0;
+    left: 0;
+    border-radius: 0;
+  }
 }
 header .main-nav ul {
   list-style: none;
@@ -188,6 +250,11 @@ header .main-nav ul li {
   display: inline-block;
   font-size: 1.3em;
   padding: 0 10px;
+}
+@media (max-width: 768px) {
+  header .main-nav ul li {
+    display: block;
+  }
 }
 header .main-nav ul li.active {
   font-weight: 900;
@@ -201,6 +268,11 @@ header .logout {
   right: 20px;
   display: inline-block;
 }
+@media (max-width: 768px) {
+  header .logout {
+    top: 70px;
+  }
+}
 
 footer {
   position: absolute;
@@ -213,19 +285,46 @@ footer {
 
 .home .company-description {
   margin-top: 30px;
+  width: 650px;
+}
+@media (max-width: 768px) {
+  .home .company-description {
+    width: 100%;
+  }
 }
 .home .company-description .sentence {
   text-align: right;
   font-size: 2em;
 }
+@media (max-width: 768px) {
+  .home .company-description .sentence {
+    text-align: center;
+  }
+}
+.home .company-description [class^=col-] {
+  padding: 15px 0;
+}
 .home .company-steps {
   padding: 50px 0;
   width: 650px;
+}
+@media (max-width: 768px) {
+  .home .company-steps {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 .home .company-steps .step {
   text-align: center;
   width: 25%;
   font-size: 1.4em;
+}
+@media (max-width: 768px) {
+  .home .company-steps .step {
+    width: 50%;
+    padding: 20px 0;
+  }
 }
 .home .company-steps .step .circle {
   position: relative;
@@ -246,6 +345,11 @@ footer {
   height: 3px;
   background-color: #fff;
 }
+@media (max-width: 768px) {
+  .home .company-steps .step:not(:last-child) .circle::after {
+    display: none;
+  }
+}
 .home .company-steps .step:last-child .circle {
   background-color: #4d7b86;
   color: #dcdbdb;
@@ -260,13 +364,15 @@ footer {
 .login .sign-in_form {
   width: 350px;
 }
+@media (max-width: 768px) {
+  .login .sign-in_form {
+    width: 100%;
+  }
+}
 .login .sign-up_link {
   text-align: center;
 }
 
-.registration .inner-container {
-  margin: 200px 0 100px 0;
-}
 .registration .sentence {
   max-width: 350px;
   padding: 30px 0;
@@ -274,13 +380,15 @@ footer {
   font-size: 2em;
 }
 
-.registration-second-step .inner-container {
-  margin: 200px 0 100px 0;
-}
 .registration-second-step .section-user-plan {
   padding: 50px 0;
   font-size: 2em;
   width: 600px;
+}
+@media (max-width: 768px) {
+  .registration-second-step .section-user-plan {
+    width: 100%;
+  }
 }
 .registration-second-step .section-user-plan ul {
   margin: 20px 0;
@@ -316,9 +424,6 @@ footer {
   padding: 30px 0;
 }
 
-.qanda .inner-container {
-  margin: 200px 0 100px 0;
-}
 .qanda .section-title_medium {
   margin-top: 50px;
 }
@@ -328,6 +433,7 @@ footer {
 }
 .qanda .questions-accordion ul {
   list-style: none;
+  padding: 0;
 }
 .qanda .questions-accordion ul li {
   display: block;
@@ -358,9 +464,6 @@ footer {
   overflow: hidden;
 }
 
-.contact .inner-container {
-  margin: 200px 0 100px 0;
-}
 .contact .section-title_small {
   margin: 20px 0;
 }
@@ -369,14 +472,30 @@ footer {
   font-size: 1rem;
 }
 
+@media (max-width: 768px) {
+  .user-panel h6 {
+    text-align: center;
+  }
+}
 .user-panel .welcome-section {
   width: 100%;
   height: 600px;
   background: url("../images/bg.jpg");
   background-attachment: fixed;
 }
+@media (max-width: 768px) {
+  .user-panel .welcome-section {
+    height: auto;
+  }
+}
 .user-panel .welcome-section .inner-container {
   width: 1000px;
+  overflow: hidden;
+}
+@media (max-width: 1000px) {
+  .user-panel .welcome-section .inner-container {
+    width: 100%;
+  }
 }
 .user-panel .welcome-section .inner-container .avatar {
   width: 300px;
@@ -385,39 +504,97 @@ footer {
   overflow: hidden;
   background-color: #dcdbdb;
 }
+@media (max-width: 768px) {
+  .user-panel .welcome-section .inner-container .avatar {
+    margin: 50px auto;
+  }
+}
 .user-panel .welcome-section .inner-container .sentence {
   font-weight: 300;
   font-size: 2rem;
 }
+@media (max-width: 768px) {
+  .user-panel .welcome-section .inner-container .sentence {
+    text-align: center;
+  }
+}
 .user-panel .welcome-section .inner-container .details, .user-panel .welcome-section .inner-container .edit {
-  padding: 30px 0;
+  margin: 30px 0;
 }
 .user-panel .welcome-section .inner-container .details .name {
   font-size: 1.5rem;
   font-weight: 600;
 }
+@media (max-width: 768px) {
+  .user-panel .welcome-section .inner-container .details .name {
+    text-align: center;
+  }
+}
 .user-panel .welcome-section .inner-container .details .date {
   font-size: 1rem;
 }
+@media (max-width: 768px) {
+  .user-panel .welcome-section .inner-container .details .date {
+    text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .user-panel .welcome-section .inner-container .details .type {
+    text-align: center;
+  }
+}
 .user-panel .welcome-section .inner-container .edit {
   text-align: right;
+}
+@media (max-width: 768px) {
+  .user-panel .welcome-section .inner-container .edit {
+    text-align: center;
+  }
 }
 .user-panel .user-content {
   margin: 0 auto;
   width: 1000px;
   color: #717171;
 }
+@media (max-width: 768px) {
+  .user-panel .user-content {
+    width: 100%;
+  }
+  .user-panel .user-content .gallery-wrapper, .user-panel .user-content .button-wrapper {
+    text-align: center;
+    width: 100%;
+  }
+}
 .user-panel .user-content .user-text, .user-panel .user-content .user-files, .user-panel .user-content .user-gallery {
-  padding: 50px 0;
+  margin: 50px 0;
 }
 .user-panel .user-content .user-text p {
   padding: 20px 0;
   font-size: 1rem;
   line-height: 1.8rem;
 }
+@media (max-width: 768px) {
+  .user-panel .user-content .user-text p {
+    padding: 20px 20px;
+  }
+}
 .user-panel .user-content .user-files {
   box-sizing: border-box;
   padding: 50px 0 50px 50px;
+}
+@media (max-width: 768px) {
+  .user-panel .user-content .user-files {
+    padding: 20px 20px;
+  }
+}
+
+.profile-editor {
+  padding: 200px 0;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+.profile-editor .inner-container {
+  margin: 50px 0 50px 0;
 }
 
 /*# sourceMappingURL=main.css.map */
