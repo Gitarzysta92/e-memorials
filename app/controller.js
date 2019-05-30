@@ -172,14 +172,16 @@ module.exports.registrationFinalization = function(req, res) {
 	promoEmail && sendMail.notifyPromoCodeOwner(promoEmail)
 		.catch(console.error);
 
+ 
 	// Add new user to database and send confirmation mail
 	const registrationData = regProcess.getUserData();
 	database.createNewUser(registrationData)
 		.then(() => {
 			const { email, name } = registrationData;
-			if (email) {
-				return sendMail.signUpConfirmation(email, name);
-			}	
+			if (email) return sendMail.signUpConfirmation(email, name);
+		})
+		.then(() => {
+			return sendMail.notifyAdministration(registrationData);
 		})
 		.then(res.redirect('/memorium'))
 		.catch(err => {
