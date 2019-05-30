@@ -21,10 +21,36 @@ main.disable-video {
 .fh {
   height: 100vh;
 }
+@media (max-width: 992px) {
+  .fh {
+    height: auto;
+  }
+}
 
 .bg-video {
+  top: 0;
   position: fixed;
   opacity: 0.4;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 100px 0;
+    padding: 0 40px;
+  }
+}
+
+.inner-container {
+  margin: 200px 0 100px 0;
+}
+@media (max-width: 768px) {
+  .inner-container {
+    margin: 0;
+  }
+}
+
+img {
+  max-width: 100%;
 }
 
 .flex {
@@ -162,8 +188,26 @@ input, textarea {
   margin-bottom: 20px;
 }
 
+.alert-box {
+  text-align: center;
+  font-size: 1rem;
+  border-radius: 50px;
+  padding: 6px;
+}
+.alert-box.success {
+  background: #0f8ea5;
+}
+.alert-box.error {
+  background: red;
+}
+
 .sign-in_form, .promo-code_form {
   width: 450px;
+}
+@media (max-width: 768px) {
+  .sign-in_form, .promo-code_form {
+    width: 100%;
+  }
 }
 
 .section-title_small {
@@ -333,13 +377,15 @@ footer {
 .login .sign-in_form {
   width: 350px;
 }
+@media (max-width: 768px) {
+  .login .sign-in_form {
+    width: 100%;
+  }
+}
 .login .sign-up_link {
   text-align: center;
 }
 
-.registration .inner-container {
-  margin: 200px 0 100px 0;
-}
 .registration .sentence {
   max-width: 350px;
   padding: 30px 0;
@@ -347,9 +393,6 @@ footer {
   font-size: 2em;
 }
 
-.registration-second-step .inner-container {
-  margin: 200px 0 100px 0;
-}
 .registration-second-step .section-user-plan {
   padding: 50px 0;
   font-size: 2em;
@@ -394,9 +437,6 @@ footer {
   padding: 30px 0;
 }
 
-.qanda .inner-container {
-  margin: 200px 0 100px 0;
-}
 .qanda .section-title_medium {
   margin-top: 50px;
 }
@@ -406,6 +446,7 @@ footer {
 }
 .qanda .questions-accordion ul {
   list-style: none;
+  padding: 0;
 }
 .qanda .questions-accordion ul li {
   display: block;
@@ -436,15 +477,13 @@ footer {
   overflow: hidden;
 }
 
-.contact .inner-container {
-  margin: 200px 0 100px 0;
-}
 .contact .section-title_small {
   margin: 20px 0;
 }
 .contact .contact-data {
   margin: 50px 0;
   font-size: 1rem;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

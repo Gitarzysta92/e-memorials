@@ -3,8 +3,8 @@ const headers = {
 	'Content-Type': 'application/json'
 }
 const url = {
-	checkPromoCode: 'http://localhost:3000/register/check-promo-code',
-	submitSecondStep: 'http://localhost:3000/register/next-step'
+	checkPromoCode: '/register/check-promo-code',
+	submitSecondStep: '/register/next-step'
 };
 
 
@@ -75,6 +75,21 @@ function displayAlert(message) {
 		event.preventDefault();
 		const givenCode = event.target[0].value;
 		apiCaller('post', url.checkPromoCode, headers, {
+			promoCode: givenCode
+		}).then(data => {
+			const { basic, premium } = data;
+			basicPrice.innerHTML = basic;
+			premiumPrice.innerHTML = premium;
+		})
+	})
+
+	const contactForm = document.getElementById('contact-form');
+	const sendFormEndpoint = '/form-send-message'
+	console.log(contactForm);
+	contactForm && contactForm.addEventListener('submit', function(event){
+		event.preventDefault();
+	
+		apiCaller('post', sendFormEndpoint, headers, {
 			promoCode: givenCode
 		}).then(data => {
 			const { basic, premium } = data;
