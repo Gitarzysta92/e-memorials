@@ -26,7 +26,7 @@ passport.use(new LocalStrategy({
 		passwordFiled: 'password',
 		passReqToCallback: true
 	},
-	async	function(req, username, password, done) {
+	async function(req, username, password, done) {
 		const userPass = await database.getUserPassword(username);
 		console.log('strategy', username, password, userPass);
 		if (password === userPass) {

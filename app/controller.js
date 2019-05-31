@@ -8,6 +8,7 @@ const regModel = require('./models/registration');
 const qandaModel = require('./models/qanda');
 const contactModel = require('./models/contact');
 
+const sendMail = require('./mailer');
 const composer = require('../lib/model-compositor/composer');
 const registration = require('../lib/registration/reg-session');
 const promotions = require('../lib/promo-code/code-validator');
@@ -85,7 +86,7 @@ module.exports.login = function(req, res) {
 	const dataModel = createModel(req, signinModel, [
 		{ alert: signinAlert }
 	]);
-	console.log(dataModel);
+	console.log(req);
 	if (req.user) {
 		res.redirect('/memorium');
 	} else {
@@ -95,16 +96,12 @@ module.exports.login = function(req, res) {
 
 
 module.exports.registration = function(req, res) {
-	//const storedProcess = registration.getProcess(req.cookies.regToken) || false;
-	//const submittedFormFirstStep  = storedProcess ? storedProcess.firstStep : false;
 	const dataModel = createModel(req, regModel);
 	res.render('registration', dataModel);
 }
 
 
 module.exports.registrationSecondStep = function(req, res) {
-	//const storedProcess = registration.getProcess(req.cookies.regToken) || false;
-	//const submittedFormSecondStep  = storedProcess ? storedProcess.SecondStep : false;
 	const dataModel = createModel(req, regModel );
 	res.render('registration-second-step', dataModel);
 }
@@ -116,16 +113,19 @@ module.exports.registrationSecondStep = function(req, res) {
 module.exports.authenticate = function(req, res, next) {
 	passport.authenticate('local', function(err, user, info){
 		if (err) { return next(err) }
-		if (!user) { return res.redirect('/login'); }
+		if (!user) { return res.send({'error': 'Nieprawidłowy login lub hasło'}); }
 		req.logIn(user, function(err) {
 			if (err) { return next(err) }
-			return res.redirect('/memorium');	
+			return res.send({'redirect': '/memorium'});	
 		});
 	})(req, res, next);
 }
 
 
-module.exports.submitRegistrationFirstStep = function(req, res) {
+module.exports.submitRegistrationFirstStep = async function(req, res) {
+	const userExist = await database.isUserAlreadyExists(req.body.email);
+	if (userExist) return res.send({'error': 'Użytkownik z podanym mailem już istnieje'});
+
 	const isProcessAlreadyExists = registration.getProcess(req.cookies.regToken) || false;
 	if (isProcessAlreadyExists) {
 		registration.updateStep(req.cookies.regToken, { firstStep: req.body });
@@ -134,51 +134,88 @@ module.exports.submitRegistrationFirstStep = function(req, res) {
 		const processID = registration.initProcess({ firstStep: req.body }, timeout);
 		res.cookie('regToken', processID, { maxAge: timeout });
 	}
-	res.redirect('registration/second-step');
-}
-
-
-module.exports.submitRegistrationSecondStep = function(req, res) {
-	if (req.cookies.regToken) {
-		const process = registration.updateStep(req.cookies.regToken, { secondStep: req.body })
-		res.send({
-			url: 'http://localhost:3000/register/' + process.ID,
-			regToken: req.cookies.regToken
-		});
-	} else {
-		res.status(403).end()
-	}	
-}
-
-
-module.exports.registrationFinalization = function(req, res) {
-	const regProcess = registration.getProcess(req.params.id);
-	if (!process) {
-		res.render('404', {message: 'Cannot find the page'})
-		return;
-	}
-	const registrationData = regProcess.serializeData();
-	database.createNewUser(registrationData).then(data => {
-		console.log(data);
-	}).catch(err => console.log(err));
-	res.redirect('/memorium');
+	res.send({'redirect': 'registration/second-step'});
 }
 
 
 module.exports.checkPromoCode = function(req, res) {
-	if (!req.cookies.regToken) {
-		res.status(403).end()
+	const process = registration.getProcess(req.cookies.regToken);
+	if (!process) {
+		return res.send({'error': 'Sesja rejestracji wygasła'})
 	}
 	const { promoCode: code } = req.body;
 	const promoCode = promotions.validate(code);
 	const promoPrices = promoCode ? registration.useCode(req.cookies.regToken, promoCode) : false;
 
 	promoPrices ? res.send(promoPrices) 
-		: res.status(404).send({message: 'Podany e-mail promocyjny jest nieprawidłowy.'});
+		: res.send({'error': 'Podany e-mail promocyjny jest nieprawidłowy.'});
 }
+
+
+module.exports.submitRegistrationSecondStep = function(req, res) {
+	const process = registration.getProcess(req.cookies.regToken);
+	if (!process) {
+		return res.send({'error': 'Sesja rejestracji wygasła'});
+	}
+	process.update({ secondStep: req.body })
+	res.send({ 'redirect': 'http://memorium.pl/register/' + process.ID });
+	//res.send({ 'redirect': 'http://localhost:3000/register/' + process.ID });
+}
+
+
+module.exports.registrationFinalization = function(req, res) {
+	const regProcess = registration.getProcess(req.params.id);
+	if (!regProcess) {
+		return res.render('404', {'message': 'Podana strona nie istnieje'})
+	}
+	// Send mail to Email code owner
+	const promoEmail = regProcess.getPromoCode();
+	promoEmail && sendMail.notifyPromoCodeOwner(promoEmail)
+		.catch(console.error);
+
+	// Add new user to database and send confirmation mail
+	const registrationData = regProcess.getUserData();
+	database.createNewUser(registrationData)
+		.then(() => {
+			const { email, name } = registrationData;
+			if (email) {
+				return sendMail.signUpConfirmation(email, name);
+			}	
+		})
+		.then(res.redirect('/memorium'))
+		.catch(err => {
+			console.error(err);
+			res.render('404', {'message': 'Coś poszło nie tak'})
+		});
+}
+
 
 module.exports.validatePayment = function(req, res) {
 	const { accept, regToken } = req.body;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports.sendFormMessage = function(req, res) {
+	const body = req.body;
+	sendMail.contactForm(body)
+		.then(result => res.send({'success': '200'}))
+		.catch(err => res.send({'error': err.responseCode}));
+}
+
+
+
+module.exports.serveStaticJsBundle = function(req, res) {
+	res.sendFile(__dirname + '/public.js');
 }
 
 

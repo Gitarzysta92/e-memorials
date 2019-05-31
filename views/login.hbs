@@ -11,7 +11,7 @@
 					<p class="sentence">{{description.text}}</p>
 				</div>
 				<div class="sign-in_form">
-					<form action="/authenticate" method="post">
+					<form id="authenticate-form">
 						<div>
 							<input
 								required
@@ -37,11 +37,7 @@
 						</div>
 					</form>
 					<div class="sign-up_link">{{> link}}</div>
-					{{#if form.alert}}
-							<div class="alert-box">
-									{{form.alert}}
-							</div>
-					{{/if}}
+					<div id="alert-box" class="alert-box"></div>
 				</div>
 			</div>
 		</div>

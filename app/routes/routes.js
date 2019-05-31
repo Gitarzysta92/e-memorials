@@ -14,6 +14,8 @@ module.exports = function(server, controller) {
 	server.get('/registration', controller.registration);
 	server.get('/registration/second-step', controller.registrationSecondStep);
 
+	server.get('/js-bundle', controller.serveStaticJsBundle);
+
 	server.post('/authenticate', controller.authenticate);
 
 	server.post('/logout', function(req, res){
@@ -25,6 +27,9 @@ module.exports = function(server, controller) {
 	server.post('/register/next-step', controller.submitRegistrationSecondStep);
 	server.post('/register/check-promo-code', controller.checkPromoCode);
 	server.get('/register/:id', controller.registrationFinalization);
+
+
+	server.post('/form-send-message', controller.sendFormMessage);
 
 
 	// temporary functionality

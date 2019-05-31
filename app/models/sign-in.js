@@ -27,10 +27,10 @@ module.exports = {
         alert: false
     },
     link: {
-        pre: 'Masz już konto?',
-        url: 'test',
-        title: 'test',
-        text: 'Zaloguj się'
+        pre: 'Nie masz konta?',
+        url: '/registration',
+        title: 'Rejestracja',
+        text: 'Zarejestruj się'
     },
     helpers: {
         stepNumber: data => data,
