@@ -21,7 +21,7 @@ main.disable-video {
 .fh {
   height: 100vh;
 }
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .fh {
     height: auto;
   }
@@ -330,12 +330,12 @@ footer {
 }
 .home .company-steps .step {
   text-align: center;
-  width: 25%;
+  width: 33%;
   font-size: 1.4em;
 }
 @media (max-width: 768px) {
   .home .company-steps .step {
-    width: 50%;
+    width: 100%;
     padding: 20px 0;
   }
 }
@@ -354,7 +354,7 @@ footer {
   top: 49%;
   left: 100%;
   position: absolute;
-  width: 125px;
+  width: 180px;
   height: 3px;
   background-color: #fff;
 }

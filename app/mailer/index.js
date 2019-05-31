@@ -4,7 +4,7 @@ const mailer = require('../../lib/mail-sender/mailer');
 const sender = mailer.configure(config);
 const from = 'kontakt@memorium.pl';
 
-
+//------
 module.exports.contactForm = function(formData) {
 	const { 
 		name = '', 
@@ -23,7 +23,7 @@ module.exports.contactForm = function(formData) {
 	})
 } 
 
-
+//------
 const notifyContent = `Witamy!
 
 Uprzejmie informujemy, że ktoś w tym momencie skorzystał z państwa kodu promocyjnego. 
@@ -46,6 +46,7 @@ module.exports.notifyPromoCodeOwner = function(email) {
 }
 
 
+//------
 const confirmationContent = `Witamy!
 
 Z poważaniem
@@ -60,4 +61,40 @@ module.exports.signUpConfirmation = function(email, name) {
 		subject: `${name}! Witaj na Memorium.pl `,
 		text: confirmationContent
 	})	
+}
+
+
+//-----------
+module.exports.notifyAdministration = function(formData) {
+	console.log(formData)
+	const { 
+		id = '',
+		email = '', 
+		name = '', 
+		surname = '',
+		phone = '',
+		city = '',
+		street = '',
+		postalCode = '' } = formData;
+
+	return sender({
+		from: from,
+		to: from,
+		subject: `${name} <${email}> - nowy użytkownik`,
+		text: `
+
+		URL: http://memorium.pl/memorium/${id}
+
+		Pozostałe dane:
+
+		Imię i nazwisko: ${name} ${surname}
+		Adres e-mail: ${email}
+		Telefon: ${phone}
+		Miasto i kod pocztowy: ${city} ${postalCode}
+		Ulica: ${street}
+		
+		Z poważaniem
+		Memorium Immortalis
+		`
+	})
 }

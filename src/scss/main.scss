@@ -42,7 +42,7 @@ main {
 // Utils
 .fh { 
     height: 100vh;
-    @media (max-width: $laptops) { & {height: auto}}
+    @media (max-width: $mobile) { & {height: auto}}
 }
 
 .bg-video {
@@ -354,10 +354,10 @@ footer {
         }
         .step {
             text-align: center;
-            width: 25%;
+            width: 33%;
             @media (max-width: $mobile) { 
                 & {
-                    width: 50%;
+                    width: 100%;
                     padding: 20px 0;
                 }
             }
@@ -379,7 +379,7 @@ footer {
                 top: 49%;
                 left: 100%;
                 position: absolute;
-                width: 125px;
+                width: 180px;
                 height: 3px;
                 background-color: #fff;
                 @media (max-width: $mobile) { & {display: none}}

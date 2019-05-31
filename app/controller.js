@@ -43,8 +43,8 @@ module.exports.contact = function(req, res) {
 module.exports.userPanel = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	const userPanelModel = await database.getPanelByUserID(userID);
+	console.log(userPanelModel);
 	if (!userPanelModel) {
-		await database.createNewProfile(defaultPanelModel, userID, uuid());
 		return res.redirect('/memorium/edit-profile');
 	}
 	const dataModel = createModelSingedIn(req, defaultPanelModel,[
@@ -66,14 +66,13 @@ module.exports.editProfile = async function(req, res) {
 
 
 
-module.exports.userProfile = function(req, res) {
+module.exports.userProfile = async function(req, res) {
 	console.log('request', req.params.id);
-	const pageID = req.params.id;
-//	const userPanelModel = database.getPageDataBy(pageID);
-	
+	const userPanelModel = await database.getProfileByURL(req.params.id);
+
 	if (userPanelModel) {
-		const dataModel = createModelSingedIn(req, userPanelModel);
-		console.log('datamodel', dataModel);
+		const dataModel = createModel(req, userPanelModel);
+		console.log('datamodel', userPanelModel);
 		res.render('userPanel', dataModel );
 	} else {
 		res.render('404', {message: 'Cannot find the page'})
@@ -81,12 +80,7 @@ module.exports.userProfile = function(req, res) {
 }
 
 module.exports.login = function(req, res) {
-	console.log(req.flash('signinAlert'));
-	const signinAlert = req.flash('signinAlert') || false;
-	const dataModel = createModel(req, signinModel, [
-		{ alert: signinAlert }
-	]);
-	console.log(req);
+	const dataModel = createModel(req, signinModel);
 	if (req.user) {
 		res.redirect('/memorium');
 	} else {
@@ -163,6 +157,8 @@ module.exports.submitRegistrationSecondStep = function(req, res) {
 }
 
 
+
+
 module.exports.registrationFinalization = function(req, res) {
 	const regProcess = registration.getProcess(req.params.id);
 	if (!regProcess) {
@@ -173,14 +169,30 @@ module.exports.registrationFinalization = function(req, res) {
 	promoEmail && sendMail.notifyPromoCodeOwner(promoEmail)
 		.catch(console.error);
 
-	// Add new user to database and send confirmation mail
+	// Add new user to database and send confirmation mails
 	const registrationData = regProcess.getUserData();
-	database.createNewUser(registrationData)
+	database.createNewUser(registrationData, regProcess.ID)
+		.then(() => {
+			const { email, password } = registrationData;
+			return database.getUserID({
+				username: email,
+				password: password
+			})
+		})
+		.then(result => {
+			return database.createNewProfile(defaultPanelModel, result, regProcess.ID)
+		})
 		.then(() => {
 			const { email, name } = registrationData;
 			if (email) {
 				return sendMail.signUpConfirmation(email, name);
 			}	
+		})
+		.then(() => {
+			const id = regProcess.ID;
+			if (id) {
+				return sendMail.notifyAdministration({id, ...registrationData});
+			}		
 		})
 		.then(res.redirect('/memorium'))
 		.catch(err => {
@@ -188,6 +200,8 @@ module.exports.registrationFinalization = function(req, res) {
 			res.render('404', {'message': 'Coś poszło nie tak'})
 		});
 }
+
+
 
 
 module.exports.validatePayment = function(req, res) {
