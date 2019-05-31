@@ -1,11 +1,11 @@
 html, body {
   position: relative;
   width: 100%;
+  font-size: 62.5%;
 }
 
 body {
   font-family: "Open Sans", Arial, sans-serif;
-  font-size: 10px;
 }
 
 main {
@@ -126,7 +126,7 @@ p {
   border-radius: 30px;
   padding: 10px 20px;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   border: none;
 }
 .button.outlined, button.outlined {
@@ -145,7 +145,7 @@ p {
   font-size: 1rem;
 }
 .button.nav, button.nav {
-  font-size: 1rem;
+  font-size: 1.4rem;
   padding: 15px 30px;
   font-weight: 400;
 }
@@ -154,12 +154,21 @@ p {
   line-height: 20px;
 }
 
-.sign-up_link {
-  margin: 10px 0;
+.sign-in_link, .sign-up_link, .forgot-password_link {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.sign-in_link, .sign-up_link {
+  margin-top: 10px;
+}
+
+.forgot-password_link {
+  font-size: 1.2rem;
 }
 
 form {
-  font-size: 1.4em;
+  font-size: 1.4rem;
 }
 form label {
   margin-bottom: 5px;
@@ -190,7 +199,7 @@ input, textarea {
 
 .alert-box {
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
   border-radius: 50px;
   padding: 6px;
 }
@@ -211,7 +220,7 @@ input, textarea {
 }
 
 .section-title_small {
-  font-size: 1.5rem;
+  font-size: 2rem;
   text-align: center;
 }
 .section-title_small small {
@@ -261,7 +270,7 @@ header .main-nav ul {
 }
 header .main-nav ul li {
   display: inline-block;
-  font-size: 1.3em;
+  font-size: 1.2rem;
   padding: 0 10px;
 }
 @media (max-width: 768px) {
@@ -294,6 +303,7 @@ footer {
   width: 100%;
   padding: 20px;
   bottom: 0;
+  font-size: 1.2rem;
 }
 
 .home .company-description {
@@ -307,7 +317,7 @@ footer {
 }
 .home .company-description .sentence {
   text-align: right;
-  font-size: 2em;
+  font-size: 2rem;
 }
 @media (max-width: 768px) {
   .home .company-description .sentence {
@@ -331,7 +341,7 @@ footer {
 .home .company-steps .step {
   text-align: center;
   width: 33%;
-  font-size: 1.4em;
+  font-size: 1.4rem;
 }
 @media (max-width: 768px) {
   .home .company-steps .step {
@@ -381,9 +391,6 @@ footer {
   .login .sign-in_form {
     width: 100%;
   }
-}
-.login .sign-up_link {
-  text-align: center;
 }
 
 .registration .sentence {
@@ -469,11 +476,11 @@ footer {
   height: auto;
 }
 .qanda .questions-accordion ul li .question {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 .qanda .questions-accordion ul li .answer {
   height: 0px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   overflow: hidden;
 }
 
@@ -482,7 +489,7 @@ footer {
 }
 .contact .contact-data {
   margin: 50px 0;
-  font-size: 1rem;
+  font-size: 1.4rem;
   text-align: center;
 }
 
@@ -526,7 +533,7 @@ footer {
 }
 .user-panel .welcome-section .inner-container .sentence {
   font-weight: 300;
-  font-size: 2rem;
+  font-size: 2.4rem;
 }
 @media (max-width: 768px) {
   .user-panel .welcome-section .inner-container .sentence {
@@ -537,7 +544,7 @@ footer {
   margin: 30px 0;
 }
 .user-panel .welcome-section .inner-container .details .name {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 @media (max-width: 768px) {
@@ -546,7 +553,7 @@ footer {
   }
 }
 .user-panel .welcome-section .inner-container .details .date {
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 @media (max-width: 768px) {
   .user-panel .welcome-section .inner-container .details .date {
@@ -585,8 +592,8 @@ footer {
 }
 .user-panel .user-content .user-text p {
   padding: 20px 0;
-  font-size: 1rem;
-  line-height: 1.8rem;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 @media (max-width: 768px) {
   .user-panel .user-content .user-text p {

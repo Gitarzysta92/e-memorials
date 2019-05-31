@@ -4,6 +4,7 @@ const uuid = require('uuid/v4');
 const defaultPanelModel = require('./models/panelModel');
 const homeModel = require('./models/home');
 const signinModel = require('./models/sign-in');
+const resetPassword = require('./models/reset-pass');
 const regModel = require('./models/registration');
 const qandaModel = require('./models/qanda');
 const contactModel = require('./models/contact');
@@ -98,6 +99,13 @@ module.exports.registration = function(req, res) {
 module.exports.registrationSecondStep = function(req, res) {
 	const dataModel = createModel(req, regModel );
 	res.render('registration-second-step', dataModel);
+}
+
+
+
+module.exports.resetPasswordPage = function(req, res) {
+	const dataModel = createModel(req, resetPassword);
+	res.render('reset-password', dataModel);
 }
 
 

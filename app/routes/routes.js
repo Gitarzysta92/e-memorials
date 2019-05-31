@@ -13,6 +13,7 @@ module.exports = function(server, controller) {
 	server.get('/login', controller.login);
 	server.get('/registration', controller.registration);
 	server.get('/registration/second-step', controller.registrationSecondStep);
+	server.get('/reset-password', controller.resetPasswordPage);
 
 	server.get('/js-bundle', controller.serveStaticJsBundle);
 
