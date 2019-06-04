@@ -1,8 +1,7 @@
-const config = require('./smtp-config');
-const mailer = require('../../lib/mail-sender/mailer');
-
-const sender = mailer.configure(config);
-const from = 'kontakt@memorium.pl';
+const { 
+	mailer: send, 
+	sender: from 
+} = require('../api-provider');
 
 //------
 module.exports.contactForm = function(formData) {
@@ -14,7 +13,7 @@ module.exports.contactForm = function(formData) {
 		
 	if (!email) return; 
 	
-	return sender({
+	return send({
 		from: from,
 		to: from,
 		subject: `${name} <${email}> - przez formularz kontaktowy`,
@@ -36,7 +35,7 @@ Memorium Immortalis
 
 module.exports.notifyPromoCodeOwner = function(email) {
 	if (!email) return;
-	return sender({
+	return send({
 		from: from,
 		to: email,
 		subject: `Twój kod promocyjny dla Memorium.pl został wykorzystany`,
@@ -55,7 +54,7 @@ Memorium Immortalis
 
 module.exports.signUpConfirmation = function(email, name) {
 	if (!email) return;
-	return sender({
+	return send({
 		from: from,
 		to: email,
 		subject: `${name}! Witaj na Memorium.pl `,
@@ -77,7 +76,7 @@ module.exports.notifyAdministration = function(formData) {
 		street = '',
 		postalCode = '' } = formData;
 
-	return sender({
+	return send({
 		from: from,
 		to: from,
 		subject: `${name} <${email}> - nowy użytkownik`,

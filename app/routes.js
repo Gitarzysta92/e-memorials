@@ -1,4 +1,6 @@
-module.exports = function(server, controller) {
+module.exports = function(controller, server) {
+	const { isAuthenticated } = controller;
+
 	// Website endpoints
 	server.get('/', controller.home );
 	server.get('/qanda', controller.qanda);
@@ -14,6 +16,8 @@ module.exports = function(server, controller) {
 	server.get('/registration', controller.registration);
 	server.get('/registration/second-step', controller.registrationSecondStep);
 	server.get('/reset-password', controller.resetPasswordPage);
+	server.post('/reset-password', controller.resetPassword);
+
 
 	server.get('/js-bundle', controller.serveStaticJsBundle);
 
@@ -31,21 +35,6 @@ module.exports = function(server, controller) {
 
 
 	server.post('/form-send-message', controller.sendFormMessage);
-
-
-	// temporary functionality
-	server.post('validatePayment', controller.validatePayment);
-	
-
-
-
-	function isAuthenticated(req, res, next) {
-		if (req.user) {
-			next()
-		} else {
-			res.redirect('/login');
-		}
-	}
 
 }
 

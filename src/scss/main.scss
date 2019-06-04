@@ -136,7 +136,6 @@ button.nav {
 // TYPOGRAPHY
 //
 
-h6 {font-size: 1.4rem;}
 p { margin: 0 }
 .sentence { font-style: italic }
 
@@ -166,7 +165,7 @@ p { margin: 0 }
 
     &.small {
         padding: 10px 15px;
-        font-size: 1rem;
+        font-size: 1.4rem;
     }
     &.nav {
         font-size: 1.4rem;
@@ -250,7 +249,7 @@ input, textarea {
 
 // titles
 .section-title_small {
-    font-size: 2rem;
+    font-size: 3rem;
     text-align: center;
     small {
         font-weight: 300;
@@ -444,7 +443,7 @@ footer {
             list-style: none;
             li {
                 padding: 5px 0;
-                font-size: 1rem;
+                font-size: 1.6rem;
             }
             li:nth-child(odd) {
                 background-color: rgba(0,0,0, 0.1)

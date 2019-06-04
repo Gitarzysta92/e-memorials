@@ -110,10 +110,6 @@ button.nav {
   border: 1px solid #717171;
 }
 
-h6 {
-  font-size: 1.4rem;
-}
-
 p {
   margin: 0;
 }
@@ -142,7 +138,7 @@ p {
 }
 .button.small, button.small {
   padding: 10px 15px;
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 .button.nav, button.nav {
   font-size: 1.4rem;
@@ -220,7 +216,7 @@ input, textarea {
 }
 
 .section-title_small {
-  font-size: 2rem;
+  font-size: 3rem;
   text-align: center;
 }
 .section-title_small small {
@@ -417,7 +413,7 @@ footer {
 }
 .registration-second-step .section-user-plan ul li {
   padding: 5px 0;
-  font-size: 1rem;
+  font-size: 1.6rem;
 }
 .registration-second-step .section-user-plan ul li:nth-child(odd) {
   background-color: rgba(0, 0, 0, 0.1);

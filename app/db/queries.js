@@ -1,23 +1,4 @@
-const mysql = require('mysql');
-const database = mysql.createPool({
-    connectionLimit: 10,
-    host: "mn06.webd.pl",
-    user: "atole44_admin",
-    password: "tzqx44!@#",
-    database: 'atole44_memo'
-});
-
-async function _execute(sql) {
-    const connection = new Promise(function(resolve, reject) {
-        database.query(sql, function(err, result) {
-            if (err) reject(err);
-            resolve(result);
-        })
-    });
-    return connection;
-}
-
-
+const { database: _execute } = require('../api-provider');
 
 // GET
 module.exports.getPanelByID = function(panelID) {
@@ -27,7 +8,7 @@ module.exports.getPanelByID = function(panelID) {
 
 module.exports.getProfileByURL = function(uniqueID) {
     const query = `SELECT * FROM UserPanels WHERE unique_ID = '${uniqueID}'`;  
-    return _execute(query).then(current => current[0]);;
+    return _execute(query).then(current => current[0]);
 }
 
 
