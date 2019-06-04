@@ -1,29 +1,16 @@
-const mysql = require('mysql');
-const database = mysql.createPool({
-    connectionLimit: 10,
-    host: "mn06.webd.pl",
-    user: "atole44_admin",
-    password: "tzqx44!@#",
-    database: 'atole44_memo'
-});
-
-async function _execute(sql) {
-    const connection = new Promise(function(resolve, reject) {
-        database.query(sql, function(err, result) {
-            if (err) reject(err);
-            resolve(result);
-        })
-    });
-    return connection;
-}
-
-
+const { database: _execute } = require('../api-provider');
 
 // GET
 module.exports.getPanelByID = function(panelID) {
     const query = `SELECT * FROM UserPanels WHERE panel_ID = '${panelID}'`;  
-    return _execute(query);
+    return _execute(query).then(current => current.length > 0 ? current : false);;
 }
+
+module.exports.getProfileByURL = function(uniqueID) {
+    const query = `SELECT * FROM UserPanels WHERE unique_ID = '${uniqueID}'`;  
+    return _execute(query).then(current => current[0]);
+}
+
 
 module.exports.getPanelByUserID = function(userID) {
     const query = `SELECT * FROM UserPanels WHERE user_ID = '${userID}'`; 
@@ -31,9 +18,15 @@ module.exports.getPanelByUserID = function(userID) {
 }
 
 module.exports.getUserPassword = function(userEmail) {
-    const query = `SELECT * FROM Users WHERE email = '${userEmail}'`;
-    return _execute(query).then(current => current[0].password);
+    const query = `SELECT password FROM Users WHERE email = '${userEmail}'`;
+    return _execute(query).then(current => current[0] ? current[0].password : false);
 }
+
+module.exports.isUserAlreadyExists = function(userEmail) {
+    const query = `SELECT * FROM Users WHERE email = '${userEmail}'`;
+    return _execute(query).then(current => current.length > 0 ? true : false);
+}
+
 
 module.exports.getUserID = function({username, password}) {
     const query = `SELECT User_ID FROM Users WHERE email ='${username}' AND password = '${password}'`;
@@ -73,6 +66,12 @@ module.exports.createNewProfile = function(panelData, userID, uniqueID) {
 }
 
 
+module.exports.changeUserPassword = function(username, password) {
+    const query = `Update Users SET password = '${password}' WHERE email = '${username}'`;
+    return _execute(query);
+}
+
+
 
 const sql = `CREATE TABLE IF NOT EXISTS
     Attachments(
@@ -101,7 +100,7 @@ CREATE TABLE IF NOT EXISTS
     UserPanels(
         panel_ID INT(11) unsigned NOT NULL AUTO_INCREMENT,
         user_ID INT(11) unsigned NOT NULL UNIQUE,
-        unique_ID INT(22) unsigned NOT NULL UNIQUE,
+        unique_ID VARCHAR(255) NOT NULL UNIQUE,
         name VARCHAR(255) NOT NULL, 
         birth DATE NOT NULL,
         dead DATE NOT NULL, 

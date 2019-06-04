@@ -28,10 +28,6 @@ module.exports = {
         },
         {
             number: '3',
-            text: 'Dodaj przyjaciół'
-        },
-        {
-            number: '4',
             text: 'Otrzymaj fizyczny kod QR'
         },
     ],

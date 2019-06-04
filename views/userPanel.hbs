@@ -21,7 +21,9 @@
                         <div class="type">{{privateKey}}</div>
                     </div>
                     <div class="col-md-6 edit">
-                        <a class="button outlined" href="{{editProfile}}" >Edytuj profil</a>
+                        {{#if editProfile}}
+                            <a class="button outlined" href="{{editProfile}}" >Edytuj profil</a>
+                        {{/if}}
                     </div>
                 </div>
             </div>

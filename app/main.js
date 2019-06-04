@@ -1,63 +1,52 @@
-const { server, instance } = require('./server/server.js');
-const serverConfig =  require('./server/serverConfig.js');
-const routes = require('./routes/routes.js');
-const controller =  require('./controller.js');
+const controller = './controller.js';
+const apiProvider = require('./api-provider');
+const routesAttach = require('./routes.js');
 
-require('./passport/passport.js');
-//require('./sqlConnect');
+
+const { prepareServer, instance } = require('../lib/server/server');
+const dbConnect = require('../lib/database-service/db-connect');
+const createMailer = require('../lib/mail-sender/mailer');
+const setupRegistration = require('../lib/registration/reg-session');
+const registerPromoCodes = require('../lib/promo-code/code-validator');
+const composer = require('../lib/model-compositor/composer');
+
+
 
 
 module.exports = (function() {
 	const _reg = {
 		expressInstance: instance
 	}
-	const _services = {
-		preStartup: {},
-		startUp: {},
-		runtime: {}
-	}
-	const api = {
-		run: _runApp
-	}
-
-	function _runApp() {
-		_services.startUp.server();
-	}
-
+	const _services = {};
 	return function(configuration) {
-		const {
-			server,
-			dir,
-			database
+		const { 
+			domain, 
+			server, 
+			dirs, 
+			database, 
+			mailer,
+			userPlans 
 		} = configuration;
 
-		_services.startUp.server = initServer(server.port, serverListenNotify(server.notify), dir);
-		_services.runtime.routes = createRoutes(_reg.expressInstance);
+		_reg.domain = domain;
+		_reg.sender = mailer.sender;
+		_reg.dirs = dirs;
 
-		return api;
+		_services.database = dbConnect(database.config); 
+		_services.mailer = createMailer(mailer.config);
+		_services.registration = setupRegistration(userPlans);
+		_services.promoCode = registerPromoCodes(userPlans.promoCodes);
+		_services.composer = composer;
+		apiProvider([_reg, _services]);
+
+		const _run = prepareServer(server.config, server.port, dirs, server.callback);
+		require('./passport/passport.js');
+		routesAttach(require(controller), _reg.expressInstance);
+ 
+		return {
+			run: _run
+		}
 	}
 })();
 
 
-
-
-function initServer(port, callback, dirs) {
-	const config = function(instance) {
-		return serverConfig(instance, dirs)
-	}
-
-	const serverListenOn = server(config);
-
-	return function() {
-		serverListenOn(port, callback);
-	}
-}
-
-function serverListenNotify(text) {
-	return function() {
-	}
-}
-
-function createRoutes(expressInstance) {
-	return routes(expressInstance, controller);
-}

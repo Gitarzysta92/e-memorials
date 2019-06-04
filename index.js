@@ -1,31 +1,50 @@
 const app = require('./app/main.js');
 
+const serverConfig = require('./configs/server-config');
+const mailerConfig = require('./configs/mailer-config');
+const dbConfig = require('./configs/db-config');
+
+
 
 const ABSPATH = __dirname;
-const paths = {
-	client: `${ABSPATH}/client`,
-	library: `${ABSPATH}/lib`,
-	utilities: `${ABSPATH}/utils`,
-	constants: `${ABSPATH}/constants`,
-	layouts: `${ABSPATH}/views/layouts`,
-	partials: `${ABSPATH}/views/partials`
-}
-
-const database = {
-
-}
-
+const defaultPort = 3000;
 
 const memorial = app({
+	domain: process.env.DOMAIN || 'http://localhost:' + defaultPort,
 	server: {
 		port: process.env.PORT || 3000,
-		notify: 'Server listen'
+		callback: () => console.log('Server listen'),
+		config: serverConfig
 	},
-	dir: paths,
-	database: false
+	mailer: {
+		sender: 'kontakt@memorium.pl',
+		config: mailerConfig
+	},
+	database: {
+		config: dbConfig	
+	},
+	dirs: {
+		client: `${ABSPATH}/client`,
+		library: `${ABSPATH}/lib`,
+		utilities: `${ABSPATH}/utils`,
+		publicJS: `${ABSPATH}/public/js`
+	},
+	userPlans: {
+		basic: {
+			price: 60,
+			discount: 10
+		},
+		premium: {
+			price: 120,
+			discount: 10
+		},
+		promoCodes: [
+			'kontakt@memorium.pl'
+		]
+	},
+	
 });
 
-
-
-
 memorial.run();
+
+

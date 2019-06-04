@@ -9,14 +9,11 @@ module.exports = {
         pamięć o bliskich, którzy odeszli.`
     },
     form: {
-        username: {
-            placeholder: 'Adres e-mail',
-        },
         password: {
-            placeholder: 'Hasło'
+            placeholder: 'Podaj nowe hasło'
         },
         button: {
-            text: 'Zaloguj się',
+            text: 'Resetuj hasło',
             alt: false,
             url: false,
             meta: {
@@ -32,14 +29,4 @@ module.exports = {
         title: 'Rejestracja',
         text: 'Zarejestruj się'
     },
-    forgotPassword: {
-        pre: '',
-        url: '/forgot-password',
-        title: 'Reset hasła',
-        text: 'Zapomniałeś hasła?'
-    },
-
-    helpers: {
-        stepNumber: data => data,
-    }
 }
