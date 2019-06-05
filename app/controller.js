@@ -3,6 +3,7 @@ const services = {
 	...require('./services/registration'),
 	...require('./services/user-profile'),
 	...require('./services/pages'),
+	...require('./services/password-reset'),
 	...require('./services/miscs')
 };
 

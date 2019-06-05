@@ -34,7 +34,7 @@ module.exports = {
     },
     forgotPassword: {
         pre: '',
-        url: '/reset-password',
+        url: '/forgot-password',
         title: 'Reset hasła',
         text: 'Zapomniałeś hasła?'
     },

@@ -65,6 +65,33 @@ module.exports.createNewProfile = function(panelData, userID, uniqueID) {
     return  _execute(query);
 }
 
+module.exports.updateUserProfile = function(panelData, userID) {
+    const {
+        name,
+        birth,
+        dead,
+        sentence,
+        text
+    } = panelData;
+    const query = `Update UserPanels SET
+        name = '${name}', birth = '${birth}', dead = '${dead}', sentence = '${sentence}', text = '${text}'
+        WHERE user_ID = ${userID}`;
+    return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
+}
+
+
+module.exports.uploadAvatar = function(path, userID) {
+    const query = `INSERT INTO Attachments (name, url) VALUES ('avatar', ${path})`;
+    return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
+}
+
+
+module.exports.changeUserPassword = function(username, password) {
+    console.log(password, username)
+    const query = `UPDATE Users SET password = '${password}' WHERE email = '${username}'`;
+    return _execute(query).then(result => result.affectedRows > 0 ? true : false);
+}
+
 
 
 const sql = `CREATE TABLE IF NOT EXISTS

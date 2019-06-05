@@ -8,8 +8,6 @@ const host = `${window.location.protocol}//${window.location.hostname}${port}`;
 
 
 document.addEventListener("DOMContentLoaded", function() {
-	console.log('Your document is ready!');
-
 
 	const promoForm = document.getElementById('promo-form');
 	const basicPrice = document.getElementById('basic-price');
@@ -76,7 +74,10 @@ document.addEventListener("DOMContentLoaded", function() {
 				box.innerHTML = errorMessage;
 			}
 		}
-	})(); 
+	})();
+
+
+
 
 
 	// SIGN UP form - first step
@@ -154,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			});
 	})
 
-	// Authorize form
+	// AUTHORIZE form
 	const authForm = document.getElementById('authenticate-form');
 	const authFormEndpoint = '/authenticate'
 	
@@ -174,6 +175,72 @@ document.addEventListener("DOMContentLoaded", function() {
 	})
 
 
+	// FORGOT PASSWORD form 
+	const forgotForm = document.getElementById('forgot-password');
+	const forgotPasswordEndpoint = '/forgot-password';
+	
+	forgotForm && forgotForm.addEventListener('submit', function(event){
+		event.preventDefault();
+		const dryData= {};
+		const data = new FormData(this);
+		data.forEach((value, key) => {dryData[key] = value})
+		apiCaller('post', forgotPasswordEndpoint, headers, dryData)
+			.then(result => {
+				const { error, success } = result;
+				if (error) {
+					return alertBox.setStatusError(error);
+				}
+				alertBox.setStatusSuccess(success)
+			});
+	})
+
+
+	// RESET PASSWORD form 
+	const resetForm = document.getElementById('reset-password');
+	const resetPasswordEndpoint = '/reset-password';
+	
+	resetForm && resetForm.addEventListener('submit', function(event){
+		event.preventDefault();
+		const dryData= {
+			token: getCookie('reset-token')
+		};
+		const data = new FormData(this);
+		data.forEach((value, key) => {dryData[key] = value})
+		apiCaller('post', resetPasswordEndpoint, headers, dryData)
+			.then(result => {
+				const { error, success } = result;
+				if (error) {
+					return alertBox.setStatusError(error);
+				}
+				alertBox.setStatusSuccess(success)
+			});
+	})
+
+	// EDIT PROFILE form
+	const editProfileForm = document.getElementById('edit-profile');
+	const previewButton = document.getElementById('profile-preview');
+	const submitButton = document.getElementById('actualize-profile');
+	const previewProfileEndpoint = `${host}/memorium/profile-preview`;
+	const submitProfileEndpoint = `${host}/memorium/edit-profile`;
+
+	submitButton && submitButton.addEventListener('click', function(event){
+		event.preventDefault();
+		const dryData= {};
+		const data = new FormData(editProfileForm);
+		data.forEach((value, key) => {dryData[key] = value});
+		console.log(dryData);
+
+		const requestOptions = {
+			method: 'POST',
+			body: data
+		};
+		fetch(submitProfileEndpoint, requestOptions).then(handleResponse)
+			.then(result => {
+				console.log(result);
+			});
+
+	})
+
 });
 
 
@@ -182,10 +249,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 	
-
-
-
-
+function getCookie(cname) {
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for(var i = 0; i <ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
 
 
 function apiCaller(method, url, headers, body) {

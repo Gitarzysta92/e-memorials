@@ -24,6 +24,7 @@
     "express": "^4.17.0",
     "express-fileupload": "^1.1.4",
     "express-flash-messages": "^0.1.1",
+    "express-formidable": "^1.2.0",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.16.1",
     "handlebars": "^4.1.2",

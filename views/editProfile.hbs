@@ -2,66 +2,68 @@
 
 <main class="disable-video">
     <div class="container profile-editor dark">
-        <div class="inner-container">
-            <div class="row">
-                <div class="col-md-6 col-sm-12">
-                    <h2>Edycja Profilu</h2>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <button>Podgląd profilu</button>
-                    <button>Aktualizuj</button>
-                </div>
-            </div>
-        </div>
-        <div class="inner-container">
-            <div class="row">
-                <div class="col-md-6 col-sm-12">
-                    <label for='avatar'>Avatar</label>
-                    <input type="file" name="avatar" />
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <label for='sentence'>Sentencja</label>
-                    <input type="text" name="sentence" value="Sentence"/>
-                </div>
-            </div>
-        </div>
-        <div class="inner-container">
-            <div class="row">
-                <div class="col-md-12 col-sm-12">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-12">
-                            <label for='name'>Imię i nazwisko</label>
-                            <input type="text" name="name" value="Lorem ipsum"/>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <label for='birth'>Data urodzenia</label>
-                            <input type="date" name="dead" value="Lorem ipsum"/>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <label for='dead'>Data śmierci</label>
-                            <input type="date" name="dead" value="Lorem ipsum"/>
-                        </div>
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>Edycja Profilu</h2>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12">
-                            <label for='text'>Opis profilu</label>
-                            <textarea type="date" name="text" rows="20" cols="50"/>asd</textarea>
-                        </div>
+                    <div class="col-md-6 col-sm-12">
+                        <button id="profile-preview">Podgląd profilu</button>
+                        <button id="actualize-profile">Aktualizuj</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="inner-container">
-            <div class="row">
-                <div class="col-md-6 col-sm-12">
-                <label for='avatar'>Wybierz zdjęcia</label>
-                    <input type="file" name="avatar" multiple/>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <label for='avatar'>Wybierz pliki</label>
-                    <input type="file" name="avatar" multiple/>
+        <form id="edit-profile" enctype="multipart/form-data" method="post">    
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <label for='avatar'>Avatar</label>
+                        <input type="file" name="avatar" />
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <label for='sentence'>Sentencja</label>
+                        <input type="text" name="sentence" value="Sentence"/>
+                    </div>
                 </div>
             </div>
-        </div>  
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                <label for='name'>Imię i nazwisko</label>
+                                <input type="text" name="name" value="Lorem ipsum"/>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <label for='birth'>Data urodzenia</label>
+                                <input type="date" name="birth" value="Lorem ipsum"/>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <label for='dead'>Data śmierci</label>
+                                <input type="date" name="dead" value="Lorem ipsum"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <label for='text'>Opis profilu</label>
+                                <textarea name="text" rows="20" cols="50"/>asd</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                    <label for='photos'>Wybierz zdjęcia</label>
+                        <input type="file" name="photos" multiple/>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <label for='files'>Wybierz pliki</label>
+                        <input type="file" name="files" multiple/>
+                    </div>
+                </div>
+            </div>
+        </form> 
     </div>
 </main>

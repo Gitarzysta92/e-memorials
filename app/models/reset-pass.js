@@ -9,8 +9,8 @@ module.exports = {
         pamięć o bliskich, którzy odeszli.`
     },
     form: {
-        email: {
-            placeholder: 'Podaj adres e-mail'
+        password: {
+            placeholder: 'Podaj nowe hasło'
         },
         button: {
             text: 'Resetuj hasło',
