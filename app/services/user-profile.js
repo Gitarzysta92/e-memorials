@@ -65,21 +65,43 @@ module.exports.profileActualization = async function(req, res) {
 		return res.send({'error': 'error'})
 	}
 
-	
-	
-	const fileExt = getExt(req.files.avatar.name);
-	const fileName = `${uuid()}.${fileExt}`
-	const filePath = `/avatars/${fileName}`
 
-	req.files.avatar.mv(dirs.publicImages + filePath, function(err) {
-		if (err) {
-			console.log(err);
-			return;
-		}
+	const avatar = saveFile(req.files.avatar, '/avatars/', function(filePath) {
 		database.uploadAvatar(filePath, userID);
 	});
+
+	const galleryImages =  req.files.photos || [];
+	galleryImages.map(image => {
+		return saveFile(image, /gallery/, function(filePath) {
+			return database.uploadGalleryImage(filePath, userID);
+		})
+	});
+
+	const documents =  req.files.documents || [];
+	documents.map(image => {
+		return saveFile(image, /documents/, function(filePath) {
+			return database.uploadDocument(filePath, userID);
+		})
+	});
+
+	Promise.All([...galleryImages, ...documents, avatar])
+		.then(result => result.filter())
+	
 }
 
+
+function saveFile(file, path, callback) {
+	const fileExt = getExt(file.name);
+	const fileName = `${uuid()}.${fileExt}`;
+	const filePath = path + fileName;
+
+	file.mv(dirs.publicImages + filePath, function(err) {
+		if (err) {
+			return;
+		}
+		return callback(filePath);
+	})
+}
 
 
 
