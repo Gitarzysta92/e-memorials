@@ -71,11 +71,6 @@ module.exports.resetPassword = function(req, res) {
 	if (!username) {
 		return res.send({'error': 'Sesja restartu hasła wygasła'});
 	}
-<<<<<<< HEAD
-	database.changeUserPassword(password, username)
-		.then(passwordReset.removeRequest(token))
-		.then(res.send({'success': 'Hasło zostało zmienione'}))
-=======
 	database.changeUserPassword(username, password)
 		.then(result => {
 			if (!result) {
@@ -84,7 +79,6 @@ module.exports.resetPassword = function(req, res) {
 			passwordReset.removeRequest(token)
 			res.send({'success': 'Hasło zostało zmienione'})
 		})
->>>>>>> dev2
 		.catch(err => {
 			console.error(err);
 			res.render('404', {'message': 'Coś poszło nie tak'})
