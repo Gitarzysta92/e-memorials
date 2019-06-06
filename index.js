@@ -27,7 +27,9 @@ const memorial = app({
 		client: `${ABSPATH}/client`,
 		library: `${ABSPATH}/lib`,
 		utilities: `${ABSPATH}/utils`,
-		publicJS: `${ABSPATH}/public/js`
+		public: `${ABSPATH}/public`,
+		publicJS: `${ABSPATH}/public/js`,
+		publicImages: `${ABSPATH}/public/images`
 	},
 	userPlans: {
 		basic: {

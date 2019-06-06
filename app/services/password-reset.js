@@ -23,7 +23,6 @@ passwordReset.getRequest = function(token) {
 	return passwordReset._list.find(session => session.resetID === token);
 }
 
-
 passwordReset.removeRequest = function(token) {
 	passwordReset._list = passwordReset._list.filter(session => {
 		return !(session.resetID === token);
@@ -72,9 +71,20 @@ module.exports.resetPassword = function(req, res) {
 	if (!username) {
 		return res.send({'error': 'Sesja restartu hasła wygasła'});
 	}
+<<<<<<< HEAD
 	database.changeUserPassword(password, username)
 		.then(passwordReset.removeRequest(token))
 		.then(res.send({'success': 'Hasło zostało zmienione'}))
+=======
+	database.changeUserPassword(username, password)
+		.then(result => {
+			if (!result) {
+				return res.send({'error': 'Nie udało się zmienić hasła'})	
+			} 
+			passwordReset.removeRequest(token)
+			res.send({'success': 'Hasło zostało zmienione'})
+		})
+>>>>>>> dev2
 		.catch(err => {
 			console.error(err);
 			res.render('404', {'message': 'Coś poszło nie tak'})
