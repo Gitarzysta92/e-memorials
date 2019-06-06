@@ -8,10 +8,7 @@ const { composer, domain } = require('../api-provider');
 
 const createModel = composer.getPreset['not-signed-in'];
 const passwordReset = {};
-passwordReset._list = [{
-	resetID: '1',
-	username: 'm.luskasiewicz92@gmail.com'
-}];
+passwordReset._list = [];
 
 passwordReset.newRequest = function(username) {
 	const id = uuid();

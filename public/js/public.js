@@ -63,15 +63,24 @@ document.addEventListener("DOMContentLoaded", function() {
 	const alertBox = (function(){
 		const box = document.getElementById('alert-box');
 		
+		const removeStatus = function() {
+			setTimeout(function() {
+				box.classList.remove('error','success');
+				box.innerHTML = '';
+			}, 5000);
+		}
+
 		return {
 			setStatusSuccess: function(successMessage) {
 				box.classList.remove('error');
 				box.classList.add('success');
 				box.innerHTML = successMessage;
+				removeStatus();
 			},
 			setStatusError: function(errorMessage) {
 				box.classList.add('error');
 				box.innerHTML = errorMessage;
+				removeStatus();
 			}
 		}
 	})();
@@ -212,33 +221,52 @@ document.addEventListener("DOMContentLoaded", function() {
 				if (error) {
 					return alertBox.setStatusError(error);
 				}
-				alertBox.setStatusSuccess(success)
+				alertBox.setStatusSuccess(success);
 			});
 	})
 
 	// EDIT PROFILE form
 	const editProfileForm = document.getElementById('edit-profile');
-	const previewButton = document.getElementById('profile-preview');
 	const submitButton = document.getElementById('actualize-profile');
-	const previewProfileEndpoint = `${host}/memorium/profile-preview`;
 	const submitProfileEndpoint = `${host}/memorium/edit-profile`;
 
 	submitButton && submitButton.addEventListener('click', function(event){
 		event.preventDefault();
-		const dryData= {};
 		const data = new FormData(editProfileForm);
-		data.forEach((value, key) => {dryData[key] = value});
-		console.log(dryData);
-
 		const requestOptions = {
 			method: 'POST',
 			body: data
 		};
 		fetch(submitProfileEndpoint, requestOptions).then(handleResponse)
 			.then(result => {
-				console.log(result);
+				const { error, success } = result;
+				if (error) {
+					return alertBox.setStatusError(error);
+				}
+				alertBox.setStatusSuccess(success);
 			});
+	})
 
+
+	// PREVIEW PROFILE form
+	const previewButton = document.getElementById('profile-preview');
+	const previewProfileEndpoint = `${host}/memorium/profile-preview`;
+
+	previewButton && previewButton.addEventListener('click', function(event){
+		event.preventDefault();
+		const data = new FormData(editProfileForm);
+		const requestOptions = {
+			method: 'POST',
+			body: data
+		};
+		fetch(previewProfileEndpoint, requestOptions).then(handleResponse)
+			.then(result => {
+				const { error, redirect } = result;
+				if (error) {
+					return alertBox.setStatusError(error);
+				}
+				window.open(redirect, '_blank');
+			});
 	})
 
 });

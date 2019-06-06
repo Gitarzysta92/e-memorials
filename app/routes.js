@@ -14,6 +14,7 @@ module.exports = function(controller, server) {
 	// GET
 	server.get('/memorium', isAuthenticated, controller.userPanel);
 	server.get('/memorium/edit-profile', isAuthenticated, controller.editProfile);
+	server.get('/memorium/profile-preview/:id', isAuthenticated, controller.profilePreviewPage);
 	server.get('/memorium/:id', controller.userProfile);
 	// POST
 	server.post('/memorium/edit-profile', isAuthenticated, controller.profileActualization);

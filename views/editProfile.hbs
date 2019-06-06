@@ -2,6 +2,7 @@
 
 <main class="disable-video">
     <div class="container profile-editor dark">
+            <div id="alert-box" class="alert-box"></div>
             <div class="inner-container">
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
@@ -19,10 +20,13 @@
                     <div class="col-md-6 col-sm-12">
                         <label for='avatar'>Avatar</label>
                         <input type="file" name="avatar" />
+                        {{#each avatar}}
+                            <li><a href="{{url}}" data-lightbox="gallery">{{name}}</a></li>
+                        {{/each}}
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for='sentence'>Sentencja</label>
-                        <input type="text" name="sentence" value="Sentence"/>
+                        <input type="text" name="sentence" value="{{sentence}}"/>
                     </div>
                 </div>
             </div>
@@ -32,21 +36,21 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-12">
                                 <label for='name'>Imię i nazwisko</label>
-                                <input type="text" name="name" value="Lorem ipsum"/>
+                                <input type="text" name="name" value="{{name}}"/>
                             </div>
                             <div class="col-md-4 col-sm-12">
                                 <label for='birth'>Data urodzenia</label>
-                                <input type="date" name="birth" value="Lorem ipsum"/>
+                                <input type="date" name="birth" value="{{birth}}"/>
                             </div>
                             <div class="col-md-4 col-sm-12">
                                 <label for='dead'>Data śmierci</label>
-                                <input type="date" name="dead" value="Lorem ipsum"/>
+                                <input type="date" name="dead" value="{{dead}}"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <label for='text'>Opis profilu</label>
-                                <textarea name="text" rows="20" cols="50"/>asd</textarea>
+                                <textarea name="text" rows="20" cols="50"/>{{text}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -55,12 +59,22 @@
             <div class="inner-container">
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
-                    <label for='photos'>Wybierz zdjęcia</label>
+                        <label for='photos'>Wybierz zdjęcia</label>
                         <input type="file" name="photos" multiple/>
+                        <ul>
+                        {{#each gallery}}
+                            <li><a href="{{url}}" data-lightbox="gallery">{{name}}</a></li>
+                        {{/each}}
+                        </ul>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for='documents'>Wybierz pliki</label>
                         <input type="file" name="documents" multiple/>
+                        <ul>
+                        {{#each documents}}
+                            <li><a target="_blank" href="{{url}}" title={{title}} download>{{name}}</a></li>
+                        {{/each}}
+                        </ul>
                     </div>
                 </div>
             </div>

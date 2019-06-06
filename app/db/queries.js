@@ -33,6 +33,21 @@ module.exports.getUserID = function({username, password}) {
     return _execute(query).then(current => current[0].User_ID);
 }
 
+module.exports.getAttachments = async function(userID, type) {
+    const metaQuery = `SELECT attachment_ID FROM AttachmentsMeta WHERE panel_ID ='${userID}'`;
+    const meta = await _execute(metaQuery)
+
+    const ids = meta.reduce((acc, curr, index) => {
+        const comma = index !== 0 ? ',' : '';
+        if (!curr.hasOwnProperty('attachment_ID')) return '';
+        return acc += `${comma}'${curr.attachment_ID}'`
+    }, '');
+    const attachmentsQuery = `SELECT * FROM Attachments WHERE attachment_ID IN (${ids})
+    AND type = '${type}'`;
+    
+    return ids.length > 2 ? await _execute(attachmentsQuery) : false;
+}
+
 
 
 // POST
@@ -80,14 +95,20 @@ module.exports.updateUserProfile = function(panelData, userID) {
 }
 
 
-module.exports.uploadAvatar = function(path, userID) {
-    const query = `INSERT INTO Attachments (name, url) VALUES ('avatar', ${path})`;
-    return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
+
+module.exports.addAttachment = function(file, type, userID) {
+    const { path, name, alt, title } = file;
+    const attachmentQuery = `INSERT INTO Attachments (name, type, url) VALUES ('${name}','${type}', '${path}')`;
+    return _execute(attachmentQuery).then(result => {
+        const relationQuery = `INSERT INTO AttachmentsMeta (panel_ID, attachment_ID)
+        VALUES ('${userID}', '${result.insertId}')`
+        return _execute(relationQuery) 
+    })
 }
 
 
+
 module.exports.changeUserPassword = function(username, password) {
-    console.log(password, username)
     const query = `UPDATE Users SET password = '${password}' WHERE email = '${username}'`;
     return _execute(query).then(result => result.affectedRows > 0 ? true : false);
 }
@@ -98,6 +119,9 @@ const sql = `CREATE TABLE IF NOT EXISTS
     Attachments(
         attachment_ID INT(11) unsigned NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
+        type VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        alt VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL,
         PRIMARY KEY (attachment_ID)
     );

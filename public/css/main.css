@@ -19,7 +19,7 @@ main.disable-video {
 }
 
 .fh {
-  height: 100vh;
+  min-height: 100vh;
 }
 @media (max-width: 768px) {
   .fh {
@@ -35,7 +35,6 @@ main.disable-video {
 
 @media (max-width: 768px) {
   .container {
-    margin: 100px 0;
     padding: 0 40px;
   }
 }
@@ -109,6 +108,9 @@ button.nav {
 .dark input, .dark textarea {
   border: 1px solid #717171;
 }
+.dark .alert-box {
+  color: #dcdbdb;
+}
 
 p {
   margin: 0;
@@ -116,6 +118,10 @@ p {
 
 .sentence {
   font-style: italic;
+}
+
+h4 {
+  font-size: 2rem;
 }
 
 .button, button {
@@ -516,11 +522,20 @@ footer {
   }
 }
 .user-panel .welcome-section .inner-container .avatar {
+  position: relative;
   width: 300px;
   height: 300px;
   border-radius: 400px;
   overflow: hidden;
   background-color: #dcdbdb;
+}
+.user-panel .welcome-section .inner-container .avatar img {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  margin: auto;
+  max-width: 200%;
+  height: 100%;
 }
 @media (max-width: 768px) {
   .user-panel .welcome-section .inner-container .avatar {
@@ -578,10 +593,25 @@ footer {
   .user-panel .user-content {
     width: 100%;
   }
-  .user-panel .user-content .gallery-wrapper, .user-panel .user-content .button-wrapper {
-    text-align: center;
-    width: 100%;
+}
+.user-panel .user-content .gallery-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.user-panel .user-content .gallery-wrapper .image {
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+@media (max-width: 768px) {
+  .user-panel .user-content .gallery-wrapper .image {
+    height: auto;
   }
+}
+.user-panel .user-content .gallery-wrapper, .user-panel .user-content .button-wrapper {
+  text-align: center;
+  width: 100%;
+  margin: 20px 0 20px;
 }
 .user-panel .user-content .user-text, .user-panel .user-content .user-files, .user-panel .user-content .user-gallery {
   margin: 50px 0;
@@ -598,7 +628,10 @@ footer {
 }
 .user-panel .user-content .user-files {
   box-sizing: border-box;
-  padding: 50px 0 50px 50px;
+  padding: 0 0 50px 0;
+}
+.user-panel .user-content .user-files li {
+  font-size: 1.4rem;
 }
 @media (max-width: 768px) {
   .user-panel .user-content .user-files {
