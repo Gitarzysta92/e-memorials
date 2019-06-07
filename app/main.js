@@ -9,6 +9,7 @@ const createMailer = require('../lib/mail-sender/mailer');
 const setupRegistration = require('../lib/registration/reg-session');
 const registerPromoCodes = require('../lib/promo-code/code-validator');
 const composer = require('../lib/model-compositor/composer');
+const modelStore = require('../lib/model-store/store');
 
 
 
@@ -37,6 +38,7 @@ module.exports = (function() {
 		_services.registration = setupRegistration(userPlans);
 		_services.promoCode = registerPromoCodes(userPlans.promoCodes);
 		_services.composer = composer;
+		_services.modelStore = modelStore;
 		apiProvider([_reg, _services]);
 
 		const _run = prepareServer(server.config, server.port, dirs, server.callback);

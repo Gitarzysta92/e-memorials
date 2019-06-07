@@ -3,76 +3,10 @@ const database = require('../db/queries');
 const { composer, dirs } = require('../api-provider');
 const uuid = require('uuid/v4');
 
-const { domain } = require('../api-provider')
+const { domain, modelStore: profilePreviews } = require('../api-provider')
 
 const createModel = composer.getPreset['not-signed-in'];
 const createModelSingedIn = composer.getPreset['signed-in'];
-
-
-class Preview {
-	constructor(userID, formData) {
-		this.ID = uuid();
-		this.userID = userID;
-		this._model = this._createModel(formData);
-	}
-
-	getModel() {
-		return this._model;
-	}
-
-	update(formData) {
-		this._model = this._createModel(formData);
-	}
-
-	async _createModel(data) {
-		const { 
-			plain, 
-			avatar: previewAvatar, 
-			documents: previewDocuments, 
-			gallery: previewGallery 
-		} = data;
-		const userPanelModel = await database.getPanelByUserID(this.userID);
-		const avatar = await database.getAttachments(this.userID, 'avatar');
-		const gallery = await database.getAttachments(this.userID, 'image');
-		const documents = await database.getAttachments(this.userID, 'document');
-		const currentModel = {
-			...userPanelModel,
-			avatar,
-			documents,
-			gallery
-		}
-		return Object.assign(currentModel, {...plain});
-	}
-}
-
-const profilePreviews = {}
-
-profilePreviews._sessions = [];
-
-profilePreviews.createPreview = function(userID, formData) {
-	const existingPreview = profilePreviews._sessions.find(session => session.userID === userID);
-	if (existingPreview) {
-		existingPreview.update(formData);
-		return existingPreview.ID;
-	}
-	const preview = new Preview(userID, formData);
-	profilePreviews._sessions.push(preview);
-	return preview.ID;
-}
-
-profilePreviews.getPreviewModel = function(previewID) {
-	const preview = profilePreviews._sessions.find(session => session.ID === previewID);
-	return preview ? preview.getModel() : false;
-}
-
-profilePreviews.removePreviewBy = function(userID) {
-	const sessions = profilePreviews._sessions;
-	profilePreviews._sessions = sessions.filter(session => !(session.userID === userID));
-}
-
-
-
-
 
 
 
@@ -112,7 +46,7 @@ module.exports.editProfile = async function(req, res) {
 			documents: documents
 		}
 	]);
-	console.log(dataModel);
+	console.log(userPanelModel);
 	res.render('editProfile', dataModel);
 }
 
@@ -136,33 +70,73 @@ module.exports.userProfile = async function(req, res) {
 	}
 }
 
-module.exports.profilePreviewPage = async function(req, res) {
-	const previewModel = await profilePreviews.getPreviewModel(req.params.id);
+module.exports.profilePreviewPage = function(req, res) {
+	const previewModel = profilePreviews.generateModel(req.params.id);
 	if (!previewModel) {
 		res.render('404', {message: 'Cannot find the page'});	
 	}
-	const dataModel = createModelSingedIn(req, previewModel);
-	console.log(previewModel);
+	const { avatar, ...model } = previewModel;
+	const dataModel = createModelSingedIn(req, model, [
+		{ avatar: avatar[0]	}
+	]);
 	res.render('userPanel', dataModel);
 }
 
 
 // POST actions
-
 module.exports.profilePreview = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	if (!userID) { 
 		return res.send({'error': 'error'});
 	}
-	const previewID = profilePreviews.createPreview(userID, {
-		plain: req.body,
-		avatar: req.files.avatar,
-		gallery: req.files.photos,
-		documents: req.files.documents
-	})
+	
+	const prepareAttachment = function(prop) {
+		if (!Array.isArray(prop) && prop.name.length === 0) {
+			return [];
+		} else if (prop.name) {
+			return [{
+				name: prop.name,
+				url: prop.tempFilePath
+			}]
+		}
+		return prop.map(current => ({ name: current.name, url: current.tempFilePath}))
+	}
+
+	const attachments = {
+		avatar: prepareAttachment(req.files.avatar),
+		gallery: prepareAttachment(req.files.photos),
+		documents: prepareAttachment(req.files.documents)
+	}
+	const model = { ...req.body, ...attachments }	
+
+
+
+	const actualAttachments = {
+		avatar: await database.getAttachments(userID, 'avatar'),
+		gallery: await database.getAttachments(userID, 'image'),
+		documents: await database.getAttachments(userID, 'document')
+	}
+	const actualModel = { ...await database.getPanelByUserID(userID), ...actualAttachments }
+	
+	
+	const previewID = profilePreviews.createContainer(userID, model, function(data) {
+		const entries = Object.keys(data);
+		const result = entries.reduce((acc, curr) => {	
+			let prop = data[curr];
+			if (curr === 'avatar' || curr === 'documents' || curr === 'gallery') {
+				prop = data[curr].concat(actualModel[curr])
+			} 
+			const modelPart = { [curr]: prop }
+			return Object.assign(acc, modelPart);
+		}, {});
+		return result;
+	});
 
 	res.send({'redirect': `${domain}/memorium/profile-preview/${previewID}`});
 }
+
+
+
 
 
 module.exports.profileActualization = async function(req, res) {
@@ -171,7 +145,7 @@ module.exports.profileActualization = async function(req, res) {
 		return res.send({'error': 'error'});
 	}
 
-	profilePreviews.removePreviewBy(userID);
+	profilePreviews.removeContainerBy(userID);
 	
 	if (Object.keys(req.files).length == 0) {
 		return res.send({'error': 'error'})

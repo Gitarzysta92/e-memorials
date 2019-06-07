@@ -6,6 +6,6 @@ module.exports = {
         sentence: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         name: 'Imię i nazwisko',
         birth: '2019-04-05',
-        dead: '2019-03-05',
+        death: '2019-03-05',
         privateKey: false,
 }

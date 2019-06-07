@@ -2,19 +2,25 @@ const { database: _execute } = require('../api-provider');
 
 // GET
 module.exports.getPanelByID = function(panelID) {
-    const query = `SELECT * FROM UserPanels WHERE panel_ID = '${panelID}'`;  
-    return _execute(query).then(current => current.length > 0 ? current : false);;
+   return _getUserPanelBy('panel_ID', panelID).then(current => current.length > 0 ? current : false)
 }
 
 module.exports.getProfileByURL = function(uniqueID) {
-    const query = `SELECT * FROM UserPanels WHERE unique_ID = '${uniqueID}'`;  
-    return _execute(query).then(current => current[0]);
+    return _getUserPanelBy('unique_ID', uniqueID).then(current => current[0]);
+}
+
+module.exports.getPanelByUserID = function(userID) {
+    return _getUserPanelBy('user_ID', userID).then(current => current[0]);
 }
 
 
-module.exports.getPanelByUserID = function(userID) {
-    const query = `SELECT * FROM UserPanels WHERE user_ID = '${userID}'`; 
-    return _execute(query).then(current => current[0]);
+function _getUserPanelBy(colName, value) {
+    const query = `SELECT name, 
+    DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
+    DATE_FORMAT(death, '%Y-%m-%d') AS death, 
+    sentence, text, private_key
+    FROM UserPanels WHERE ${colName} = '${value}'`
+    return _execute(query)
 }
 
 module.exports.getUserPassword = function(userEmail) {
@@ -71,12 +77,12 @@ module.exports.createNewProfile = function(panelData, userID, uniqueID) {
     const {
         name,
         birth,
-        dead,
+        death,
         sentence,
         text
     } = panelData;
-    const query = `INSERT INTO UserPanels (user_ID, unique_ID, name, birth, dead, sentence, text)
-        VALUES ('${userID}','${uniqueID}', '${name}', '${birth}', '${dead}', '${sentence}', '${text}')`;
+    const query = `INSERT INTO UserPanels (user_ID, unique_ID, name, birth, death, sentence, text)
+        VALUES ('${userID}','${uniqueID}', '${name}', '${birth}', '${death}', '${sentence}', '${text}')`;
     return  _execute(query);
 }
 
@@ -84,12 +90,12 @@ module.exports.updateUserProfile = function(panelData, userID) {
     const {
         name,
         birth,
-        dead,
+        death,
         sentence,
         text
     } = panelData;
     const query = `Update UserPanels SET
-        name = '${name}', birth = '${birth}', dead = '${dead}', sentence = '${sentence}', text = '${text}'
+        name = '${name}', birth = '${birth}', death = '${death}', sentence = '${sentence}', text = '${text}'
         WHERE user_ID = ${userID}`;
     return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
 }
@@ -154,7 +160,7 @@ CREATE TABLE IF NOT EXISTS
         unique_ID VARCHAR(255) NOT NULL UNIQUE,
         name VARCHAR(255) NOT NULL, 
         birth DATE NOT NULL,
-        dead DATE NOT NULL, 
+        death DATE NOT NULL, 
         sentence VARCHAR(510) NOT NULL,
         text LONGTEXT,
         private_key INT(11) NOT NULL,

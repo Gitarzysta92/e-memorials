@@ -25,6 +25,14 @@
                         {{/each}}
                     </div>
                     <div class="col-md-6 col-sm-12">
+                        <label for='private_key'>Kod dostępu</label>
+                        <input type="text" name="private_key" value="{{private_key}}" maxlength="4"/>
+                    </div>
+                </div>
+            </div>
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
                         <label for='sentence'>Sentencja</label>
                         <input type="text" name="sentence" value="{{sentence}}"/>
                     </div>
@@ -43,8 +51,8 @@
                                 <input type="date" name="birth" value="{{birth}}"/>
                             </div>
                             <div class="col-md-4 col-sm-12">
-                                <label for='dead'>Data śmierci</label>
-                                <input type="date" name="dead" value="{{dead}}"/>
+                                <label for='death'>Data śmierci</label>
+                                <input type="date" name="death" value="{{death}}"/>
                             </div>
                         </div>
                         <div class="row">
