@@ -1,0 +1,31 @@
+{{> header this.navigation }}
+{{> video-bg }}
+<main>
+    <div class="container terms-and-policy">
+        <div class="row">
+            <div class="inner-container col-12 flex in-column center-center light">
+                <div class="company-logo">
+                    <img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+                </div>
+                <div class="section-title_medium">
+                    <h2>{{description.text}}</h2>
+                </div>
+                <div class="terms-list">
+                    <ol>
+                        {{#each terms}}
+                        <li class="">
+                            <p class="term">{{this}}</p>
+                        </li>
+                        {{/each}}
+                    </ol>
+                </div>
+                <div class="section-title_medium">
+                    <h2>{{policy.title}}</h2>
+                </div>
+                <div class="policy">
+                    <p>{{{policy.text}}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

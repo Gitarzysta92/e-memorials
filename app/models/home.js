@@ -28,10 +28,6 @@ module.exports = {
         },
         {
             number: '3',
-            text: 'Dodaj przyjaciół'
-        },
-        {
-            number: '4',
             text: 'Otrzymaj fizyczny kod QR'
         },
     ],
@@ -41,7 +37,8 @@ module.exports = {
         text: 'Dodaj swojego bliskiego',
         meta: {
             class: 'solid',
-            icon: '/images/icon_add.png'
+            //icon: '/images/icon_add.png'
+            icon: false
         }
 
     },

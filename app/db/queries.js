@@ -1,29 +1,16 @@
-const mysql = require('mysql');
-const database = mysql.createPool({
-    connectionLimit: 10,
-    host: "mn06.webd.pl",
-    user: "atole44_admin",
-    password: "tzqx44!@#",
-    database: 'atole44_memo'
-});
-
-async function _execute(sql) {
-    const connection = new Promise(function(resolve, reject) {
-        database.query(sql, function(err, result) {
-            if (err) reject(err);
-            resolve(result);
-        })
-    });
-    return connection;
-}
-
-
+const { database: _execute } = require('../api-provider');
 
 // GET
 module.exports.getPanelByID = function(panelID) {
     const query = `SELECT * FROM UserPanels WHERE panel_ID = '${panelID}'`;  
-    return _execute(query);
+    return _execute(query).then(current => current.length > 0 ? current : false);;
 }
+
+module.exports.getProfileByURL = function(uniqueID) {
+    const query = `SELECT * FROM UserPanels WHERE unique_ID = '${uniqueID}'`;  
+    return _execute(query).then(current => current[0]);
+}
+
 
 module.exports.getPanelByUserID = function(userID) {
     const query = `SELECT * FROM UserPanels WHERE user_ID = '${userID}'`; 
@@ -78,6 +65,33 @@ module.exports.createNewProfile = function(panelData, userID, uniqueID) {
     return  _execute(query);
 }
 
+module.exports.updateUserProfile = function(panelData, userID) {
+    const {
+        name,
+        birth,
+        dead,
+        sentence,
+        text
+    } = panelData;
+    const query = `Update UserPanels SET
+        name = '${name}', birth = '${birth}', dead = '${dead}', sentence = '${sentence}', text = '${text}'
+        WHERE user_ID = ${userID}`;
+    return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
+}
+
+
+module.exports.uploadAvatar = function(path, userID) {
+    const query = `INSERT INTO Attachments (name, url) VALUES ('avatar', ${path})`;
+    return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
+}
+
+
+module.exports.changeUserPassword = function(username, password) {
+    console.log(password, username)
+    const query = `UPDATE Users SET password = '${password}' WHERE email = '${username}'`;
+    return _execute(query).then(result => result.affectedRows > 0 ? true : false);
+}
+
 
 
 const sql = `CREATE TABLE IF NOT EXISTS
@@ -107,7 +121,7 @@ CREATE TABLE IF NOT EXISTS
     UserPanels(
         panel_ID INT(11) unsigned NOT NULL AUTO_INCREMENT,
         user_ID INT(11) unsigned NOT NULL UNIQUE,
-        unique_ID INT(22) unsigned NOT NULL UNIQUE,
+        unique_ID VARCHAR(255) NOT NULL UNIQUE,
         name VARCHAR(255) NOT NULL, 
         birth DATE NOT NULL,
         dead DATE NOT NULL, 

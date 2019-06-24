@@ -20,7 +20,7 @@ module.exports = {
         policy: {
             text: 'Oświadczam, że znam i akceptuję postanowienia ',
             linkText: 'Regulaminu E-Memorials.',
-            url: '/',
+            url: '/terms-and-policy',
             checked: false
         },
         button: {

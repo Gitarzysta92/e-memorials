@@ -1,8 +1,7 @@
 const uuid = require('uuid/v4');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const database = require('../../lib/database-service/db-queries');
-
+const database = require('../db/queries');
 
 const users = { list: [] }
 

@@ -10,6 +10,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const flash = require('express-flash-messages');
+const gunzipParser = require('../lib/gunzip-parser/parser');
 
 
 
@@ -17,8 +18,12 @@ module.exports = function(expressInstance, dirs) {
     const server = expressInstance;
     const { layouts, partials } = dirs;
     server.use(cors());
-    server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({ extended: false }));
+    server.use(bodyParser.urlencoded({ 
+        extended: false,
+        limit: '50mb' 
+    }));
+    server.use(bodyParser.json({limit: '50mb'}));
+    
     server.use(cookieParser('memo'));
     server.use(express.static('public/'));
     server.set('trust proxy', 1);
@@ -46,15 +51,15 @@ module.exports = function(expressInstance, dirs) {
     }));
     server.use(passport.initialize());
     server.use(passport.session());
-    
     server.use(fileUpload({
-        useTempFiles : true,
-        tempFileDir : '/tmp/'
+      useTempFiles : true,
+      tempFileDir : '/tmp/'
     }));
+    
     server.use(function(req, res, next) {
-       // console.log(req.flash());
+        //console.log(req);
         next();
-    });
+    })
 
 	return server; 
 }
