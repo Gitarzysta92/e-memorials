@@ -65,7 +65,7 @@ module.exports.submitRegistrationSecondStep = function(req, res) {
 
 
 	const params = {
-		amount: plan.price,
+		amount: plan.price * 100,
 		email: regData.email,
 		client: `${regData.name} ${regData.surname}`,
 		adress: regData.street,
@@ -73,11 +73,12 @@ module.exports.submitRegistrationSecondStep = function(req, res) {
 		city: regData.city,
 		transfer_label: `Memorium.pl: ${plan.name}`
 	}
-	const transaction = payment.createTransaction(process.ID, params);
+	const transaction = payment.createTransaction(regProcess.ID, params);
 
 	transaction.register()
 		.then(result => { 
 			regProcess.setPaymentToken(result);
+			console.log(registration.getProcess(result))
 			res.send({ 'redirect': `${payment.trnRequestURL}/${result}` });
 		})
 		.catch(err => console.warn(err));	
@@ -97,7 +98,7 @@ module.exports.registrationFinalization = async function(req, res) {
 
 	const transaction = payment.getTransaction(paymentID);
 	const isVerified = await transaction.verify(orderID, amount)
-	console.log(req, isVerified);
+	
 	isVerified && registerUser(paymentID);
 
 	res.status(200);
@@ -106,7 +107,9 @@ module.exports.registrationFinalization = async function(req, res) {
 
 
 function registerUser(id) {
+	console.log(id);
 	const regProcess = registration.getProcess(id);
+	console.log(regProcess);
 	if (!regProcess) return;
 
 
