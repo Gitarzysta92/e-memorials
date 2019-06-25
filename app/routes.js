@@ -5,6 +5,7 @@ module.exports = function(controller, server) {
 	// GET
 	server.get('/', controller.home );
 	server.get('/qanda', controller.qanda);
+	server.get('/terms-and-policy', controller.policy);
 	server.get('/contact', controller.contact);
 	// POST
 	server.post('/form-send-message', controller.sendFormMessage);
@@ -14,8 +15,8 @@ module.exports = function(controller, server) {
 	// GET
 	server.get('/memorium', isAuthenticated, controller.userPanel);
 	server.get('/memorium/edit-profile', isAuthenticated, controller.editProfile);
-	server.get('/memorium/profile-preview/:id', isAuthenticated, controller.profilePreviewPage);
 	server.get('/memorium/:id', controller.userProfile);
+	server.get('/memorium/profile-preview/:id', isAuthenticated, controller.profilePreviewPage);
 	// POST
 	server.post('/memorium/edit-profile', isAuthenticated, controller.profileActualization);
 	server.post('/memorium/profile-preview', isAuthenticated, controller.profilePreview);
@@ -32,7 +33,7 @@ module.exports = function(controller, server) {
 	});
 
 
-	// Forgotten password retrive endpoints
+	// Retrieve forgotten password endpoints
 	// GET
 	server.get('/forgot-password', controller.forgotPasswordPage);
 	server.get('/reset-password/:id', controller.resetPasswordPage);
@@ -41,20 +42,17 @@ module.exports = function(controller, server) {
 	server.post('/reset-password', controller.resetPassword);
 
 
-	// Registration 
+	// Registration endpoints
 	// GET
 	server.get('/registration', controller.registration);
 	server.get('/registration/second-step', controller.registrationSecondStep);
-	server.get('/register/:id', controller.registrationFinalization);
 	// POST
 	server.post('/register', controller.submitRegistrationFirstStep);
 	server.post('/register/next-step', controller.submitRegistrationSecondStep);
 	server.post('/register/check-promo-code', controller.checkPromoCode);
+	server.post('/register/status', controller.registrationFinalization);
 
 	
-
+	// Misc
 	server.get('/js-bundle', controller.serveStaticJsBundle);
 }
-
-
-

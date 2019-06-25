@@ -10,7 +10,6 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const flash = require('express-flash-messages');
-const formidable = require('formidable');
 
 
 module.exports = function(expressInstance, dirs) {

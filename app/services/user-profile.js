@@ -75,6 +75,7 @@ module.exports.profilePreviewPage = function(req, res) {
 	if (!previewModel) {
 		res.render('404', {message: 'Cannot find the page'});	
 	}
+	console.log(previewModel);
 	const { avatar, ...model } = previewModel;
 	const dataModel = createModelSingedIn(req, model, [
 		{ avatar: avatar[0]	}

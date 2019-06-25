@@ -31,6 +31,46 @@ main.disable-video {
   top: 0;
   position: fixed;
   opacity: 0.4;
+  min-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 40px;
+  }
+}
+
+.inner-container {
+  margin: 200px 0 100px 0;
+}
+@media (max-width: 768px) {
+  .inner-container {
+    margin: 0;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 100px auto;
+    padding: 0 40px;
+  }
+}
+
+.inner-container {
+  margin: 200px 0 100px 0;
+}
+@media (max-width: 768px) {
+  .inner-container {
+    margin: 0;
+  }
+}
+
+img {
+  max-width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -92,12 +132,23 @@ img {
 .light .button.outlined {
   border-color: #dcdbdb;
 }
+.light .button.outlined:hover {
+  background: #dcdbdb;
+  color: #4d7b86;
+}
 .light .button.solid {
   background-color: #dcdbdb;
   color: #4d7b86;
 }
 .light .button.solid.blue {
   background-color: #4d7b86;
+  color: #dcdbdb;
+}
+.light .button.solid.blue:hover {
+  background-color: #0f8ea5;
+}
+.light .button.solid:hover {
+  background-color: #0f8ea5;
   color: #dcdbdb;
 }
 
@@ -112,16 +163,25 @@ button.nav {
   color: #dcdbdb;
 }
 
-p {
-  margin: 0;
-}
-
 .sentence {
   font-style: italic;
 }
 
+p {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+}
+
 h4 {
   font-size: 2rem;
+}
+
+.sentence {
+  font-style: italic;
 }
 
 .button, button {
@@ -130,13 +190,15 @@ h4 {
   text-decoration: none;
   font-size: 1.4rem;
   border: none;
+  transition: background-color ease-in-out 0.2s;
+  transition: color ease-in-out 0.2s;
 }
 .button.outlined, button.outlined {
   border: 2px solid;
 }
 .button.solid, button.solid {
   font-weight: 600;
-  padding: 15px 20px;
+  padding: 15px 40px;
   border-radius: 40px;
 }
 .button:hover, button:hover {
@@ -320,6 +382,7 @@ footer {
 .home .company-description .sentence {
   text-align: right;
   font-size: 2rem;
+  padding: 0 15px;
 }
 @media (max-width: 768px) {
   .home .company-description .sentence {
@@ -384,7 +447,7 @@ footer {
   max-width: 350px;
   padding: 30px 0;
   text-align: center;
-  font-size: 2em;
+  font-size: 2rem;
 }
 .login .sign-in_form {
   width: 350px;
@@ -399,7 +462,7 @@ footer {
   max-width: 350px;
   padding: 30px 0;
   text-align: center;
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 .registration-second-step .section-user-plan {
@@ -478,11 +541,11 @@ footer {
   height: auto;
 }
 .qanda .questions-accordion ul li .question {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 .qanda .questions-accordion ul li .answer {
   height: 0px;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   overflow: hidden;
 }
 
@@ -493,6 +556,32 @@ footer {
   margin: 50px 0;
   font-size: 1.4rem;
   text-align: center;
+}
+
+.terms-and-policy .section-title_medium {
+  margin-top: 50px;
+}
+.terms-and-policy .contact-data {
+  margin: 50px 0;
+  font-size: 1.4rem;
+  text-align: center;
+}
+.terms-and-policy .terms-list {
+  max-width: 650px;
+}
+.terms-and-policy .terms-list ol {
+  padding-left: 10px;
+}
+.terms-and-policy .terms-list ol li {
+  font-size: 1.4rem;
+  margin: 7px 0;
+}
+.terms-and-policy .policy {
+  max-width: 650px;
+}
+.terms-and-policy .policy li {
+  font-size: 1.4rem;
+  margin: 7px 0;
 }
 
 @media (max-width: 768px) {
@@ -542,6 +631,11 @@ footer {
     margin: 50px auto;
   }
 }
+@media (max-width: 768px) {
+  .user-panel .welcome-section .inner-container .avatar {
+    margin: 50px auto;
+  }
+}
 .user-panel .welcome-section .inner-container .sentence {
   font-weight: 300;
   font-size: 2.4rem;
@@ -558,11 +652,6 @@ footer {
   font-size: 2rem;
   font-weight: 600;
 }
-@media (max-width: 768px) {
-  .user-panel .welcome-section .inner-container .details .name {
-    text-align: center;
-  }
-}
 .user-panel .welcome-section .inner-container .details .date {
   font-size: 1.4rem;
 }
@@ -572,7 +661,7 @@ footer {
   }
 }
 @media (max-width: 768px) {
-  .user-panel .welcome-section .inner-container .details .type {
+  .user-panel .welcome-section .inner-container .details .name, .user-panel .welcome-section .inner-container .details .date, .user-panel .welcome-section .inner-container .details .type {
     text-align: center;
   }
 }

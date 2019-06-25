@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "app": "nodemon --inspect index.js",
-    "sass": "sass --watch src/scss:public/css"
+    "sass": "sass --watch src/scss:public/css",
+    "dev": "concurrently --kill-others \"npm:app\" \"npm:sass\""
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "dependencies": {
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
+    "crypto-js": "^3.1.9-1",
     "express": "^4.17.0",
     "express-fileupload": "^1.1.4",
     "express-flash-messages": "^0.1.1",
@@ -32,9 +34,11 @@
     "nodemailer": "^6.2.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "zlibjs": "^0.3.1"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "sass": "^1.20.1"
   }
 }

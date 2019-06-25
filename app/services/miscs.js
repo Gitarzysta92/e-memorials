@@ -7,9 +7,5 @@ module.exports.serveStaticJsBundle = function(req, res) {
 
 
 
-//POST actions
-
-
-
 
 

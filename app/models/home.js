@@ -37,7 +37,8 @@ module.exports = {
         text: 'Dodaj swojego bliskiego',
         meta: {
             class: 'solid',
-            icon: '/images/icon_add.png'
+            //icon: '/images/icon_add.png'
+            icon: false
         }
 
     },

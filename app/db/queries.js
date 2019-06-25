@@ -137,7 +137,6 @@ const sql = `CREATE TABLE IF NOT EXISTS
         url VARCHAR(255) NOT NULL,
         PRIMARY KEY (attachment_ID)
     );
-
 CREATE TABLE IF NOT EXISTS 
     Users(
         user_ID INT(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -176,12 +175,10 @@ CREATE TABLE IF NOT EXISTS
         CONSTRAINT Attachments_meta_ibfk_1 FOREIGN KEY (panel_ID) REFERENCES UserPanels (panel_ID) ON DELETE CASCADE ON UPDATE CASCADE,
         CONSTRAINT Attachments_meta_ibfk_2 FOREIGN KEY (attachment_ID) REFERENCES Attachments (attachment_ID) ON DELETE CASCADE ON UPDATE CASCADE
     );
-
     `
 
 
     
-
 
 
 
