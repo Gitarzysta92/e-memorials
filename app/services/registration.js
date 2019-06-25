@@ -124,12 +124,12 @@ function registerUser(id) {
 	const saltRounds = 10;
 	const salt = bcrypt.genSaltSync(saltRounds);
 	const hash = { password: bcrypt.hashSync(password, salt) }
-	const data = Object.assign(rest, hash)
+	const regData = Object.assign(rest, hash)
 
 	// Add new user to database and send confirmation mails 
-	database.createNewUser(data, regProcess.ID)
+	database.createNewUser(regData, regProcess.ID)
 		.then(() => {
-			const { email, password } = registrationData;
+			const { email, password } = regData;
 			return database.getUserID({
 				username: email,
 				password: password
@@ -139,7 +139,7 @@ function registerUser(id) {
 			return database.createNewProfile(defaultPanelModel, result, regProcess.ID)
 		})
 		.then(() => {
-			const { email, name } = registrationData;
+			const { email, name } = regData;
 			if (email) {
 				return sendMail.signUpConfirmation(email, name);
 			}	
@@ -147,7 +147,7 @@ function registerUser(id) {
 		.then(() => {
 			const id = regProcess.ID;
 			if (id) {
-				return sendMail.notifyAdministration({id, ...registrationData});
+				return sendMail.notifyAdministration({id, ...regData});
 			}		
 		})
 		.catch(err => {

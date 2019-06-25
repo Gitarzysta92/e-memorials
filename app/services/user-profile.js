@@ -109,6 +109,9 @@ module.exports.editProfile = async function(req, res) {
 	const avatar = await database.getAttachments(userID, 'avatar');
 	const gallery = await database.getAttachments(userID, 'image');
 	const documents = await database.getAttachments(userID, 'document');
+
+	if (!userPanelModel) return;
+
 	const dataModel = createModelSingedIn(req, userPanelModel,[
 		{	
 			avatar: avatar,
@@ -116,7 +119,7 @@ module.exports.editProfile = async function(req, res) {
 			documents: documents
 		}
 	]);
-	console.log(userPanelModel);
+	
 	res.render('edit-profile', dataModel);
 }
 

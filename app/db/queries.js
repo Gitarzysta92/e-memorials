@@ -34,9 +34,9 @@ module.exports.isUserAlreadyExists = function(userEmail) {
 }
 
 
-module.exports.getUserID = function({username, password}) {
-    const query = `SELECT User_ID FROM Users WHERE email ='${username}' AND password = '${password}'`;
-    return _execute(query).then(current => current[0].User_ID);
+module.exports.getUserID = function({username}) {
+    const query = `SELECT User_ID FROM Users WHERE email ='${username}'`;
+    return _execute(query).then(current => current[0] ? current[0].User_ID : false);
 }
 
 module.exports.getAttachments = async function(userID, type) {

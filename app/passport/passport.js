@@ -27,8 +27,11 @@ passport.use(new LocalStrategy({
 	},
 	async function(username, password, done) {
 		const userPass = await database.getUserPassword(username);
+		
+		if (!userPass) return;
 
 		bcrypt.compare(password, userPass, function(err, res) {
+			console.log(username, password);
 			if (err) {
 				done(null, false);
 			} else if (res) {
