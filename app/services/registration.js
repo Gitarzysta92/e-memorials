@@ -63,6 +63,7 @@ module.exports.submitRegistrationSecondStep = function(req, res) {
 	const regData = regProcess.getUserData();
 	const plan = regProcess.getUserPlan();
 
+
 	const params = {
 		amount: plan.price,
 		email: regData.email,
@@ -96,7 +97,7 @@ module.exports.registrationFinalization = async function(req, res) {
 
 	const transaction = payment.getTransaction(paymentID);
 	const isVerified = await transaction.verify(orderID, amount)
-
+	console.log(req, isVerified);
 	isVerified && registerUser(paymentID);
 
 	res.status(200);

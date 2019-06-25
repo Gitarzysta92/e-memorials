@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Subscription plan 
 	const subscription = (function(){
 		const plan = {
-			type: 'premium-plan',
+			type: 'premium',
 			buttons: [
 				document.getElementById('basic-plan'),
 				document.getElementById('premium-plan')
