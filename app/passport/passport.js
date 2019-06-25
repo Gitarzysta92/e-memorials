@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const uuid = require('uuid/v4');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -22,16 +23,18 @@ users.getById = function(id) {
 
 passport.use(new LocalStrategy({
 		usernameField: 'username',
-		passwordFiled: 'password',
-		passReqToCallback: true
+		passwordFiled: 'password'
 	},
-	async function(req, username, password, done) {
+	async function(username, password, done) {
 		const userPass = await database.getUserPassword(username);
-		console.log('strategy', username, password, userPass);
-		if (password === userPass) {
-			return done(null, { username, password });	
-		}
-		return done(null, false, req.flash('error-message', 'Zły adres e-mail lub login'));
+
+		bcrypt.compare(password, userPass, function(err, res) {
+			if (err) {
+				done(null, false);
+			} else if (res) {
+				done(null, { username, password });
+			}
+		})
 	}
 ));
 

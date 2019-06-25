@@ -138,7 +138,8 @@ module.exports.profilePreviewPage = function(req, res) {
 
 
 // POST action
-//
+// create profile preview based on given form data
+// excluding attachments
 module.exports.profilePreview = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	if (!userID) { 
@@ -192,7 +193,7 @@ module.exports.profilePreview = async function(req, res) {
 
 
 // POST action
-//
+// actualize user profile by given form data
 module.exports.profileActualization = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	if (!userID) { 

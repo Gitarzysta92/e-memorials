@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const defaultPanelModel = require('../models/panel-model');
 const regModel = require('../models/registration');
 
@@ -116,15 +118,16 @@ function registerUser(id) {
 		return
 	};
 
+	const { password, ...rest } = regProcess.getUserData();
 
-	// Send mail to Email code owner
-	const promoEmail = regProcess.getPromoCode();
-	promoEmail && sendMail.notifyPromoCodeOwner(promoEmail)
-		.catch(console.error);
+	// hash password
+	const saltRounds = 10;
+	const salt = bcrypt.genSaltSync(saltRounds);
+	const hash = { password: bcrypt.hashSync(password, salt) }
+	const data = Object.assign(rest, hash)
 
-	// Add new user to database and send confirmation mails
-	const registrationData = regProcess.getUserData();
-	database.createNewUser(registrationData, regProcess.ID)
+	// Add new user to database and send confirmation mails 
+	database.createNewUser(data, regProcess.ID)
 		.then(() => {
 			const { email, password } = registrationData;
 			return database.getUserID({
@@ -150,4 +153,9 @@ function registerUser(id) {
 		.catch(err => {
 			console.error(err);
 		});
+
+	// Send mail to Email code owner
+	const promoEmail = regProcess.getPromoCode();
+	promoEmail && sendMail.notifyPromoCodeOwner(promoEmail)
+		.catch(console.error);
 }
