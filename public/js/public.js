@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		})
 	})
 
+
 	// PLAN form - second step
 	const secondStepEndpoint = host +'/register/next-step';
 
@@ -146,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 	
-	
 	// CONTACT form
 	const contactForm = document.getElementById('contact-form');
 	const sendFormEndpoint = '/form-send-message'
@@ -163,6 +163,29 @@ document.addEventListener("DOMContentLoaded", function() {
 				: alertBox.setStatusError('Wystąpił problem z wysłaniem Twojej wiadomości.')
 			});
 	})
+
+	// PROFILE CODE authorization form
+	const codeForm = document.getElementById('code-auth-form');
+	const profileCodeAuth = '/memorium/profile-access'
+	
+	codeForm && codeForm.addEventListener('submit', function(event){
+		event.preventDefault();
+		const id = window.location.pathname.split('/')[2];
+		const dryData= {};
+		const data = new FormData(this);
+		data.append('id', id);
+		data.forEach((value, key) => {dryData[key] = value})
+		console.log(dryData);
+		apiCaller('post', profileCodeAuth, headers, dryData)
+			.then(result => {
+				const { error, redirect } = result;
+				if (error) {
+					return alertBox.setStatusError(error);
+				}
+				window.location.replace(redirect);
+			});
+	})
+
 
 	// AUTHORIZE form
 	const authForm = document.getElementById('authenticate-form');

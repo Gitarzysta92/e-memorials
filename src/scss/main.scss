@@ -298,15 +298,17 @@ input, textarea {
     }
 }
 
-.sign-in_form, .promo-code_form {
+.sign-in_form, .promo-code_form, .code-auth_form, .medium_form {
+    padding: 20px 0;
     width: 450px;
     @media (max-width: $mobile) { & {width: 100%}}
 }
 
 // titles
 .section-title_small {
-    font-size: 3rem;
+    font-size: 1.5rem;
     text-align: center;
+    padding: 20px 0;
     small {
         font-weight: 300;
     }
@@ -315,6 +317,7 @@ input, textarea {
 .section-title_medium {
     font-size: 2rem;
     text-align: center;
+    padding: 20px 0;
     small {
         font-weight: 300;
     }
@@ -536,7 +539,7 @@ footer {
 // Questions and answers
 .qanda {
     .section-title_medium {
-        margin-top: 50px;
+        margin-top: 20px;
     }
     .questions-accordion {
         max-width: 650px;
@@ -578,13 +581,9 @@ footer {
 
 // Contact
 .contact {
-    
-    .section-title_small {
-        margin: 20px 0;
-    }
     .contact-data {
-        margin: 50px 0;
-        font-size: 1.4rem;
+        margin: 10px 0;
+        font-size: 1.8rem;
         text-align: center;
     }
 }
@@ -670,14 +669,16 @@ footer {
             }
             .details {
                 .name {
-                    font-size: 2rem;
+                    font-size: 2.4rem;
                     font-weight: 600;
                 }
                 .date {
-                    font-size: 1.4rem;
+                    font-size: 1.6rem;
                     @media (max-width: $mobile) { & {text-align: center}}
                 }
-
+                .type {
+                    font-size: 1.4rem;
+                }
                 .name, .date, .type {
                     @media (max-width: $mobile) { & {text-align: center}}   
                 }

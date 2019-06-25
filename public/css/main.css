@@ -274,18 +274,20 @@ input, textarea {
   background: red;
 }
 
-.sign-in_form, .promo-code_form {
+.sign-in_form, .promo-code_form, .code-auth_form, .medium_form {
+  padding: 20px 0;
   width: 450px;
 }
 @media (max-width: 768px) {
-  .sign-in_form, .promo-code_form {
+  .sign-in_form, .promo-code_form, .code-auth_form, .medium_form {
     width: 100%;
   }
 }
 
 .section-title_small {
-  font-size: 3rem;
+  font-size: 1.5rem;
   text-align: center;
+  padding: 20px 0;
 }
 .section-title_small small {
   font-weight: 300;
@@ -294,6 +296,7 @@ input, textarea {
 .section-title_medium {
   font-size: 2rem;
   text-align: center;
+  padding: 20px 0;
 }
 .section-title_medium small {
   font-weight: 300;
@@ -510,7 +513,7 @@ footer {
 }
 
 .qanda .section-title_medium {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 .qanda .questions-accordion {
   max-width: 650px;
@@ -549,12 +552,9 @@ footer {
   overflow: hidden;
 }
 
-.contact .section-title_small {
-  margin: 20px 0;
-}
 .contact .contact-data {
-  margin: 50px 0;
-  font-size: 1.4rem;
+  margin: 10px 0;
+  font-size: 1.8rem;
   text-align: center;
 }
 
@@ -649,16 +649,19 @@ footer {
   margin: 30px 0;
 }
 .user-panel .welcome-section .inner-container .details .name {
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 600;
 }
 .user-panel .welcome-section .inner-container .details .date {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 @media (max-width: 768px) {
   .user-panel .welcome-section .inner-container .details .date {
     text-align: center;
   }
+}
+.user-panel .welcome-section .inner-container .details .type {
+  font-size: 1.4rem;
 }
 @media (max-width: 768px) {
   .user-panel .welcome-section .inner-container .details .name, .user-panel .welcome-section .inner-container .details .date, .user-panel .welcome-section .inner-container .details .type {

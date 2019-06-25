@@ -5,7 +5,7 @@ module.exports.getPanelByID = function(panelID) {
    return _getUserPanelBy('panel_ID', panelID).then(current => current.length > 0 ? current : false)
 }
 
-module.exports.getProfileByURL = function(uniqueID) {
+module.exports.getProfileByUniqueID = function(uniqueID) {
     return _getUserPanelBy('unique_ID', uniqueID).then(current => current[0]);
 }
 
@@ -18,7 +18,7 @@ function _getUserPanelBy(colName, value) {
     const query = `SELECT name, 
     DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
     DATE_FORMAT(death, '%Y-%m-%d') AS death, 
-    sentence, text, private_key
+    sentence, text, private_key, user_ID
     FROM UserPanels WHERE ${colName} = '${value}'`
     return _execute(query)
 }
@@ -92,10 +92,11 @@ module.exports.updateUserProfile = function(panelData, userID) {
         birth,
         death,
         sentence,
-        text
+        text,
+        private_key
     } = panelData;
     const query = `Update UserPanels SET
-        name = '${name}', birth = '${birth}', death = '${death}', sentence = '${sentence}', text = '${text}'
+        name = '${name}', birth = '${birth}', death = '${death}', sentence = '${sentence}', text = '${text}', private_key = '${private_key}'
         WHERE user_ID = ${userID}`;
     return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
 }
@@ -162,7 +163,7 @@ CREATE TABLE IF NOT EXISTS
         death DATE NOT NULL, 
         sentence VARCHAR(510) NOT NULL,
         text LONGTEXT,
-        private_key INT(11) NOT NULL,
+        private_key VARCHAR(255),
         PRIMARY KEY (panel_ID),
         CONSTRAINT Users_ibfk_1 FOREIGN KEY (user_ID) REFERENCES Users (user_ID) ON DELETE CASCADE ON UPDATE CASCADE
     );

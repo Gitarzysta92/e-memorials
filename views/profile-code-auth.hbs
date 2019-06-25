@@ -1,0 +1,42 @@
+{{> header this.navigation }}
+{{> video-bg }}
+<main>
+	<div class="container login">
+		<div class="row">
+			<div class="col-12 fh flex in-column center-center light" >
+				<div class="company-logo">
+					<img src="{{logo.url}}" alt="{{logo.alt}}" title="{{logo.title}}" />
+				</div>
+				<div class="company-destription">
+					<div class="col-12 section-title_small flex center-center">
+                        <h2>{{description.text}}</h2>
+                    </div>
+				</div>
+				<div class="code-auth_form">
+					<form id="code-auth-form">
+						<div>
+							<input
+								required
+								type="text"
+								name="code"
+								placeholder="{{form.code.placeholder}}"
+								maxlength="4"
+							/>
+						</div>
+						<div>
+							<input 
+								type="submit" 
+								value="{{form.button.text}}"
+								class="button {{form.button.meta.class}}"
+								/>
+						</div>
+					</form>
+					<div id="alert-box" class="alert-box"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+
