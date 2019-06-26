@@ -7,5 +7,5 @@ module.exports = {
         name: 'Imię i nazwisko',
         birth: '2019-04-05',
         death: '2019-03-05',
-        privateKey: false,
+        private_key: 'brak',
 }

@@ -18,7 +18,9 @@
                     <div class="col-md-6 details">
                         <div class="name">{{name}}</div>
                         <div class="date">{{birth}} - {{death}}</div>
-                        <div class="type">{{privateKey}}</div>
+                        {{#if private_key}}
+                            <div class="type">Kod dostępu: {{private_key}}</div>
+                        {{/if}}
                     </div>
                     <div class="col-md-6 edit">
                         {{#if editProfile}}

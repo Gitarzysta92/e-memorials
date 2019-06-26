@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const uuid = require('uuid/v4');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -26,17 +27,21 @@ passport.use(new LocalStrategy({
 		passReqToCallback: true
 	},
 	async function(req, username, password, done) {
-		const userPass = await database.getUserPassword(username);
-		console.log('strategy', username, password, userPass);
-		if (password === userPass) {
-			return done(null, { username, password });	
-		}
-		return done(null, false, req.flash('error-message', 'Zły adres e-mail lub login'));
+		const passHash = await database.getUserPassword(username);
+
+		if (!passHash) {
+			return done(null, false, req.flash('error-message', 'Zły adres e-mail lub login'));
+		};
+		const isMatch = await bcrypt.compare(password, passHash)
+
+		if (!isMatch) {
+			return done(null, false, req.flash('error-message', 'Zły adres e-mail lub login'));
+		} 		
+		return done(null, { username, password });	
 	}
 ));
 
 passport.serializeUser(function(user, done) {
-	console.log('serialize', user.username);
 	const userID = users.add(user);
 	done(null, userID);
   });
@@ -44,7 +49,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(userID, done) {
 	const user = users.getById(userID);
 	if (user) {
-		console.log('deserialize',username);
 		done(null, user);	
 	}
 });

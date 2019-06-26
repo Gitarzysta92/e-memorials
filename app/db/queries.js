@@ -5,7 +5,7 @@ module.exports.getPanelByID = function(panelID) {
    return _getUserPanelBy('panel_ID', panelID).then(current => current.length > 0 ? current : false)
 }
 
-module.exports.getProfileByURL = function(uniqueID) {
+module.exports.getProfileByUniqueID = function(uniqueID) {
     return _getUserPanelBy('unique_ID', uniqueID).then(current => current[0]);
 }
 
@@ -18,10 +18,19 @@ function _getUserPanelBy(colName, value) {
     const query = `SELECT name, 
     DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
     DATE_FORMAT(death, '%Y-%m-%d') AS death, 
-    sentence, text, private_key
+    sentence, text, private_key, user_ID
     FROM UserPanels WHERE ${colName} = '${value}'`
     return _execute(query)
 }
+
+module.exports.getPanelMetaByUserID = function(userID) {
+    const query = `SELECT panel_ID, unique_ID 
+    FROM UserPanels WHERE user_ID = '${userID}'`
+    return _execute(query).then(current => current[0] ? current[0] : false);
+}
+
+
+
 
 module.exports.getUserPassword = function(userEmail) {
     const query = `SELECT password FROM Users WHERE email = '${userEmail}'`;
@@ -34,13 +43,16 @@ module.exports.isUserAlreadyExists = function(userEmail) {
 }
 
 
-module.exports.getUserID = function({username, password}) {
-    const query = `SELECT User_ID FROM Users WHERE email ='${username}' AND password = '${password}'`;
-    return _execute(query).then(current => current[0].User_ID);
+module.exports.getUserID = function({username}) {
+    const query = `SELECT User_ID FROM Users WHERE email ='${username}'`;
+    return _execute(query).then(current => current[0] ? current[0].User_ID : false);
 }
 
 module.exports.getAttachments = async function(userID, type) {
-    const metaQuery = `SELECT attachment_ID FROM AttachmentsMeta WHERE panel_ID ='${userID}'`;
+    const query = `SELECT panel_ID FROM UserPanels WHERE user_ID = '${userID}'`
+    const { panel_ID } = await _execute(query).then(current => current[0] ? current[0] : false);
+
+    const metaQuery = `SELECT attachment_ID FROM AttachmentsMeta WHERE panel_ID ='${panel_ID}'`;
     const meta = await _execute(metaQuery)
 
     const ids = meta.reduce((acc, curr, index) => {
@@ -92,10 +104,11 @@ module.exports.updateUserProfile = function(panelData, userID) {
         birth,
         death,
         sentence,
-        text
+        text,
+        private_key
     } = panelData;
     const query = `Update UserPanels SET
-        name = '${name}', birth = '${birth}', death = '${death}', sentence = '${sentence}', text = '${text}'
+        name = '${name}', birth = '${birth}', death = '${death}', sentence = '${sentence}', text = '${text}', private_key = '${private_key}'
         WHERE user_ID = ${userID}`;
     return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
 }
@@ -162,7 +175,7 @@ CREATE TABLE IF NOT EXISTS
         death DATE NOT NULL, 
         sentence VARCHAR(510) NOT NULL,
         text LONGTEXT,
-        private_key INT(11) NOT NULL,
+        private_key VARCHAR(255),
         PRIMARY KEY (panel_ID),
         CONSTRAINT Users_ibfk_1 FOREIGN KEY (user_ID) REFERENCES Users (user_ID) ON DELETE CASCADE ON UPDATE CASCADE
     );

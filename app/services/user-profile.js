@@ -1,4 +1,5 @@
-const defaultPanelModel = require('../models/panelModel');
+const defaultPanelModel = require('../models/panel-model');
+const codeAuthModel = require('../models/profile-code-auth');
 const database = require('../db/queries');
 const { composer, dirs } = require('../api-provider');
 const uuid = require('uuid/v4');
@@ -9,8 +10,76 @@ const createModel = composer.getPreset['not-signed-in'];
 const createModelSingedIn = composer.getPreset['signed-in'];
 
 
+//
+// Public User Profile
+//
 
-// GET actions
+// GET action
+// serve user profile public front view
+module.exports.userProfile = async function(req, res) {
+	const [ id, code ] = req.params.id.split('&');
+	const { 
+		user_ID: userID, 
+		private_key, 
+		...userPanelModel 
+	} = await database.getProfileByUniqueID(id)
+
+	const restrictionCode = private_key.toString();
+	if (restrictionCode.length === 4 && restrictionCode !== code) {
+		return res.redirect(`/memorium/${id}/auth`);
+	}
+	
+	const avatar = await database.getAttachments(userID, 'avatar');
+	const gallery = await database.getAttachments(userID, 'image');
+	const documents = await database.getAttachments(userID, 'document');
+	if (userPanelModel ) {
+		const dataModel = createModel(req, userPanelModel, [
+			{	
+				avatar: avatar[0],
+				gallery: gallery,
+				documents: documents
+			}
+		]);
+		res.render('user-profile', dataModel );
+	} else {
+		res.render('404', {message: 'Cannot find the page'});
+	}
+}
+
+
+// GET action
+// serve profile code authorization page
+module.exports.userProfileCodeAuthPage = function(req, res) {
+	const id = req.params.id;
+	const dataModel = createModel(req, codeAuthModel, [
+		{ profileID: id }
+	]);
+	res.render('profile-code-auth', dataModel);
+}
+
+
+// POST action
+// check is given code is valid 
+module.exports.userProfileCodeAuth = async function(req, res) {
+	const {code, id} = req.body;
+	const { private_key } = await database.getProfileByUniqueID(id);
+	const restrictionCode = private_key.toString();
+
+	if ( restrictionCode !== code) {
+		return res.send({'error': 'Klucz niepoprawny'})
+	}
+	res.send({'redirect': `/memorium/${id}&${code}`});
+}
+
+
+
+//
+// Logged in User Profile
+//
+
+// GET action
+// serve logged in user front view 
+// provides access to edit page and account delete 
 module.exports.userPanel = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	const userPanelModel = await database.getPanelByUserID(userID);
@@ -28,17 +97,23 @@ module.exports.userPanel = async function(req, res) {
 			documents: documents
 		}
 	]);
-	console.log(dataModel);
-	res.render('userPanel', dataModel);
+	res.render('user-profile', dataModel);
 }
 
 
+// GET action
+// serve edit user profile page
 module.exports.editProfile = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	const userPanelModel = await database.getPanelByUserID(userID);
+
+	
 	const avatar = await database.getAttachments(userID, 'avatar');
 	const gallery = await database.getAttachments(userID, 'image');
 	const documents = await database.getAttachments(userID, 'document');
+
+	if (!userPanelModel) return;
+
 	const dataModel = createModelSingedIn(req, userPanelModel,[
 		{	
 			avatar: avatar,
@@ -46,30 +121,13 @@ module.exports.editProfile = async function(req, res) {
 			documents: documents
 		}
 	]);
-	console.log(userPanelModel);
-	res.render('editProfile', dataModel);
+	
+	res.render('edit-profile', dataModel);
 }
 
 
-module.exports.userProfile = async function(req, res) {
-	const { user_ID: userID, ...userPanelModel } = await database.getProfileByURL(req.params.id);
-	const avatar = await database.getAttachments(userID, 'avatar');
-	const gallery = await database.getAttachments(userID, 'image');
-	const documents = await database.getAttachments(userID, 'document');
-	if (userPanelModel ) {
-		const dataModel = createModel(req, userPanelModel,[
-			{	
-				avatar: avatar[0],
-				gallery: gallery,
-				documents: documents
-			}
-		]);
-		res.render('userPanel', dataModel );
-	} else {
-		res.render('404', {message: 'Cannot find the page'});
-	}
-}
-
+// GET action
+// serve profile page preview generated from current form data
 module.exports.profilePreviewPage = function(req, res) {
 	const previewModel = profilePreviews.generateModel(req.params.id);
 	if (!previewModel) {
@@ -80,11 +138,13 @@ module.exports.profilePreviewPage = function(req, res) {
 	const dataModel = createModelSingedIn(req, model, [
 		{ avatar: avatar[0]	}
 	]);
-	res.render('userPanel', dataModel);
+	res.render('user-profile', dataModel);
 }
 
 
-// POST actions
+// POST action
+// create profile preview based on given form data
+// excluding attachments
 module.exports.profilePreview = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	if (!userID) { 
@@ -137,9 +197,8 @@ module.exports.profilePreview = async function(req, res) {
 }
 
 
-
-
-
+// POST action
+// actualize user profile by given form data
 module.exports.profileActualization = async function(req, res) {
 	const userID = await database.getUserID(req.user);
 	if (!userID) { 
@@ -152,10 +211,11 @@ module.exports.profileActualization = async function(req, res) {
 		return res.send({'error': 'error'})
 	}
 
+	const { panel_ID: panelID } = await database.getPanelMetaByUserID(userID);
 	const avatar = saveFile(req.files.avatar, '/images/avatars/')
 		.then(file => {
 			//const avatar = await database.getAttachments(userID, 'avatar');
-			database.addAttachment(file, 'avatar', userID)
+			database.addAttachment(file, 'avatar', panelID)
 		})
 		.catch(console.error);
 
@@ -163,7 +223,7 @@ module.exports.profileActualization = async function(req, res) {
 	photos = Array.isArray(photos) ? photos : [photos];
 	const galleryImages = photos.map(image => {
 		return saveFile(image, '/images/gallery/')
-			.then(file => database.addAttachment(file, 'image', userID))
+			.then(file => database.addAttachment(file, 'image', panelID))
 			.catch(console.error);
 	});
 
@@ -171,9 +231,11 @@ module.exports.profileActualization = async function(req, res) {
 	docs = Array.isArray(docs) ? docs : [docs];
 	const documents = docs.map(image => {
 		return saveFile(image, '/documents/')
-			.then(file => database.addAttachment(file, 'document', userID))
+			.then(file => database.addAttachment(file, 'document', panelID))
 			.catch(console.error);
 	});
+
+	console.log(req.body)
 	database.updateUserProfile(req.body, userID)
 		.then(res.send({'success': 'Profil został zaktualizowany'}))
 		.catch(console.error);
@@ -208,7 +270,5 @@ function saveFile(file, path) {
 function getExt(fileName) {
 	if (typeof fileName !== 'string') return;
 	const name = fileName.split('.');
-	
-	
 	return name[name.length -1];
 }

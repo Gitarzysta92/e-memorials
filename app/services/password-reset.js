@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const resetPageModel = require('../models/reset-pass');
 const forgotPageModel = require('../models/forgot-pass');
 
@@ -71,7 +73,13 @@ module.exports.resetPassword = function(req, res) {
 	if (!username) {
 		return res.send({'error': 'Sesja restartu hasła wygasła'});
 	}
-	database.changeUserPassword(username, password)
+
+	// hash password
+	const saltRounds = 10;
+	const salt = bcrypt.genSaltSync(saltRounds);
+	const hash = bcrypt.hashSync(password, salt) 
+
+	database.changeUserPassword(username, hash)
 		.then(result => {
 			if (!result) {
 				return res.send({'error': 'Nie udało się zmienić hasła'})	

@@ -1,4 +1,6 @@
-const defaultPanelModel = require('../models/panelModel');
+const bcrypt = require('bcrypt');
+
+const defaultPanelModel = require('../models/panel-model');
 const regModel = require('../models/registration');
 
 const sendMail = require('../mailer/mailer');
@@ -78,7 +80,6 @@ module.exports.submitRegistrationSecondStep = function(req, res) {
 	transaction.register()
 		.then(result => { 
 			regProcess.setPaymentToken(result);
-			console.log(registration.getProcess(result))
 			res.send({ 'redirect': `${payment.trnRequestURL}/${result}` });
 		})
 		.catch(err => console.warn(err));	
@@ -94,11 +95,14 @@ module.exports.registrationFinalization = async function(req, res) {
 		p24_amount: amount 
 	} = req.body;
 
-	if (!(paymentID && orderID && amount)) return;
+	if (!(paymentID && orderID && amount)) {
+		res.status(400).send('Bad Request');
+		return;
+	};
 
 	const transaction = payment.getTransaction(paymentID);
-	const isVerified = await transaction.verify(orderID, amount)
-	
+	const isVerified = await transaction.verify(orderID, amount);
+	console.warn(isVerified);
 	isVerified && registerUser(paymentID);
 
 	res.status(200);
@@ -107,22 +111,25 @@ module.exports.registrationFinalization = async function(req, res) {
 
 
 function registerUser(id) {
-	console.log(id);
 	const regProcess = registration.getProcess(id);
 	console.log(regProcess);
-	if (!regProcess) return;
+	if (!regProcess) {
+		console.warn(regProcess);
+		return
+	};
 
+	const { password, ...rest } = regProcess.getUserData();
 
-	// Send mail to Email code owner
-	const promoEmail = regProcess.getPromoCode();
-	promoEmail && sendMail.notifyPromoCodeOwner(promoEmail)
-		.catch(console.error);
+	// hash password
+	const saltRounds = 10;
+	const salt = bcrypt.genSaltSync(saltRounds);
+	const hash = { password: bcrypt.hashSync(password, salt) }
+	const regData = Object.assign(rest, hash)
 
-	// Add new user to database and send confirmation mails
-	const registrationData = regProcess.getUserData();
-	database.createNewUser(registrationData, regProcess.ID)
+	// Add new user to database and send confirmation mails 
+	database.createNewUser(regData, regProcess.ID)
 		.then(() => {
-			const { email, password } = registrationData;
+			const { email, password } = regData;
 			return database.getUserID({
 				username: email,
 				password: password
@@ -132,7 +139,7 @@ function registerUser(id) {
 			return database.createNewProfile(defaultPanelModel, result, regProcess.ID)
 		})
 		.then(() => {
-			const { email, name } = registrationData;
+			const { email, name } = regData;
 			if (email) {
 				return sendMail.signUpConfirmation(email, name);
 			}	
@@ -140,10 +147,15 @@ function registerUser(id) {
 		.then(() => {
 			const id = regProcess.ID;
 			if (id) {
-				return sendMail.notifyAdministration({id, ...registrationData});
+				return sendMail.notifyAdministration({id, ...regData});
 			}		
 		})
 		.catch(err => {
 			console.error(err);
 		});
+
+	// Send mail to Email code owner
+	const promoEmail = regProcess.getPromoCode();
+	promoEmail && sendMail.notifyPromoCodeOwner(promoEmail)
+		.catch(console.error);
 }

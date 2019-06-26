@@ -35,7 +35,8 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "uuid": "^3.3.2",
-    "zlibjs": "^0.3.1"
+    "zlibjs": "^0.3.1",
+    "bcrypt": "^3.0.6"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
