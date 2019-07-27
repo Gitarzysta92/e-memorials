@@ -2,6 +2,14 @@ const controller = './controller.js';
 const apiProvider = require('./api-provider');
 const routesAttach = require('./routes.js');
 
+
+// core
+const core = require('./core');
+
+// services
+
+const 
+
 // library
 const { prepareServer, instance } = require('../lib/server/server');
 const dbConnect = require('../lib/database-service/db-connect');
@@ -14,6 +22,11 @@ const PaymentHandler = require('../lib/przelewy24/payment-handler');
 
 // utils
 //const { apiCaller } = require('../utils/isomorphic-fetch.js');
+
+
+
+
+
 
 module.exports = (function() {
 	const _reg = {
