@@ -1,72 +1,81 @@
-const controller = './controller.js';
-const apiProvider = require('./api-provider');
-const routesAttach = require('./routes.js');
+// local
+const core = require('./core/index');
+const dbConnect = require('./database/connect');
 
+// internal services
+const userService = require('./services/user');
+const paymentService = require('./services/payment');
+const mailerService = require('./services/mailer');
+const authService = require('./services/authentication');
+const attachmentsService = require('./services/attachments');
+const customerProfileService = require('./services/customer-profile');
+const pagesService = require('./services/pages-composer');
+const staticAssetsService = require('./services/static-assets');
 
-// core
-const core = require('./core');
-
-// services
-
-const 
+// external api services
+const externalApiService = require('./services/external-api');
 
 // library
-const { prepareServer, instance } = require('../lib/server/server');
-const dbConnect = require('../lib/database-service/db-connect');
-const createMailer = require('../lib/mail-sender/mailer');
-const setupRegistration = require('../lib/registration/reg-session');
-const registerPromoCodes = require('../lib/promo-code/code-validator');
-const composer = require('../lib/model-compositor/composer');
-const modelStore = require('../lib/model-store/store');
-const PaymentHandler = require('../lib/przelewy24/payment-handler');
-
-// utils
-//const { apiCaller } = require('../utils/isomorphic-fetch.js');
+const { prepareServer, instance } = require('./lib/server/server');
+const PaymentHandler = require('./lib/przelewy24/payment-handler');
+const modelStore = require('./lib/model-store/store');
+const modelComposer = require('./lib/model-compositor/composer');
 
 
 
 
+module.exports = function(setup) {
+	const { 
+		domain, server, dirs, database, mailer, userPlans, przelewy24, smtpMailer
+	} = setup;
 
+	const sharedApi = {};
+	const services = {};
 
-module.exports = (function() {
-	const _reg = {
-		expressInstance: instance
+	// shared constants
+	sharedApi.domain = domain;
+	sharedApi.mailer = {
+		sender: mailer.sender,
+		config: smtpMailer
 	}
-	const _lib = {};
-	const _utils = {};
-
-	return function(configuration) {
-		const { 
-			domain, 
-			server, 
-			dirs, 
-			database, 
-			mailer,
-			userPlans 
-		} = configuration;
-
-		_reg.domain = domain;
-		_reg.sender = mailer.sender;
-		_reg.dirs = dirs;
-
-		_lib.database = dbConnect(database.config); 
-		_lib.mailer = createMailer(mailer.config);
-		_lib.registration = setupRegistration(userPlans);
-		_lib.promoCode = registerPromoCodes(userPlans.promoCodes);
-		_lib.composer = composer;
-		_lib.modelStore = modelStore;
-		_lib.PaymentHandler = PaymentHandler;
-		//_utils.apiCaller= apiCaller;
-		apiProvider([_reg, _lib, _utils]);
-
-		const _run = prepareServer(server.config, server.port, dirs, server.callback);
-		require('./passport/passport.js');
-		routesAttach(require(controller), _reg.expressInstance);
- 
-		return {
-			run: _run
-		}
+	sharedApi.dirs = dirs;
+	sharedApi.registrationOptions = {
+		sessionTimeout: 1000 * 60 * 60,
+		userPlans
 	}
-})();
+
+	// database api setup
+	const { internalApi, externalApi } = dbConnect(database.config);
+
+
+	// shared abstractions
+	sharedApi.core = core;
+	sharedApi.database = internalApi;
+	sharedApi.eDatabase = externalApi;
+	sharedApi.paymentHandler = new PaymentHandler(przelewy24(domain));
+	sharedApi.modelStore = modelStore;
+	sharedApi.modelComposer = modelComposer;
+
+
+	// init services
+	services.user = userService(sharedApi);
+	services.payment = paymentService(sharedApi);
+	services.mailer = mailerService(sharedApi);
+	services.user.auth = authService(sharedApi);
+	services.attachments = attachmentsService(sharedApi);
+	services.customersProfiles = customerProfileService(sharedApi);
+	services.pages = pagesService(sharedApi);
+	services.assets = staticAssetsService(sharedApi);
+	services.externalApi = externalApiService(sharedApi);
+
+
+	return {
+		run: prepareServer(server.config, server.port, dirs, server.callback),
+		server: instance,
+		sharedApi,
+		services
+	}
+
+};
 
 

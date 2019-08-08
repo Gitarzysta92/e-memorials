@@ -1,9 +1,11 @@
 
-module.exports = function(codesArray = []) {
-	const promoCodes = codesArray;
-	return {
-		validate: function(code) {
+	const promoCodes = [];
+
+module.exports = {
+		getCode: function(code) {
 			return promoCodes.find(current => current === code);
+		},
+		add: function(code) {
+			promoCodes.push(code);
 		}
 	}
-}

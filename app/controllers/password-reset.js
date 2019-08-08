@@ -1,3 +1,43 @@
+module.exports = function({ api, services }) {
+
+	const { user, mailer } = services;
+
+	const forgotPassword = async function(req, res) {
+		const { email } = req.body;
+		const resetID = await user.lostPassword.createRequest(email)
+		if (!resetID) {
+			return res.send({'error': 'Brak użytkownika o podanym adresie e-mail'});
+		}
+		const link = `${api.domain}/reset-password/${resetID}`;
+		mailer.sendMessage('password-reset', { email, link });
+
+		res.send({'success': 'Link z resetem hasła został wysłany'});
+	}
+
+	const resetPassword = async function(req, res) {
+		const { token, password } = req.body;
+		const result = await user.lostPassword.resolveRequest(token, password);
+		if (!result) {
+			return res.send({'error': 'Sesja restartu hasła wygasła'});
+		}
+		res.send({'success': 'Hasło zostało zmienione'});
+	}
+
+	return {
+		forgotPassword,
+		resetPassword
+	}
+}
+
+
+
+
+/*
+
+
+
+
+
 const bcrypt = require('bcrypt');
 
 const resetPageModel = require('../models/reset-pass');
@@ -31,22 +71,7 @@ passwordReset.removeRequest = function(token) {
 	});
 }
 
-// GET actions
-module.exports.forgotPasswordPage = function(req, res) {
-	const dataModel = createModel(req, forgotPageModel);
-	res.render('forgot-password', dataModel);
-}
 
-
-module.exports.resetPasswordPage = function(req, res) {
-	const { resetID } = passwordReset.getRequest(req.params.id) || {};
-	if (!resetID) {
-		res.render('404', {message: 'Cannot find the page'});
-	}
-	const dataModel = createModel(req, resetPageModel);
-	res.cookie('reset-token', resetID, { maxAge: 100000 });
-	res.render('reset-password', dataModel);
-}
 
 
 
@@ -93,3 +118,4 @@ module.exports.resetPassword = function(req, res) {
 		});
 }
 
+*/

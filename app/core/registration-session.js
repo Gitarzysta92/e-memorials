@@ -1,7 +1,5 @@
 const uuid = require('uuid/v4');
 
-const offer = {};
-
 class _Process {
 		constructor(withfirstStep) {
 			this.ID = uuid();
@@ -42,20 +40,22 @@ class _Process {
 			};
 		}
 
-		_initialize(firstStep) {
+		_initialize(initProps) {
+			const { firstStep, pricing } = initProps;
+			if (!(firstStep && pricing)) return;
+
 			this._prices = {
-				basic: offer.basic.price,
-				premium: offer.premium.price
+				basic: pricing.basic.price,
+				premium: pricing.premium.price
 			}
 			this._discounts = {
-				basic: offer.basic.discount,
-				premium: offer.basic.discount
+				basic: pricing.basic.discount,
+				premium: pricing.basic.discount
 			}
 			this._steps = {
-				firstStep: false,
+				firstStep,
 				secondStep: false
 			}
-			this.update(firstStep);
 		}
 
 		_changePrices() {
@@ -73,15 +73,7 @@ class _Process {
 }
 
 
-const regSetup = function(prices) {
-	Object.defineProperties(offer, {
-		basic: {
-			value: prices.basic
-		},
-		premium: {
-			value: prices.premium
-		}
-	});
+const regSetup = function() {
 
 	let _processes = [];
 
@@ -93,7 +85,6 @@ const regSetup = function(prices) {
 	}
 
 	const getProcess = function(ID) {
-		console.log(_processes)
 		return _processes.find(current => {
 			return (current.ID === ID || current.paymentToken === ID);
 		}) || false;

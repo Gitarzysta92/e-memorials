@@ -1,8 +1,10 @@
-const app = require('./app/main.js');
+const app = require('./app/index.js');
 
 const serverConfig = require('./configs/server-config');
 const mailerConfig = require('./configs/mailer-config');
 const dbConfig = require('./configs/db-config');
+const przelewy24 = require('./configs/przelewy24-config');
+const smtpMailer = require('./configs/smtp-config');
 
 
 
@@ -44,7 +46,8 @@ const memorial = app({
 			'kontakt@memorium.pl'
 		]
 	},
-	
+	przelewy24,
+	smtpMailer
 });
 
 memorial.run();

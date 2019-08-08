@@ -59,4 +59,32 @@ module.exports = function(controller, server) {
 	
 	// Misc
 	server.get('/js-bundle', controller.serveStaticJsBundle);
+
+
+	//
+	// External api
+	// 
+
+	// user endpoints
+	server.post('/api/users', controller.createUser);
+	server.get('/api/users/:id', controller.getUserById);
+	server.get('/api/users', controller.getAllUsers);
+	server.put('/api/users', controller.updateUserById);
+	server.delete('/api/users/:id', controller.deleteUserById);
+
+
+	// partners endpoints
+	server.post('/api/partners', controller.createPartner);
+	server.get('/api/partners/:id', controller.getPartnerById);
+	server.get('/api/partners', controller.getAllPartners);
+	server.put('/api/partners', controller.updatePartnerById);
+	server.delete('/api/partners/:id', controller.deletePartnerById);
+	
+
+	// pages endpoints
+	server.post('/api/pages', controller.createPage);
+	server.get('/api/pages/:id', controller.getPageById);
+	server.get('/api/pages', controller.getAllPages);
+	server.put('/api/pages', controller.updatePageById);
+	server.delete('/api/pages/:id', controller.deletePageById);
 }

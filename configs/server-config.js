@@ -54,7 +54,6 @@ module.exports = function(expressInstance, dirs) {
       tempFileDir : '/tmp/'
     }));
     
-
 	return server; 
 }
 

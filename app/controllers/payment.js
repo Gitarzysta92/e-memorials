@@ -1,7 +1,15 @@
-const payment = require('../payment/payment');
+module.exports = function( ) {
+	
+	const authenticatse = function() {
+		
+	}
 
+	const isAuthenticasted = function() {
 
+	}
 
-module.exports.paymentStatus = function(req, res) {
-	console.log(req);
-}	
+	return {
+		authenticatse,
+		isAuthenticasted
+	}
+}

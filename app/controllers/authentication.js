@@ -1,39 +1,25 @@
-const passport = require('passport');
-const signinModel = require('../models/sign-in');
-const { composer } = require('../api-provider');
-const createModel = composer.getPreset['not-signed-in'];
+module.exports = function({ api, services }) {
+	const { user } = services;
 
-
-// GET actions
-module.exports.login = function(req, res) {
-	const dataModel = createModel(req, signinModel);
-	if (req.user) {
-		res.redirect('/memorium');
-	} else {
-		res.render('login', dataModel);
+	// Authenticate user
+	const authenticate = function(req, res, next) {
+		user.auth.authenticate(req, res, next, function({ error }) {
+			console.log(error);
+			if (error) return res.send({'error': 'Nieprawidłowy login lub hasło'});
+			res.send({'redirect': '/memorium'});
+		})
 	}
-}
 
-
-// POST actions
-module.exports.authenticate = function(req, res, next) {
-	passport.authenticate('local', function(err, user, info){
-		if (err) { return next(err) }
-		if (!user) { return res.send({'error': 'Nieprawidłowy login lub hasło'}); }
-		req.logIn(user, function(err) {
-			if (err) { return next(err) }
-			return res.send({'redirect': '/memorium'});	
+	// Check if user is authenticated
+	const isAuthenticated = function(req, res, next) {
+		user.auth.isAuthenticated(req, function({ error }) {
+			if (error) res.redirect('/login');
+			next();
 		});
-	})(req, res, next);
-}
+	}
 
-
-
-// MIDDLEWARE action
-module.exports.isAuthenticated = function(req, res, next) {
-	if (req.user) {
-		next()
-	} else {
-		res.redirect('/login');
+	return {
+		authenticate,
+		isAuthenticated
 	}
 }
