@@ -27,7 +27,7 @@ module.exports = function({ eDatabase }) {
 
 	// Update page by given id
 	const update = async function(id, data) {
-		const result = await eDatabase.partners.updatePartnerById(id, data);
+		const result = await eDatabase.partners.updatePartnerDataById(id, data);
 		return result;
 	}
 

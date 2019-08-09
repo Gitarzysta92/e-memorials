@@ -73,6 +73,7 @@ module.exports = function({ api, services }) {
 	// Pages
 	//
 	const createPage = async function(req, res) {
+		console.log(req.body);
 		const result = await pages.create(req.body);
 		res.send(result);
 	}

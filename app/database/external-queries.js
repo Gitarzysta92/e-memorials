@@ -88,7 +88,7 @@ module.exports = function(_execute) {
         createPage: function(data) {
             const { meta, content } = data;
             const query = `INSERT INTO Pages (meta, content)
-                VALUES ('${meta}', '${content}')`;
+                VALUES ('${JSON.stringify(meta)}', '${JSON.stringify(content)}')`;
             return _execute(query).then(result => result.affectedRows > 0 ? true : false);
         },
 
@@ -108,7 +108,7 @@ module.exports = function(_execute) {
         updatePageById: function(id, data) {
             const { meta, content } = data;
             const query = `Update Pages SET
-                meta = '${meta}', content = '${content}'
+                meta = '${JSON.stringify(meta)}', content = '${JSON.stringify(content)}'
                 WHERE page_ID = ${id}`;
             return _execute(query).then(result => result.affectedRows > 0 ? true : false);
         },

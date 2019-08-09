@@ -3,8 +3,8 @@ const sql = `
 CREATE TABLE IF NOT EXISTS
     Pages(
         page_ID INT(11) unsigned NOT NULL AUTO_INCREMENT,
-        meta VARCHAR(255) NOT NULL,
-        content VARCHAR(255) NOT NULL,
+        meta LONGTEXT NOT NULL,
+        content LONGTEXT NOT NULL,
         PRIMARY KEY (page_ID)
     );
 
