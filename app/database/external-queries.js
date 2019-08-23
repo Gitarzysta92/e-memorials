@@ -110,6 +110,7 @@ module.exports = function(_execute) {
             const query = `Update Pages SET
                 meta = '${JSON.stringify(meta)}', content = '${JSON.stringify(content)}'
                 WHERE page_ID = ${id}`;
+
             return _execute(query).then(result => result.affectedRows > 0 ? true : false);
         },
 

@@ -41,7 +41,7 @@ main {
 
 // Utils
 .fh { 
-    min-height: 100vh;
+    //min-height: 100vh;
     @media (max-width: $mobile) { & {height: auto}}
 }
 
@@ -50,6 +50,11 @@ main {
     position: fixed;
     opacity: 0.4;
     min-width: 100%;
+}
+
+.container {
+    padding: 200px;
+    min-height: 100vh;
 }
 
 .container {
@@ -530,48 +535,39 @@ footer {
 }
 
 
-// Questions and answers
-.qanda {
-    .section-title_medium {
-        margin-top: 20px;
+// Accordion
+.accordion {
+    max-width: 650px;
+    padding: 10px 0;  
+    display: block;
+    padding: 20px 30px;
+    margin: 5px 0;
+    border-radius: 15px;
+    cursor: pointer;
+    &:nth-child(odd) {
+        background-color: rgba(0,0,0,0.1);
     }
-    .questions-accordion {
-        max-width: 650px;
-        padding: 10px 0;
-        ul {
-            list-style: none;
-            padding: 0;
-            li {
-                display: block;
-                padding: 20px 30px;
-                margin: 5px 0;
-                border-radius: 15px;
-                cursor: pointer;
-                &:nth-child(odd) {
-                    background-color: rgba(0,0,0,0.1);
-                }
-                &:hover {
-                    background-color: $primary-blue;
-                }
-                &.active {
-                    background-color: $secondary-blue;
-                    .answer {
-                        margin-top: 20px;
-                        height: auto;
-                    }
-                }
-                .question {
-                    font-size: 1.6rem;
-                }
-                .answer {
-                    height: 0px;
-                    font-size: 1.4rem;
-                    overflow: hidden;
-                }
-            } 
+    &:hover {
+        background-color: $primary-blue;
+    }
+    &.active {
+        background-color: $secondary-blue;
+        .content {
+            margin-top: 20px;
+            height: auto;
         }
     }
+    .title {
+        font-size: 1.6rem;
+    }
+    .content {
+        height: 0px;
+        font-size: 1.4rem;
+        overflow: hidden;
+    }
+    
 }
+
 
 // Contact
 .contact {
