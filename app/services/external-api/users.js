@@ -5,7 +5,6 @@ const reqProps = [ 'name', 'surname', 'email', 'password', 'type', 'regDate', 'p
 
 
 module.exports = function({ eDatabase }) {
-	console.log(eDatabase);
 	// Create new user
 	const create = async function(data) {
 		const today = new Date();

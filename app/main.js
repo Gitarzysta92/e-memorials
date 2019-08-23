@@ -11,6 +11,7 @@ const attachmentsService = require('./services/attachments');
 const customerProfileService = require('./services/customer-profile');
 const pagesService = require('./services/pages-composer');
 const staticAssetsService = require('./services/static-assets');
+const filesService = require('./services/files');
 
 // external api services
 const externalApiService = require('./services/external-api');
@@ -19,7 +20,7 @@ const externalApiService = require('./services/external-api');
 const { prepareServer, instance } = require('./lib/server/server');
 const PaymentHandler = require('./lib/przelewy24/payment-handler');
 const modelStore = require('./lib/model-store/store');
-const modelComposer = require('./lib/model-compositor/composer');
+const modelComposer = require('./lib/model-compositor/api');
 
 
 
@@ -67,6 +68,7 @@ module.exports = function(setup) {
 	services.pages = pagesService(sharedApi);
 	services.assets = staticAssetsService(sharedApi);
 	services.externalApi = externalApiService(sharedApi);
+	services.files = filesService(sharedApi);
 
 
 	return {

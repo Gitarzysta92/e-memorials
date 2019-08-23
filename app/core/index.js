@@ -12,18 +12,13 @@ module.exports = {
 	addPromoPartner
 }
 
-
-
-const asd = (function() { console.log(registration)})();
-
 //
 // customer registration process
 //
 
 // start registration process
 function startRegistrationProcess(regToken = '', formData, timeout, pricing) {
-	
-	console.log(regToken);
+
   const regProcess = registration.getProcess(regToken);
 	if (regProcess) {
 		return registration.updateStep(regToken, { firstStep: formData });

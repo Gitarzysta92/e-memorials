@@ -3,10 +3,11 @@ module.exports = function(controller, server) {
 		
 	// Website endpoints
 	// GET
-	server.get('/', controller.home );
-	server.get('/qanda', controller.qanda);
-	server.get('/terms-and-policy', controller.policy);
-	server.get('/contact', controller.contact);
+	server.get('*', controller.staticPage);
+	//server.get('/qanda', controller.qanda);
+	//server.get('/terms-and-policy', controller.policy);
+	//server.get('/contact', controller.contact);
+
 	// POST
 	server.post('/form-send-message', controller.sendFormMessage);
 	
@@ -87,4 +88,7 @@ module.exports = function(controller, server) {
 	server.get('/api/pages', controller.getAllPages);
 	server.put('/api/pages', controller.updatePageById);
 	server.delete('/api/pages/:id', controller.deletePageById);
+
+	// files endpoints
+	server.post('/api/files', controller.uploadFile)
 }

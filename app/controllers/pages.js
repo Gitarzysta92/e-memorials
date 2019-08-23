@@ -1,9 +1,21 @@
 module.exports = function({ api, services }) {
 
-	const { pages } = services;
+	const { pages, user } = services;
+
+
+	const staticPage = async function(req, res, next) {
+		const url = req.originalUrl;
+
+		const page = await pages.getPageData(url, user.auth.isAuth(req));
+		if (!page) return next();
+		
+		res.render(page.templateName, page.data);
+	}
+
+
 
 	// render static home page
-	const home = function(req, res) {
+	const home = async function(req, res) {
 		const pageName = 'home';
 		const data = pages.getPageData(req, {name: pageName});
 
@@ -12,7 +24,7 @@ module.exports = function({ api, services }) {
 
 
 	// render questions and answers page
-	const qanda = function(req, res) {
+	const qanda = async function(req, res) {
 		const pageName = 'qanda';
 
 		const data = pages.getPageData(req, {
@@ -227,6 +239,7 @@ module.exports = function({ api, services }) {
 		userProfileCodeAuthPage,
 		userPanel,
 		editProfile,
-		profilePreviewPage
+		profilePreviewPage,
+		staticPage
 	}
 }

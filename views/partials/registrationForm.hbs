@@ -1,0 +1,68 @@
+<div class="sign-up_form">
+    <form id="sign-up-form">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <label for='name'>Imię:</label>
+                <input required type="text" name="name"/>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <label for='surname'>Nazwisko:</label>
+                <input required type="text" name="surname"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <label for='email'>Email:</label>
+                <input required type="email" name="email" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <label for='password'>Hasło:</label>
+                <input required minlength="8" type="password" name="password" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 section-title_small">
+                <h5>Dane korespondencyjne</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-12">
+                <label for='street'>Ulica</label>
+                <input required type="text" name="street" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <label for='city'>Miasto</label>
+                <input required type="text" name="city" />
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <label for='postalCode'>Kod pocztowy</label>
+                <input required type="text" name="postalCode" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-12">
+                <label for='phone'>Telefon</label>
+                <input required type="tel" name="phone" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 inline checkbox">			
+                <input required type="checkbox" name="policy" {{form.policy.checked}}>
+                <label for="policy">{{form.policy.text}}<a href="{{form.policy.url}}">{{form.policy.linkText}}</a></label>
+            </div>
+        </div>
+        <div>
+            <input 
+                type="submit" 
+                value="Przejdź do kolejnego etapu"
+                class="button solid blue"
+                />
+        </div>
+    </form>
+    <div class="policy_link">{{> link}}</div>
+    <div id="alert-box" class="alert-box"></div>
+</div>

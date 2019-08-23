@@ -1,7 +1,7 @@
 module.exports = function({ api, services }) {
 
 	const { pages, partners, users } = services.externalApi;
-
+	const { files } = services;
 	//
 	// user
 	// 
@@ -104,6 +104,17 @@ module.exports = function({ api, services }) {
 	}
 
 
+	//
+	// upload files
+	//
+
+	const uploadFile = async function(req, res) {
+		const file = req.body
+		const path = await files.saveFile(file);
+
+		res.send({path});
+	}
+
 	return {
 		createUser,
 		getUserById,
@@ -122,5 +133,7 @@ module.exports = function({ api, services }) {
 		getAllPages,
 		updatePageById,
 		deletePageById,
+
+		uploadFile
 	}
 }

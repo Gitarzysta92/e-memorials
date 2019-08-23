@@ -5,7 +5,6 @@ const reqProps = [ 'name', 'email', 'address', 'city', 'postCode' ]
 
 
 module.exports = function({ eDatabase }) {
-	console.log(eDatabase);
 	// Create new page
 	const create = async function(data) {
 		const result = await eDatabase.partners.createPartner(data);

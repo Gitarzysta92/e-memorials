@@ -31,6 +31,14 @@ module.exports = function({ database }) {
 		}
 	}
 
+	const isAuth = function(req) {
+		if (req.user) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	// Setup passport user validation strategy
 	passport.use(new LocalStrategy({
@@ -55,7 +63,8 @@ module.exports = function({ database }) {
 
 	return {
 		authenticate,
-		isAuthenticated
+		isAuthenticated,
+		isAuth
 	}
 }
 

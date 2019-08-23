@@ -15,24 +15,38 @@ const models = {
 }
 
 
-module.exports = function({modelComposer, db, ...rest}) {
-
-	const createModel = modelComposer.getPreset['not-signed-in'];
-	const createModelSingedIn = modelComposer.getPreset['signed-in'];
+module.exports = function({modelComposer, database, ...rest}) {
+	
 
 	// Create new payment transaction using payment handler
-	const getPageData = function(req, {name, isAuthorized, toInject = []}) {
-		if (!models.hasOwnProperty(name)) return;
-		if (isAuthorized) {
-			
-			return createModelSingedIn(req, models[name], toInject);
-		} else {
-			return createModel(req, models[name], toInject);
-		}
-	}
+	const getPageData = async function(url, isAuthorized) {
 
+		const userAccess = isAuthorized ? 'signed' : 'unSigned'
+
+		const pagesData = await database.getPages()
+		.then(result => result.map(page => ({
+			meta: JSON.parse(page.meta),
+			content: JSON.parse(page.content),
+		})))
+		
+		const menu = pagesData.reduce((acc, page) => {
+				if (!Array.isArray(page.meta.menu)) return acc;	
+				const isExist = page.meta.menu.find(access => access === userAccess);
+				return isExist ? [...acc, page.meta] : acc
+		}, [])
+		const page = pagesData.find(page => page.meta.path === url);
+
+		if (!page) return;
+		
+		const pageData = modelComposer.preparePageModel({ menu: menu, main: page.content });
+		return pageData;
+	}
 
 	return {
 		getPageData
 	}
 }
+
+
+
+

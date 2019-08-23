@@ -373,52 +373,51 @@ footer {
   font-size: 1.2rem;
 }
 
-.company-description {
+.home .company-description {
   margin-top: 30px;
   width: 650px;
 }
 @media (max-width: 768px) {
-  .company-description {
+  .home .company-description {
     width: 100%;
   }
 }
-.company-description .sentence {
+.home .company-description .sentence {
   text-align: right;
   font-size: 2rem;
   padding: 0 15px;
 }
 @media (max-width: 768px) {
-  .company-description .sentence {
+  .home .company-description .sentence {
     text-align: center;
   }
 }
-.company-description [class^=col-] {
+.home .company-description [class^=col-] {
   padding: 15px 0;
 }
-
-.company-steps {
+.home .company-steps {
   padding: 50px 0;
   width: 650px;
 }
 @media (max-width: 768px) {
-  .company-steps {
+  .home .company-steps {
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
   }
 }
-.company-steps .step {
+.home .company-steps .step {
   text-align: center;
   width: 33%;
   font-size: 1.4rem;
 }
 @media (max-width: 768px) {
-  .company-steps .step {
+  .home .company-steps .step {
     width: 100%;
     padding: 20px 0;
   }
 }
-.company-steps .step .circle {
+.home .company-steps .step .circle {
   position: relative;
   width: 40px;
   height: 40px;
@@ -428,7 +427,7 @@ footer {
   font-size: 16px;
   margin: 0 auto 10px auto;
 }
-.company-steps .step:not(:last-child) .circle::after {
+.home .company-steps .step:not(:last-child) .circle::after {
   content: "";
   top: 49%;
   left: 100%;
@@ -438,38 +437,35 @@ footer {
   background-color: #fff;
 }
 @media (max-width: 768px) {
-  .company-steps .step:not(:last-child) .circle::after {
+  .home .company-steps .step:not(:last-child) .circle::after {
     display: none;
   }
 }
-.company-steps .step:last-child .circle {
+.home .company-steps .step:last-child .circle {
   background-color: #4d7b86;
   color: #dcdbdb;
 }
 
-.sentence {
+.login .sentence {
   max-width: 350px;
   padding: 30px 0;
   text-align: center;
   font-size: 2rem;
 }
-
-.sign-in_form {
+.login .sign-in_form {
   width: 350px;
 }
 @media (max-width: 768px) {
-  .sign-in_form {
+  .login .sign-in_form {
     width: 100%;
   }
 }
 
-.sign-up_form {
-  width: 450px;
-}
-@media (max-width: 768px) {
-  .sign-up_form {
-    width: 100%;
-  }
+.registration .sentence {
+  max-width: 350px;
+  padding: 30px 0;
+  text-align: center;
+  font-size: 2rem;
 }
 
 .registration-second-step .section-user-plan {
@@ -744,4 +740,4 @@ footer {
   margin: 50px 0 50px 0;
 }
 
-/*# sourceMappingURL=main.css.map */
+/*# sourceMappingURL=main.bac.css.map */
