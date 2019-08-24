@@ -474,47 +474,49 @@ footer {
   }
 }
 
-.registration-second-step .section-user-plan {
+.section-user-plan {
   padding: 50px 0;
   font-size: 2em;
   width: 600px;
 }
 @media (max-width: 768px) {
-  .registration-second-step .section-user-plan {
+  .section-user-plan {
     width: 100%;
   }
 }
-.registration-second-step .section-user-plan ul {
+.section-user-plan ul {
   margin: 20px 0;
   padding: 0;
   list-style: none;
 }
-.registration-second-step .section-user-plan ul li {
+.section-user-plan ul li {
   padding: 5px 0;
   font-size: 1.6rem;
 }
-.registration-second-step .section-user-plan ul li:nth-child(odd) {
+.section-user-plan ul li:nth-child(odd) {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.registration-second-step .section-user-plan .price strong {
+.section-user-plan .price strong {
   font-size: 1.3em;
 }
-.registration-second-step .section-user-plan .pricing-plan {
+.section-user-plan .pricing-plan {
   padding: 20px;
   cursor: pointer;
   border-radius: 15px;
   text-align: center;
 }
-.registration-second-step .section-user-plan .pricing-plan.active {
+.section-user-plan .pricing-plan.active {
   background-color: #0f8ea5;
 }
-.registration-second-step .section-user-plan .pricing-plan:hover {
+.section-user-plan .pricing-plan:hover {
   background-color: #4d7b86;
 }
-.registration-second-step .company-logo {
+
+.company-logo {
   margin-bottom: 30px;
 }
-.registration-second-step .promo-code_form {
+
+.promo-code_form {
   padding: 30px 0;
 }
 

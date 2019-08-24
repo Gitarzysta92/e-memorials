@@ -490,49 +490,49 @@ footer {
 }
 
 
-.registration-second-step {
-    .section-user-plan {
-        padding: 50px 0;
-        font-size: 2em;
-        width: 600px;
-        @media (max-width: $mobile) { & {width: 100%}}
-        ul {
-            margin: 20px 0;
-            padding: 0;
-            list-style: none;
-            li {
-                padding: 5px 0;
-                font-size: 1.6rem;
-            }
-            li:nth-child(odd) {
-                background-color: rgba(0,0,0, 0.1)
-            }
+
+.section-user-plan {
+    padding: 50px 0;
+    font-size: 2em;
+    width: 600px;
+    @media (max-width: $mobile) { & {width: 100%}}
+    ul {
+        margin: 20px 0;
+        padding: 0;
+        list-style: none;
+        li {
+            padding: 5px 0;
+            font-size: 1.6rem;
         }
-       .price {
-           strong { font-size: 1.3em; }
-       }
-       .pricing-plan {
-            padding: 20px;
-            cursor: pointer;
-            border-radius: 15px;
-            text-align: center;
-            &.active {
-                background-color: $secondary-blue;
-            }
-            &:hover {
-                background-color: $primary-blue;
-            }
-       }
+        li:nth-child(odd) {
+            background-color: rgba(0,0,0, 0.1)
+        }
     }
-
-    .company-logo {
-        margin-bottom: 30px;
+    .price {
+        strong { font-size: 1.3em; }
     }
-
-    .promo-code_form {
-        padding: 30px 0; 
+    .pricing-plan {
+        padding: 20px;
+        cursor: pointer;
+        border-radius: 15px;
+        text-align: center;
+        &.active {
+            background-color: $secondary-blue;
+        }
+        &:hover {
+            background-color: $primary-blue;
+        }
     }
 }
+
+.company-logo {
+    margin-bottom: 30px;
+}
+
+.promo-code_form {
+    padding: 30px 0; 
+}
+
 
 
 // Accordion
