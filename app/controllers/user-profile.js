@@ -4,6 +4,8 @@ module.exports = function({ api, services }) {
 		customersProfiles,
 		attachments 
 	} = services;
+
+
 	
 	const userProfileCodeAuth = function(req, res) {
 		const {code, id} = req.body;
@@ -21,16 +23,13 @@ module.exports = function({ api, services }) {
 	}
 
 
-	const profileActualization = function(req, res) {
-		
-		customersProfiles.updateProfile(req.user, req.body);
+	const profileActualization = async function(req, res) {
+		const id = await customersProfiles.getProfileID(req.user);
+		customersProfiles.updateProfile(id, req.body);
 
 		for (let filesCat in req.files) {
-			const files = Array.isArray(photos) ? photos : [photos];
-			attachments.saveAttachments(id, files, 'image', '/images/gallery/');
+			attachments.saveAttachments(id, req.files[filesCat], filesCat, '/images/gallery/');
 		}
-
-		
 	}	
 
 	return {

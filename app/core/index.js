@@ -55,8 +55,9 @@ function finishRegistratrionProcess(regToken = '') {
   if (!regProcess) return;
 	const data = regProcess.getUserData();
 	const promoCode = regProcess.getPromoCode();
+
 	
-  return { id: regProcess.id, data , promoCode}; 
+  return { id: regProcess.ID, data , promoCode}; 
 }
 
 

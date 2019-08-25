@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS
         password VARCHAR(255) NOT NULL,
         type VARCHAR(255) NOT NULL,
         regDate VARCHAR(255) NOT NULL,
-        phone int(20) NOT NULL,
+        phone VARCHAR(255) NOT NULL,
         address VARCHAR(255),
         city VARCHAR(100),
         postCode CHAR(6),

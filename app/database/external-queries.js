@@ -26,6 +26,7 @@ module.exports = function(_execute) {
 
         // Update user profile by given id
         updateUserDataById: function(id, data) {
+            console.log(data);
             const { name, surname, email, password, type, regDate, phone, city, postCode, address } = data;
             const query = `Update Users SET
                 name = '${name}', surname = '${surname}', email = '${email}', password = '${password}', type = '${type}', regdate = '${regDate}', phone = '${phone}', city = '${city}', postCode = '${postCode}', address = '${address}'

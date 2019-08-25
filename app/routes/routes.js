@@ -28,8 +28,6 @@ module.exports = function(controller, server) {
 
 
 	// App authentication endpoints
-	// GET
-	server.get('/login', controller.login);
 	// POST
 	server.post('/authenticate', controller.authenticate);
 	server.post('/logout', function(req, res){
@@ -40,17 +38,14 @@ module.exports = function(controller, server) {
 
 	// Retrieve forgotten password endpoints
 	// GET
-	server.get('/forgot-password', controller.forgotPasswordPage);
-	server.get('/reset-password/:id', controller.resetPasswordPage);
+	//server.get('/forgot-password', controller.forgotPasswordPage);
+	//server.get('/reset-password/:id', controller.resetPasswordPage);
 	// POST
 	server.post('/forgot-password', controller.forgotPassword);
 	server.post('/reset-password', controller.resetPassword);
 
 
 	// Registration endpoints
-	// GET
-	server.get('/registration', controller.registration);
-	server.get('/registration/second-step', controller.registrationSecondStep);
 	// POST
 	server.post('/register', controller.submitRegistrationFirstStep);
 	server.post('/register/next-step', controller.submitRegistrationSecondStep);

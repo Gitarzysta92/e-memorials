@@ -11,37 +11,74 @@ const models = {
 	'reset-password': require('./models/reset-pass'),
 	'login': require('./models/sign-in'),
 	'edit-profile' : {}
-
 }
+
+
+const signedInMenuItems = [
+	{
+		meta: {
+			menu: ["signed"],
+			menuPosition: 1,
+			path: "/memorium",
+			title: "Twój profil"
+		}
+	},
+	{
+		meta: {
+			menu: ["signed"],
+			menuPosition: 2,
+			path: "/memorium/edit-profile",
+			title: "Edytuj profil"
+		}
+	}
+]
 
 
 module.exports = function({modelComposer, database, ...rest}) {
 	
 
-	// Create new payment transaction using payment handler
-	const getPageData = async function(url, isAuthorized) {
-
+	// Prepare page data model with given data
+	const getPageDataModel = async function(url, isAuthorized, data) {
 		const userAccess = isAuthorized ? 'signed' : 'unSigned'
 
-		const pagesData = await database.getPages()
+		const rawData = await database.getPages()
+			.then(result => result.map(page => ({ meta: JSON.parse(page.meta)})));
+		
+		const pagesData = rawData.concat(signedInMenuItems);
+		const menu = getMenuItems(pagesData, userAccess);
+
+		const pageData = modelComposer.preparePageModel({ menu: menu, models: data });
+		pageData.data.menu.navItems = setCurrentMenuItem(pageData.data.menu.navItems, url); 
+		userAccess === 'signed' && (pageData.data.menu.signOut = true);
+
+		return pageData;
+	}
+
+
+	// Prepare data for dynamic pages
+	const getPageData = async function(url, isAuthorized) {
+		const userAccess = isAuthorized ? 'signed' : 'unSigned'
+
+		const rawData = await database.getPages()
 		.then(result => result.map(page => ({
 			meta: JSON.parse(page.meta),
 			content: JSON.parse(page.content),
 		})))
 		
-		const page = pagesData.find(page => page.meta.path === url);
-		if (!page) return;
+		const page = rawData.find(page => page.meta.path === url);
 
+		if (!page) return;
+		const pagesData = rawData.concat(signedInMenuItems);
 		const menu = getMenuItems(pagesData, userAccess);
 		const pageData = modelComposer.preparePageModel({ menu: menu, main: page.content });
 
 		pageData.data.menu.navItems = setCurrentMenuItem(pageData.data.menu.navItems, url); 
-		
-		console.log(pageData);
+
 		return pageData;
 	}
 
-
+	
+	// Get menu items for given access level and sort it 
 	function getMenuItems(pagesData, userAccess) {
 		const menuItems = pagesData.reduce((acc, page) => {
 			if (!Array.isArray(page.meta.menu)) return acc;	
@@ -53,20 +90,20 @@ module.exports = function({modelComposer, database, ...rest}) {
 	}
 
 
+	// Set actual menu item as active by given url
 	function setCurrentMenuItem(menu, url) {
 		const firstLevel = new RegExp('^' + url + '$', 'g');
 		
 		return menu.map(item => {
-			console.log(item)
 			firstLevel.test(item.path) && (item.class = 'active');
-
 			return item;
 		});
 	}
 
 
 	return {
-		getPageData
+		getPageData,
+		getPageDataModel
 	}
 }
 

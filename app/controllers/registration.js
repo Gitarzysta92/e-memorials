@@ -15,7 +15,7 @@ module.exports = function({ api, services }) {
 		user.registration.secondStep(regToken, regSessionData.secondStep);
 		user.registration.finalize(regToken);
 	}, 4000)
-	
+
 
 	
 	const submitRegistrationFirstStep = async function(req, res) {

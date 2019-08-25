@@ -34,7 +34,7 @@ const getPanelByID = function(panelID) {
  }
  
  
- const getUserID = function({username}) {
+ const getUserID = function({username} = {}) {
      const query = `SELECT User_ID FROM Users WHERE email ='${username}'`;
      return _execute(query).then(current => current[0] ? current[0].User_ID : false);
  }
@@ -80,15 +80,15 @@ const getPanelByID = function(panelID) {
  
  const createNewProfile = function(panelData, userID, uniqueID) {
      const {
-         name,
-         birth,
-         death,
-         sentence,
-         text
+         name = '',
+         birth = '',
+         death = '',
+         sentence = '',
+         text = ''
      } = panelData;
      const query = `INSERT INTO UserPanels (user_ID, unique_ID, name, birth, death, sentence, text)
          VALUES ('${userID}','${uniqueID}', '${name}', '${birth}', '${death}', '${sentence}', '${text}')`;
-     return  _execute(query);
+     return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
  }
  
  const updateUserProfile = function(panelData, userID) {

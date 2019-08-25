@@ -16,7 +16,6 @@ class _Process {
 		}
 
 		getPromoCode() {
-			console.log(this);
 			return this._promoCode;
 		}
 

@@ -12,10 +12,11 @@ const composer = {
 
 
 //
-composer.createPageData = function({menu, main}) {
+composer.createPageData = function({menu, main, models}) {
   const scheme = {}
 
-  scheme.main = this._partialsParser(main);
+  models && (scheme.main = this._modelsParser(models));
+  main && (scheme.main = this._partialsParser(main));
   scheme.menu = this._menuParser(menu);
 
   return { data: scheme, templateName: 'dynamic'};
@@ -41,6 +42,12 @@ composer._partialsParser = function(partials) {
     }
   });
 }
+
+composer._modelsParser = function(models) {
+  if (!Array.isArray(models)) return;
+  return models.reduce((acc, curr) => Object.assign(acc, curr), {})
+}
+
 
 composer._menuParser = function(menuItems) {
   const navItems = menuItems.map(item => {

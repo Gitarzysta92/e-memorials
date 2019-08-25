@@ -1,36 +1,57 @@
+const uuid = require('uuid/v4');
+
+
+const sampleProfileData = {
+	name: 'Podaj Imię i nazwisko',
+  birth: '2019-08-13T22:00:00.000Z',
+  death: '2019-08-13T22:00:00.000Z',
+  sentence: 'Tutaj wpisz swoją wybraną sentencję',
+  text: 'Opis'
+}
+
 
 module.exports = function({ database, modelStore }) {
 	const profilePreviews = modelStore;
 
 
+	
 	const getProfileID = async function(user) {
 		return await database.getUserID(user);
 	}
 
 
+	// Create new user profile
+	const createNewProfile = async function(userID) {
+		const uniqueID = uuid();
+		const result = await database.createNewProfile(sampleProfileData, userID, uniqueID);
+		return result;
+	}
+
+
 	// Get customer profile by id
 	const getProfileData = async function(id, code) {
+		let result;
 		if (id.length === 36) {
 			result = await database.getProfileByUniqueID(id)
 		} else {
 			result = await database.getPanelByUserID(id)
 		}
 
-		const { 
-			user_ID: userID, 
-			private_key, 	
-			...data 
-		} = result;
+		if (!result) return;
+		const { user_ID: userID, 	private_key, 	...data } = result;
 
-		const restrictionCode = private_key.toString();
-		if (restrictionCode.length === 4 && restrictionCode !== code && code !== null) return;
-		
+		if (private_key != null) {
+			const restrictionCode = private_key.toString();
+			if (restrictionCode.length === 4 && restrictionCode !== code && code !== null) return;
+		}
+				
 		const avatar = await database.getAttachments(userID, 'avatar');
 		const gallery = await database.getAttachments(userID, 'image');
 		const documents = await database.getAttachments(userID, 'document');
 
 		return { userID, data, avatar, gallery, documents }
 	}
+
 
 	// Update customer profile
 	const updateProfile = async function(id, data) {
@@ -110,6 +131,7 @@ module.exports = function({ database, modelStore }) {
 		updateProfile,
 		isAuthCodeValid,
 		createProfileDataPreview,
-		getProfileDataPreview
+		getProfileDataPreview,
+		createNewProfile
 	}
 }
