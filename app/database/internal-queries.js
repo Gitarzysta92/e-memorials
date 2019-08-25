@@ -71,10 +71,10 @@ const getPanelByID = function(panelID) {
          phone,
          city,
          postalCode: post_code,
-         street: adress, 
+         street: address, 
      } = userData;
-     const query = `INSERT INTO Users (email, password, name, surname, phone, adress, city, post_code)
-         VALUES ('${email}', '${password}', '${name}', '${surname}', '${phone}', '${adress}', '${city}', '${post_code}')`;
+     const query = `INSERT INTO Users (email, password, name, surname, phone, address, city, postCode)
+         VALUES ('${email}', '${password}', '${name}', '${surname}', '${phone}', '${address}', '${city}', '${post_code}')`;
      return _execute(query);
  }
  
@@ -132,6 +132,11 @@ const getPages = function() {
   return _execute(query).then(current => current.length > 0 ? current : []);
 }
 
+const getPromoCode = function(email) {
+    const query = `SELECT * FROM Partners WHERE email = '${email}'`
+    return _execute(query).then(current => current.length > 0 ? current[0] : false);
+}
+
 
  return {
     getPanelByID,
@@ -146,8 +151,9 @@ const getPages = function() {
     updateUserProfile,
     addAttachment,
     getAttachments,
-		changeUserPassword,
-		getPages
+	changeUserPassword,
+    getPages,
+    getPromoCode
  }
 }
 

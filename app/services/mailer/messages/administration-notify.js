@@ -1,15 +1,14 @@
 
 module.exports = from => ({ 
-  'administration-notify' :  (formData, url) => {
+  'administration-notify' :  ({id, data, url}) => {
     const { 
-      id = '',
       email = '', 
       name = '', 
       surname = '',
       phone = '',
       city = '',
       street = '',
-      postalCode = '' } = formData;
+      postalCode = '' } = data;
     
     return {
       from: from,

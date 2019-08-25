@@ -1,16 +1,32 @@
 const bcrypt = require('bcrypt');
 
+
+
 module.exports = function({core, database, registrationOptions}) {
 
+	const { userPlans,  sessionTimeout } = registrationOptions;
 
-	
+	//
+	// User registration observable
+	//
+
+	const regProcessSubscribers = [];
+
+	const regProcessSubscribe = function(cb) {
+		regProcessSubscribers.push(cb);
+	}
+
+	const notifyRegProcessSubscribers = function(data) {
+		regProcessSubscribers.forEach(sub => sub(data));
+	}
+
 	//
 	// User registration
 	//
-	const { userPlans,  sessionTimeout } = registrationOptions;
 
 	// Initialize registration process with given token
 	const registrationFirstStep = function(regToken = '', formData) {
+		console.log('first step', formData);
 		const { basic, premium } = userPlans;
 		const expTime = sessionTimeout;
 		// TO DO: props validation
@@ -20,6 +36,7 @@ module.exports = function({core, database, registrationOptions}) {
 
 	// Update given registration process by given token
 	const registrationSecondStep = function(regToken, formData) {
+		console.log('second step', formData);
 		// TO DO: props validation
 		return core.updateRegistrationSecondStep(regToken, formData);
 	}
@@ -36,10 +53,10 @@ module.exports = function({core, database, registrationOptions}) {
 		const hashedPassword = bcrypt.hashSync(user.data.password, salt);
 		user.data.password = hashedPassword;
 
-		const result = await database.createNewUser(user.data, user.id);
-		console.log(result);
-		if (!result.ok) return;  
+		//const result = await database.createNewUser(user.data, user.id);
+		//if (!result.ok) return;
 
+		notifyRegProcessSubscribers(user);
 		return user;
 	}
 
@@ -58,21 +75,15 @@ module.exports = function({core, database, registrationOptions}) {
 		// TO DO: props validation
 		core.addPaymentToken(processID, paymentID);
 	}
-	
 
-	//
-	// User lost password
-	// 
-
-	
-	// TO DO: User CRUD
 
 	return {
 		firstStep: registrationFirstStep,
 		secondStep: registrationSecondStep,
 		finalize: registrationFinalize,
 		setPaymentToken,
-		isSessionExists: isRegSessionExists
+		isSessionExists: isRegSessionExists,
+		subscribe: regProcessSubscribe
 	}
 }
 

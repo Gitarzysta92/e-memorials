@@ -8,8 +8,7 @@ module.exports = {
 	addPaymentToken,
 	finishRegistratrionProcess,
 	getRegProcess,
-	usePromoCode,
-	addPromoPartner
+	usePromoCode
 }
 
 //
@@ -56,10 +55,8 @@ function finishRegistratrionProcess(regToken = '') {
   if (!regProcess) return;
 	const data = regProcess.getUserData();
 	const promoCode = regProcess.getPromoCode();
-
-	promotions.markAsUsed(regProcess.id, promoCode);
-
-  return { id: reqProcess.id, data }; 
+	
+  return { id: regProcess.id, data , promoCode}; 
 }
 
 
@@ -79,13 +76,7 @@ function getRegProcess(regToken = '') {
 // Use promo code and return
 // new subscription prices 
 function usePromoCode(code, regToken) {
-	const promoCode = promotions.getCode(code);
-
-	if (!promoCode) return;
-	return registration.useCode(regToken, promoCode);
+	if (!code) return;
+	return registration.useCode(regToken, code);
 }
 
-
-function addPromoPartner(partnerData) {
-  promotions.add(partnerData);
-}

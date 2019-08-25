@@ -11,7 +11,7 @@ Memorium Immortalis
 
 
 module.exports = from => ({ 
-  'partnership-notify' :  email => {    
+  'partnership-notify' :  ({email}) => {    
     return {
       from: from,
 		  to: email,

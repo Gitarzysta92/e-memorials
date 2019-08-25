@@ -26,8 +26,7 @@ module.exports = function({ mailer }) {
 
 	const sendMessage = function(tmplName, data) {
 		const message = messages.find(msg => msg.hasOwnProperty(tmplName));
-		console.log(message);
-		send(message[tmplName](data))
+		send(message[tmplName](data));
 	}
 
 	return {

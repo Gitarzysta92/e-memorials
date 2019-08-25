@@ -7,7 +7,7 @@ Memorium Immortalis
 
 
 module.exports = from => ({ 
-  'sign-up-confirmation' :  (email, name) => ({
+  'sign-up-confirmation' :  ({email, name}) => (console.log(email,name), {
     from: from,
     to: email,
     subject: `${name}! Witaj na Memorium.pl `,

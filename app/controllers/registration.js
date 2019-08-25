@@ -1,6 +1,22 @@
+const regSessionData = require('./testData/session');
+
 module.exports = function({ api, services }) {
 	const { user, payment } = services;
 	const { registrationOptions, database } = api;
+
+
+	//
+	// Registration test
+	//
+
+	setTimeout(async function() {
+		const regToken = user.registration.firstStep('regToken', regSessionData.firstStep);
+		await payment.usePromoCode(regSessionData.promoCode, regToken);
+		user.registration.secondStep(regToken, regSessionData.secondStep);
+		user.registration.finalize(regToken);
+	}, 4000)
+	
+
 	
 	const submitRegistrationFirstStep = async function(req, res) {
 		const userExist = await database.isUserAlreadyExists(req.body.email);
@@ -14,13 +30,13 @@ module.exports = function({ api, services }) {
 	}
 
 
-	const checkPromoCode = function(req, res) {
+	const checkPromoCode = async function(req, res) {
 		const sessionNotExists = !user.registration.isSessionExists(req.cookies.regToken);
 		if (sessionNotExists) return res.send({'error': 'Sesja rejestracji wygasła'});
 
 		const code = req.body.promoCode;
 		const token = req.cookies.regToken;
-		const promoPrices = payment.usePromoCode(code, token);
+		const promoPrices = await payment.usePromoCode(code, token);
 
 		promoPrices ? res.send(promoPrices) 
 			: res.send({'error': 'Podany e-mail promocyjny jest nieprawidłowy.'});

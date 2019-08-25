@@ -5,7 +5,8 @@ const controllers = [
 	require('./pages'),
 	require('./password-reset'),
 	require('./miscs'),
-	require('./external-api')
+	require('./external-api'),
+	require('./mailer')
 ]
 
 

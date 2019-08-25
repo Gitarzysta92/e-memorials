@@ -1,13 +1,7 @@
 
 
-module.exports = function({paymentHandler, core, registrationOptions}) {
-
+module.exports = function({paymentHandler, core, registrationOptions, database}) {
 	
-	// setup promo codes
-	const { userPlans } = registrationOptions;
-	userPlans.promoCodes.forEach(plan => core.addPromoPartner(plan));
-	
-
 	// Create new payment transaction using payment handler
 	const initPaymentTransaction = function(id, regData, plan) {
 		// TO DO: props validation
@@ -39,8 +33,11 @@ module.exports = function({paymentHandler, core, registrationOptions}) {
 
 
 	// Use given promo code
-	const usePromoCode = function(code, regToken) {
-		return core.usePromoCode(code, regToken);
+	const usePromoCode = async function(code, regToken) {
+		const partner = await database.getPromoCode(code);
+
+		if (!partner) return;
+		return core.usePromoCode(partner.email, regToken);
 	}
 
 
