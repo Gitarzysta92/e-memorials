@@ -13,19 +13,19 @@ document.addEventListener("DOMContentLoaded", function() {
 	const basicPrice = document.getElementById('basic-price');
 	const premiumPrice = document.getElementById('premium-price');
 	const submitSecondStep = document.getElementById('second-step-submit')
-	const questions = document.querySelectorAll('.questions-accordion li');
+	const accordions = document.querySelectorAll('.accordion');
 	
 	// question accordion
-	const questionCallback = function(event) {
+	const accordionToggleHandler = function(event) {
 		const active = 'active';
 		const isActive =  Object.values(this.classList).find(curr => curr === active);
 		if (isActive) {
 			this.classList.remove(active);
 		} else {
-			this.classList += active;
+			this.classList += (' ' + active);
 		}
 	}
-	questions.forEach(current => current.addEventListener('click',questionCallback))
+	accordions.forEach(current => current.addEventListener('click', accordionToggleHandler))
 
 
 	// Subscription plan 
