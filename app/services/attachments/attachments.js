@@ -1,32 +1,33 @@
+const uuid = require('uuid/v4');
 
-
-module.exports = function({db, dirs}) {
+module.exports = function({database, dirs}) {
 
 	// Save attachment as file and add reference to database
-	const saveAttachment = function(userID, file, type, partialPath) {
-		const absPath = `${dirs.public}${partialPath}`
-		saveFile(file, absPath).then(file => db.addAttachment(file, type, userID))
+	const saveAttachment = function(panelID, file, type, partialPath) {
+		const absPath = `${dirs.public}${partialPath}`;
+		const path = partialPath;
+		saveFile(file, absPath).then(name=> database.addAttachment({name, path}, type, panelID))
 				.catch(console.error);
 	}
 
 	// Save multiple attachments
-	const saveAttachments = function(userID, files = [], type, path) {
+	const saveAttachments = function(panelID, files = [], type, path) {
 		Array.isArray(files) && files.forEach(file => {
-			saveAttachment(userID, file, type, path);
+			saveAttachment(panelID, file, type, path);
 		});
 	}
 
 	// Get attachments of given type
-	const getAttachment = function(userID, type) {
-		return db.getAttachments(userID, type);
+	const getAttachment = function(panelID, type) {
+		return database.getAttachments(panelID, type);
 	}
 
 	// Get attachments of given types
-	const getAttachments = async function(userID, types = []) {
+	const getAttachments = async function(panelID, types = []) {
 		const attachments = {};
 
 		for (let i; i < types.length; i++) {
-			const result = await getAttachment(userID, types[i]);
+			const result = await getAttachment(panelID, types[i]);
 			Object.defineProperty(acc, type, {
 				value: result,
 				enumerable: true
@@ -58,10 +59,7 @@ function saveFile(file, path) {
 			if (err) {
 				reject(err);
 			}
-			resolve({
-				name: file.name,
-				path: filePath
-			});
+			resolve(fileName);
 		})
 	});
 	return moveFile;

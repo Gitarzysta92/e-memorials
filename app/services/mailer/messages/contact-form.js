@@ -6,7 +6,7 @@ module.exports = from => ({
       surname = '', 
       email, 
       message = '' } = formData;
-    
+      
     return {
       from: from,
 		  to: from,

@@ -39,6 +39,11 @@ module.exports = function({ database }) {
 	}
 
 
+	const getRequestById = function(id) {
+		return passwordReset.getRequest(id);
+	}
+
+
 	// Resolve reset password request for given id
 	const resolveRequest = async function(requestID, newPassword) {
 		const { username } = passwordReset.getRequest(requestID) || {};
@@ -58,7 +63,8 @@ module.exports = function({ database }) {
 	
 	return {
 		createRequest,
-		resolveRequest
+		resolveRequest,
+		getRequestById
 	}
 }
 

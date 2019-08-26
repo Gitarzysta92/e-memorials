@@ -9,12 +9,12 @@ module.exports = function({ api, services }) {
 	// Registration test
 	//
 
-	setTimeout(async function() {
-		const regToken = user.registration.firstStep('regToken', regSessionData.firstStep);
-		await payment.usePromoCode(regSessionData.promoCode, regToken);
-		user.registration.secondStep(regToken, regSessionData.secondStep);
-		user.registration.finalize(regToken);
-	}, 4000)
+	// setTimeout(async function() {
+	// 	const regToken = user.registration.firstStep('regToken', regSessionData.firstStep);
+	// 	await payment.usePromoCode(regSessionData.promoCode, regToken);
+	// 	user.registration.secondStep(regToken, regSessionData.secondStep);
+	// 	user.registration.finalize(regToken);
+	// }, 4000)
 
 
 	

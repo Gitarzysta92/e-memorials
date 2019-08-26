@@ -20,9 +20,9 @@
                     <div class="col-md-6 col-sm-12">
                         <label for='avatar'>Avatar</label>
                         <input type="file" name="avatar" />
-                        {{#each main.avatar}}
-                            <li><a href="{{url}}" data-lightbox="gallery">{{name}}</a></li>
-                        {{/each}}
+                        {{#if main.avatar}}
+                            <a href="{{main.avatar.url}}" data-lightbox="gallery">{{main.avatar.name}}</a>
+                        {{/if}}
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <label for='private_key'>Kod dostępu</label>

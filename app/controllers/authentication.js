@@ -13,7 +13,7 @@ module.exports = function({ api, services }) {
 	// Check if user is authenticated
 	const isAuthenticated = function(req, res, next) {
 		user.auth.isAuthenticated(req, function({ error }) {
-			if (error) res.redirect('/login');
+			if (error) return res.redirect('/login');
 			next();
 		});
 	}

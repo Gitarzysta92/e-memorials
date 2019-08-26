@@ -9,8 +9,8 @@ module.exports = function(controller, server) {
 	//server.get('/contact', controller.contact);
 
 	// POST
-	server.post('/form-send-message', controller.sendFormMessage);
-	
+	server.post('/form-send-message', controller.sendContactFormMessage);
+
 
 	// User profile
 	// GET

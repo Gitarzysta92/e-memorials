@@ -7,25 +7,17 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-12">
                         <div class="avatar">
-                            <img src="{{avatar.url}}">
+                            <img src="{{main.avatar.url}}">
                         </div>
                     </div>
                     <div class="col-md-8 col-sm-12 flex center-center">
-                        <h2 class="sentence">{{sentence}}</h2>
+                        <h2 class="sentence">{{main.sentence}}</h2>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 details">
-                        <div class="name">{{name}}</div>
-                        <div class="date">{{birth}} - {{death}}</div>
-                        {{#if private_key}}
-                            <div class="type">Kod dostępu: {{private_key}}</div>
-                        {{/if}}
-                    </div>
-                    <div class="col-md-6 edit">
-                        {{#if editProfile}}
-                            <a class="button outlined" href="{{editProfile}}" >Edytuj profil</a>
-                        {{/if}}
+                    <div class="col-md-12 details">
+                        <div class="name">{{main.name}}</div>
+                        <div class="date">{{main.birth}} - {{main.death}}</div>
                     </div>
                 </div>
             </div>
@@ -34,12 +26,12 @@
             <div class="row">
                 <div class="col-md-8 col-sm-12 user-text">
                     <h4>Opis</h4>
-                    <p>{{text}}</p>
+                    <p>{{main.text}}</p>
                 </div>
                 <div class="col-md-4 col-sm-12 user-files">
                     <h4>Pliki</h4>
                     <ul>
-                        {{#each documents}}
+                        {{#each main.documents}}
                             <li><a target="_blank" href="{{url}}" title={{title}} >{{name}}</a></li>
                         {{/each}}
                     </ul>
@@ -50,7 +42,7 @@
                     <h4>Galeria</h4>
                     <div class="row">
                         <div class="gallery-wrapper">
-                        {{#each gallery}}
+                        {{#each main.gallery}}
                             <div class="col-md-4 col-sm-12 image">
                                 <a href="{{url}}" data-lightbox="gallery">
                                     <img src="{{url}}" alt="{{alt}}" title="{{title}}"/>

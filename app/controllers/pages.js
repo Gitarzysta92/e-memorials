@@ -13,50 +13,50 @@ module.exports = function({ api, services }) {
 	}
 
 	const resetPasswordPage = async function(req, res) {
+		const id = req.params.id;
+		const url = req.originalUrl;
+		const { resetID } = user.lostPassword.getRequest(req.params.id) || {};
 
+		if (!resetID) {
+			res.render('404', {message: 'Cannot find the page'});
+		}
+
+		const pageName = 'reset-password';
+		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ { profileID: id }	]);
+		res.cookie('reset-token', resetID, { maxAge: 100000 });
+		res.render(pageName, data);
 	}
 
 
 	// Render user profile
 	const userProfile = async function(req, res) {
 		const [ id, code ] = req.params.id.split('&');
+		const url = req.originalUrl;
 
-		const {
+		const { 
 			userID, 
-			private_key, 
-			...userPanelModel 	
-		} = await customersProfiles.getProfileData(id);
+			data: userData,
+			accessRestricted,
+			...att 
+		} = await customersProfiles.getProfileData(id, code) || {};
 
-		const restrictionCode = private_key.toString();
-		if (restrictionCode.length === 4 && restrictionCode !== code) {
+		if (accessRestricted) {
 			return res.redirect(`/memorium/${id}/auth`);
 		}
 
 		const pageName = 'user-profile';
-
-		const data = pages.getPageData(req, {
-			name: pageName,
-			isAuthorized: req.user,
-			toInject: [
-				userPanelModel,
-				await attachments.get(userID, ['avatar', 'image', 'document'])
-			],
-		});
-
+		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ userData, att	]);
 		res.render(pageName, data);
 	}
 
-	// Render code auth page
-	const userProfileCodeAuthPage = function(req, res) {
-		const id = req.params.id;
-		const pageName = 'code-auth';
-		const data = pages.getPageData(req, {
-			name: pageName,
-			toInject: [
-				{ profileID: id }
-			]
-		});
 
+	// Render code auth page
+	const userProfileCodeAuthPage = async function(req, res) {
+		const id = req.params.id;
+		const url = req.originalUrl;
+
+		const pageName = 'profile-code-auth';
+		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ { profileID: id }	]);
 		res.render(pageName, data);
 	}
 
@@ -101,16 +101,12 @@ module.exports = function({ api, services }) {
 
 
 	// Render profile preview page
-	const profilePreviewPage = function(req, res) {
-		const preview = customersProfiles.getProfileDataPreview(res.params.id);
+	const profilePreviewPage = async function(req, res) {
+		const url = req.originalUrl;
+		const preview = customersProfiles.getProfileDataPreview(req.params.id);
 
-		const pageName = 'edit-profile'
-		const data = pages.getPageData(req, {
-			name: pageName,
-			isAuthorized: req.user,
-			toInject: [ preview, ...att]
-		});
-
+		const pageName = 'user-profile'
+		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ preview	]);
 		res.render(pageName, data);
 	}
 

@@ -16,7 +16,9 @@ module.exports = function({ database, modelStore }) {
 
 	
 	const getProfileID = async function(user) {
-		return await database.getUserID(user);
+		const userID = await database.getUserID(user);
+		const { panel_ID } = await database.getPanelIDByUserID(userID); 
+		return panel_ID || false;
 	}
 
 
@@ -42,14 +44,14 @@ module.exports = function({ database, modelStore }) {
 
 		if (private_key != null) {
 			const restrictionCode = private_key.toString();
-			if (restrictionCode.length === 4 && restrictionCode !== code && code !== null) return;
+			if (restrictionCode.length === 4 && restrictionCode !== code && code !== null) return {accessRestricted: true};
 		}
 				
 		const avatar = await database.getAttachments(userID, 'avatar');
 		const gallery = await database.getAttachments(userID, 'image');
 		const documents = await database.getAttachments(userID, 'document');
 
-		return { userID, data, avatar, gallery, documents }
+		return { userID, data, avatar: avatar[avatar.length -1], gallery, documents }
 	}
 
 
@@ -65,49 +67,39 @@ module.exports = function({ database, modelStore }) {
 	const isAuthCodeValid = async function(id, code) {
 		const { private_key } = await database.getProfileByUniqueID(id);
 		const restrictionCode = private_key.toString();
-
+		console.log(private_key, restrictionCode);
 		return (restrictionCode === code)
 	}
 
 
 	// Store temporary profile data for future preview
-	const createProfileDataPreview = async function(formData) {
+	const createProfileDataPreview = async function(formData, user) {
+		const userID = await database.getUserID(user)
+		const panelID = await getProfileID(user);
 	
-		const prepareAttachment = function(prop) {
-			if (!Array.isArray(prop) && prop.name.length === 0) {
-				return [];
-			} else if (prop.name) {
-				return [{
-					name: prop.name,
-					url: prop.tempFilePath
-				}]
-			}
-			return prop.map(current => ({ name: current.name, url: current.tempFilePath}))
-		}
-	
-		const attachments = {
-			avatar: prepareAttachment(req.files.avatar),
-			gallery: prepareAttachment(req.files.photos),
-			documents: prepareAttachment(req.files.documents)
-		}
-		const model = { ...formData, ...attachments }	
-	
-
 		const actualAttachments = {
-			avatar: await database.getAttachments(userID, 'avatar'),
-			gallery: await database.getAttachments(userID, 'image'),
-			documents: await database.getAttachments(userID, 'document')
+			avatar: await database.getAttachments(panelID, 'avatar'),
+			gallery: await database.getAttachments(panelID, 'image'),
+			documents: await database.getAttachments(panelID, 'document')
 		}
-		const actualModel = { ...await database.getPanelByUserID(userID), ...actualAttachments }
 
+		const attachments = { avatar: [], gallery: [], documents: [] }
+
+		const model = { ...formData, ...attachments }	
+		const actualModel = { ...await database.getPanelByUserID(userID), ...actualAttachments }
 
 		const previewID = profilePreviews.createContainer(userID, model, function(data) {
 			const entries = Object.keys(data);
-			const result = entries.reduce((acc, curr) => {	
+			const result = entries.reduce((acc, curr) => {
 				let prop = data[curr];
+
 				if (curr === 'avatar' || curr === 'documents' || curr === 'gallery') {
 					prop = data[curr].concat(actualModel[curr])
-				} 
+				}
+
+				if (curr === 'avatar') {
+					prop = prop[prop.length -1]
+				}
 				const modelPart = { [curr]: prop }
 				return Object.assign(acc, modelPart);
 			}, {});

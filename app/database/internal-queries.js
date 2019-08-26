@@ -12,7 +12,7 @@ const getPanelByID = function(panelID) {
  const getPanelByUserID = function(userID) {
      return _getUserPanelBy('user_ID', userID).then(current => current[0]);
  }
- 
+
  
  function _getUserPanelBy(colName, value) {
      const query = `SELECT name, 
@@ -22,6 +22,13 @@ const getPanelByID = function(panelID) {
      FROM UserPanels WHERE ${colName} = '${value}'`
      return _execute(query)
  }
+
+
+ const getPanelIDByUserID = function(userID) {
+    const query = `SELECT panel_ID FROM UserPanels WHERE user_ID = '${userID}'`;
+     return _execute(query).then(current => current[0] ? current[0] : false);
+ }
+ 
  
  const getUserPassword = function(userEmail) {
      const query = `SELECT password FROM Users WHERE email = '${userEmail}'`;
@@ -44,8 +51,8 @@ const getPanelByID = function(panelID) {
     return _execute(query).then(current => current[0] ? current[0].User_ID : false);
 }
  
- const getAttachments = async function(userID, type) {
-     const metaQuery = `SELECT attachment_ID FROM AttachmentsMeta WHERE panel_ID ='${userID}'`;
+ const getAttachments = async function(panelID, type) {
+     const metaQuery = `SELECT attachment_ID FROM AttachmentsMeta WHERE panel_ID ='${panelID}'`;
      const meta = await _execute(metaQuery)
  
      const ids = meta.reduce((acc, curr, index) => {
@@ -109,8 +116,9 @@ const getPanelByID = function(panelID) {
  
  
  const addAttachment = function(file, type, userID) {
-     const { path, name, alt, title } = file;
-     const attachmentQuery = `INSERT INTO Attachments (name, type, url) VALUES ('${name}','${type}', '${path}')`;
+     const { path, name } = file;
+     console.log(path, name);
+     const attachmentQuery = `INSERT INTO Attachments (name, type, url) VALUES ('${name}','${type}', '${path}${name}')`;
      return _execute(attachmentQuery).then(result => {
          const relationQuery = `INSERT INTO AttachmentsMeta (panel_ID, attachment_ID)
          VALUES ('${userID}', '${result.insertId}')`
@@ -153,7 +161,8 @@ const getPromoCode = function(email) {
     getAttachments,
 	changeUserPassword,
     getPages,
-    getPromoCode
+    getPromoCode,
+    getPanelIDByUserID
  }
 }
 

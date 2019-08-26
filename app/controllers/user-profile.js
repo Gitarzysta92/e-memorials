@@ -9,7 +9,7 @@ module.exports = function({ api, services }) {
 	
 	const userProfileCodeAuth = function(req, res) {
 		const {code, id} = req.body;
-		if (customersProfiles.isAuthCodeValid(id, code)) {
+		if (!customersProfiles.isAuthCodeValid(id, code)) {
 			return res.send({'error': 'Klucz niepoprawny'})
 		}
 		res.send({'redirect': `/memorium/${id}&${code}`});
@@ -17,7 +17,7 @@ module.exports = function({ api, services }) {
 
 
 	const profilePreview = async function(req, res) {
-		const previewID = customersProfiles.createProfileDataPreview(req.body);
+		const previewID = await customersProfiles.createProfileDataPreview(req.body, req.user);
 
 		res.send({'redirect': `/memorium/profile-preview/${previewID}`});
 	}
@@ -25,11 +25,22 @@ module.exports = function({ api, services }) {
 
 	const profileActualization = async function(req, res) {
 		const id = await customersProfiles.getProfileID(req.user);
-		customersProfiles.updateProfile(id, req.body);
+		const result = await customersProfiles.updateProfile(id, req.body);
+		const files = req.files;
 
-		for (let filesCat in req.files) {
-			attachments.saveAttachments(id, req.files[filesCat], filesCat, '/images/gallery/');
+		if (files) {
+			const photos = Array.isArray(req.files.photos) ? req.files.photos : [req.files.photos];
+			files.photos && attachments.saveAttachments(id, photos, 'image', '/images/gallery/');
+
+			const documents = Array.isArray(req.files.documents) ? req.files.documents : [req.files.documents];
+			files.documents && attachments.saveAttachments(id, documents, 'document', '/documents');
+
+			const avatar = Array.isArray(req.files.avatar) ? req.files.avatar : [req.files.avatar];
+			files.avatar && attachments.saveAttachments(id, avatar, 'avatar', '/images/avatars/');
 		}
+		
+		if (!result) return res.send({'error': 'error'})
+		res.send({'success': 'Profil został zaktualizowany'})
 	}	
 
 	return {
@@ -39,85 +50,3 @@ module.exports = function({ api, services }) {
 	}
 
 }
-
-
-/*
-
-
-// POST action
-// actualize user profile by given form data
-module.exports.profileActualization = async function(req, res) {
-	const userID = await database.getUserID(req.user);
-	if (!userID) { 
-		return res.send({'error': 'error'});
-	}
-
-	profilePreviews.removeContainerBy(userID);
-	
-	if (Object.keys(req.files).length == 0) {
-		return res.send({'error': 'error'})
-	}
-
-	const avatar = saveFile(req.files.avatar, '/images/avatars/')
-		.then(file => {
-			//const avatar = await database.getAttachments(userID, 'avatar');
-			database.addAttachment(file, 'avatar', userID)
-		})
-		.catch(console.error);
-
-	var photos = req.files.photos;
-	photos = Array.isArray(photos) ? photos : [photos];
-	const galleryImages = photos.map(image => {
-		return saveFile(image, '/images/gallery/')
-			.then(file => database.addAttachment(file, 'image', userID))
-			.catch(console.error);
-	});
-
-	var docs = req.files.documents;
-	docs = Array.isArray(docs) ? docs : [docs];
-	const documents = docs.map(image => {
-		return saveFile(image, '/documents/')
-			.then(file => database.addAttachment(file, 'document', userID))
-			.catch(console.error);
-	});
-
-	console.log(req.body)
-	database.updateUserProfile(req.body, userID)
-		.then(res.send({'success': 'Profil został zaktualizowany'}))
-		.catch(console.error);
-}
-
-
-function saveFile(file, path) {
-	const fileExt = getExt(file.name);
-	const fileName = `${uuid()}.${fileExt}`;
-	const filePath = path + fileName;
-	const moveFile = new Promise((resolve, reject) => {
-		if (file.name.length == 0) {
-			reject(new Error('No file uploaded'));
-			return;
-		};
-		file.mv(dirs.public + filePath, function(err) {
-			if (err) {
-				reject(err);
-			}
-			resolve({
-				name: file.name,
-				path: filePath
-			});
-		})
-	});
-	return moveFile;
-}
-
-
-
-
-function getExt(fileName) {
-	if (typeof fileName !== 'string') return;
-	const name = fileName.split('.');
-	return name[name.length -1];
-}
-
-
-*/
