@@ -64,7 +64,7 @@ module.exports = function({ api, services }) {
 		const result = await payment.finalizePaymentTransaction(paymentID, orderID, amount);
 		if (!result) return res.send({'error': 'asd'});
 
-		registration.finalize(paymentID);
+		user.registration.finalize(paymentID);
 		res.status(200);
 		res.send('ok');
 	}
