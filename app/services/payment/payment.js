@@ -27,8 +27,7 @@ module.exports = function({paymentHandler, core, registrationOptions, database})
 	
 		const transaction = paymentHandler.getTransaction(paymentID);
 		const isVerified = await transaction.verify(orderID, amount);
-		console.warn(isVerified);
-
+		return isVerified;
 	}
 
 
