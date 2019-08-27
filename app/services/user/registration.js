@@ -53,8 +53,8 @@ module.exports = function({core, database, registrationOptions}) {
 		const hashedPassword = bcrypt.hashSync(user.data.password, salt);
 		user.data.password = hashedPassword;
 
-		//const result = await database.createNewUser(user.data, user.id);
-		//if (!result.ok) return;
+		const result = await database.createNewUser(user.data, user.id);
+		if (!result.ok) return;
 
 		notifyRegProcessSubscribers(user);
 		return user;
