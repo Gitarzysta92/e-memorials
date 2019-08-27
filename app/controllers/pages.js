@@ -72,11 +72,14 @@ module.exports = function({ api, services }) {
 			...att 
 		} = await customersProfiles.getProfileData(id, null) || {};
 
+
 		if (!userData) {
-			customersProfiles.createNewProfile(id);
+			const user = 	await customersProfiles.getUserID(req.user);
+			customersProfiles.createNewProfile(user);
 			return res.redirect('/memorium/edit-profile')
 		};
 
+	
 		const pageName = 'user-panel'
 		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ userData, att	]);
 		res.render(pageName, data);

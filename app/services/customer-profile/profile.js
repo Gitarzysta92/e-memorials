@@ -21,9 +21,14 @@ module.exports = function({ database, modelStore }) {
 		return panel_ID || false;
 	}
 
+	const getUserID = async function(user) {
+		const userID = await database.getUserID(user);
+		return userID || false;
+	}
 
 	// Create new user profile
 	const createNewProfile = async function(userID) {
+		console.log(userID);
 		const uniqueID = uuid();
 		const result = await database.createNewProfile(sampleProfileData, userID, uniqueID);
 		return result;
@@ -36,20 +41,21 @@ module.exports = function({ database, modelStore }) {
 		if (id.length === 36) {
 			result = await database.getProfileByUniqueID(id)
 		} else {
-			result = await database.getPanelByUserID(id)
-		}
+			result = await database.getPanelByID(id)
+		} 
 
 		if (!result) return;
-		const { user_ID: userID, 	private_key, 	...data } = result;
+		const { user_ID: userID, panel_ID: panelID, 	private_key, 	...data } = result;
 
 		if (private_key != null) {
 			const restrictionCode = private_key.toString();
 			if (restrictionCode.length === 4 && restrictionCode !== code && code !== null) return {accessRestricted: true};
 		}
 				
-		const avatar = await database.getAttachments(userID, 'avatar');
-		const gallery = await database.getAttachments(userID, 'image');
-		const documents = await database.getAttachments(userID, 'document');
+		const avatar = await database.getAttachments(panelID, 'avatar');
+		const gallery = await database.getAttachments(panelID, 'image');
+		const documents = await database.getAttachments(panelID, 'document');
+		console.log(userID);
 
 		return { userID, data, avatar: avatar[avatar.length -1], gallery, documents }
 	}
@@ -118,6 +124,7 @@ module.exports = function({ database, modelStore }) {
 
 
 	return {
+		getUserID,
 		getProfileID,
 		getProfileData,
 		updateProfile,

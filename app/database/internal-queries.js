@@ -2,7 +2,7 @@
 module.exports = function(_execute) {
     // GET
 const getPanelByID = function(panelID) {
-    return _getUserPanelBy('panel_ID', panelID).then(current => current.length > 0 ? current : false)
+    return _getUserPanelBy('panel_ID', panelID).then(current => current.length > 0 ? current[0] : false)
  }
  
  const getProfileByUniqueID = function(uniqueID) {
@@ -18,7 +18,7 @@ const getPanelByID = function(panelID) {
      const query = `SELECT name, 
      DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
      DATE_FORMAT(death, '%Y-%m-%d') AS death, 
-     sentence, text, private_key, user_ID
+     sentence, text, private_key, user_ID, panel_ID
      FROM UserPanels WHERE ${colName} = '${value}'`
      return _execute(query)
  }
@@ -98,7 +98,7 @@ const getPanelByID = function(panelID) {
      return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
  }
  
- const updateUserProfile = function(panelData, userID) {
+ const updateUserProfile = function(panelData, panelID) {
      const {
          name,
          birth,
@@ -109,19 +109,19 @@ const getPanelByID = function(panelID) {
      } = panelData;
      const query = `Update UserPanels SET
          name = '${name}', birth = '${birth}', death = '${death}', sentence = '${sentence}', text = '${text}', private_key = '${private_key}'
-         WHERE user_ID = ${userID}`;
+         WHERE panel_ID = ${panelID}`;
      return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
  }
  
  
  
- const addAttachment = function(file, type, userID) {
+ const addAttachment = function(file, type, panelID) {
      const { path, name } = file;
      console.log(path, name);
      const attachmentQuery = `INSERT INTO Attachments (name, type, url) VALUES ('${name}','${type}', '${path}${name}')`;
      return _execute(attachmentQuery).then(result => {
          const relationQuery = `INSERT INTO AttachmentsMeta (panel_ID, attachment_ID)
-         VALUES ('${userID}', '${result.insertId}')`
+         VALUES ('${panelID}', '${result.insertId}')`
          return _execute(relationQuery) 
      })
  }
