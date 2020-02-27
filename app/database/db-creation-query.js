@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS
 CREATE TABLE IF NOT EXISTS 
     UserPanels(
         panel_ID INT(11) unsigned NOT NULL AUTO_INCREMENT,
-        user_ID INT(11) unsigned NOT NULL UNIQUE,
+        user_ID INT(11) unsigned NOT NULL,
         unique_ID VARCHAR(255) NOT NULL UNIQUE,
         name VARCHAR(255) NOT NULL, 
         birth DATE NOT NULL,

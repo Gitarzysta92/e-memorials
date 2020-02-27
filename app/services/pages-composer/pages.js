@@ -19,18 +19,18 @@ const signedInMenuItems = [
 		meta: {
 			menu: ["signed"],
 			menuPosition: 1,
-			path: "/memorium",
-			title: "Twój profil"
-		}
-	},
-	{
-		meta: {
-			menu: ["signed"],
-			menuPosition: 2,
-			path: "/memorium/edit-profile",
-			title: "Edytuj profil"
+			path: "/memorium/dashboard",
+			title: "Dashboard"
 		}
 	}
+	// {
+	// 	meta: {
+	// 		menu: ["signed"],
+	// 		menuPosition: 2,
+	// 		path: "/memorium/edit-profile",
+	// 		title: "Edytuj profil"
+	// 	}
+	// }
 ]
 
 

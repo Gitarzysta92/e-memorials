@@ -22,7 +22,6 @@ module.exports = function({ mailer }) {
 	const { sender, config } = mailer; 
 	const messages = templates.map(tmpl => tmpl(sender));
 	const send = smtpMailer(config);
-	console.log(config);
 
 	const sendMessage = function(tmplName, data) {
 		const message = messages.find(msg => msg.hasOwnProperty(tmplName));

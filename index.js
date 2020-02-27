@@ -35,8 +35,8 @@ const memorial = app({
 	},
 	userPlans: {
 		basic: {
-			price: 60,
-			discount: 10
+			price: 17900,
+			discount: 3401
 		},
 		premium: {
 			price: 120,

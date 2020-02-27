@@ -12,23 +12,31 @@ const getPanelByID = function(panelID) {
  const getPanelByUserID = function(userID) {
      return _getUserPanelBy('user_ID', userID).then(current => current[0]);
  }
-
  
  function _getUserPanelBy(colName, value) {
      const query = `SELECT name, 
      DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
      DATE_FORMAT(death, '%Y-%m-%d') AS death, 
-     sentence, text, private_key, user_ID, panel_ID
+     sentence, text, private_key, user_ID, panel_ID, unique_ID
      FROM UserPanels WHERE ${colName} = '${value}'`
      return _execute(query)
  }
 
+ const getPanelsByUserID = async function(id) {
+    const query = `SELECT name, 
+    DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
+    DATE_FORMAT(death, '%Y-%m-%d') AS death, 
+    private_key, unique_ID, panel_ID
+    FROM UserPanels WHERE user_ID = '${id}'`
+    return _execute(query).then(current => current ? current : false);
+}
+
 
  const getPanelIDByUserID = function(userID) {
     const query = `SELECT panel_ID FROM UserPanels WHERE user_ID = '${userID}'`;
-     return _execute(query).then(current => current[0] ? current[0] : false);
+    return _execute(query).then(current => current[0] ? current[0] : false);
  }
- 
+
  
  const getUserPassword = function(userEmail) {
      const query = `SELECT password FROM Users WHERE email = '${userEmail}'`;
@@ -112,6 +120,15 @@ const getPanelByID = function(panelID) {
          WHERE panel_ID = ${panelID}`;
      return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
  }
+
+ const updateProfile = function(panelData, uniqueID) {
+    const { name, birth, death, sentence, text, private_key } = panelData;
+    const query = `Update UserPanels SET
+        name = '${name}', birth = '${birth}', death = '${death}', sentence = '${sentence}', text = '${text}', private_key = '${private_key}'
+        WHERE unique_ID = '${uniqueID}'`;
+    console.log(query);
+    return  _execute(query).then(result => result.affectedRows > 0 ? true : false);
+}
  
  
  
@@ -162,7 +179,9 @@ const getPromoCode = function(email) {
 	changeUserPassword,
     getPages,
     getPromoCode,
-    getPanelIDByUserID
+    getPanelIDByUserID,
+    getPanelsByUserID,
+    updateProfile
  }
 }
 

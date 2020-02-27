@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Subscription plan 
 	const subscription = (function(){
 		const plan = {
-			type: 'premium',
+			type: 'basic',
 			buttons: [
 				document.getElementById('basic-plan'),
 				document.getElementById('premium-plan')
@@ -124,8 +124,8 @@ document.addEventListener("DOMContentLoaded", function() {
 			if (error) {
 				return alertBox.setStatusError(error);
 			}
-			basicPrice.innerHTML = basic;
-			premiumPrice.innerHTML = premium;
+			basicPrice.innerHTML = basic.toString().slice(0,3) + ',' + basic.toString().slice(3);
+			//premiumPrice.innerHTML = premium;
 		})
 	})
 
@@ -248,6 +248,27 @@ document.addEventListener("DOMContentLoaded", function() {
 			});
 	})
 
+	// Add profile
+	const creationButton = document.getElementById('add-profile');
+	const creationProfileEndpoint = `${host}/memorium/create-profile`;
+
+	creationButton && creationButton.addEventListener('click', function(event){
+		event.preventDefault();
+		const requestOptions = {
+			method: 'POST',
+			body: {}
+		};
+		fetch(creationProfileEndpoint, requestOptions).then(handleResponse)
+			.then(result => {
+				const { redirect, error } = result;
+				if (error) {
+					return alertBox.setStatusError(error);
+				}
+				window.location.replace(redirect)
+			});
+	})
+
+
 	// EDIT PROFILE form
 	const editProfileForm = document.getElementById('edit-profile');
 	const submitButton = document.getElementById('actualize-profile');
@@ -255,7 +276,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	submitButton && submitButton.addEventListener('click', function(event){
 		event.preventDefault();
+		const urlParts = window.location.href.split('/');
+		const id = urlParts[urlParts.length -1];
 		const data = new FormData(editProfileForm);
+		data.append('id', id);
 		const requestOptions = {
 			method: 'POST',
 			body: data

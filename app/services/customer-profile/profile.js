@@ -21,6 +21,11 @@ module.exports = function({ database, modelStore }) {
 		return panel_ID || false;
 	}
 
+	const getProfiles = async function(user) {
+		const userID = await database.getUserID(user); 
+		return await database.getPanelsByUserID(userID);
+	}
+
 	const getUserID = async function(user) {
 		const userID = await database.getUserID(user);
 		return userID || false;
@@ -31,7 +36,7 @@ module.exports = function({ database, modelStore }) {
 		console.log(userID);
 		const uniqueID = uuid();
 		const result = await database.createNewProfile(sampleProfileData, userID, uniqueID);
-		return result;
+		return result ? uniqueID : result;
 	}
 
 
@@ -45,7 +50,7 @@ module.exports = function({ database, modelStore }) {
 		} 
 
 		if (!result) return;
-		const { user_ID: userID, panel_ID: panelID, 	private_key, 	...data } = result;
+		const { user_ID: userID, panel_ID: panelID, unique_ID: uniqueID, private_key, 	...data } = result;
 
 		if (private_key != null) {
 			const restrictionCode = private_key.toString();
@@ -55,16 +60,15 @@ module.exports = function({ database, modelStore }) {
 		const avatar = await database.getAttachments(panelID, 'avatar');
 		const gallery = await database.getAttachments(panelID, 'image');
 		const documents = await database.getAttachments(panelID, 'document');
-		console.log(userID);
 
-		return { userID, data, avatar: avatar[avatar.length -1], gallery, documents }
+		return { userID, uniqueID, data, avatar: avatar[avatar.length -1], gallery, documents }
 	}
 
 
 	// Update customer profile
 	const updateProfile = async function(id, data) {
 		profilePreviews.removeContainerBy(id);
-		return await database.updateUserProfile(data, id)
+		return await database.updateProfile(data, id)
 			.catch(console.error);
 	}
 
@@ -125,6 +129,7 @@ module.exports = function({ database, modelStore }) {
 
 	return {
 		getUserID,
+		getProfiles,
 		getProfileID,
 		getProfileData,
 		updateProfile,

@@ -19,13 +19,23 @@ module.exports = function({ api, services }) {
 	const profilePreview = async function(req, res) {
 		const previewID = await customersProfiles.createProfileDataPreview(req.body, req.user);
 
-		res.send({'redirect': `/memorium/profile-preview/${previewID}`});
+		
 	}
 
+	const profileCreation = async function(req, res) {
+		const userID = await customersProfiles.getUserID(req.user);
+		const id = await customersProfiles.createNewProfile(userID);
+		id ? res.send({'redirect': `/memorium/${id}`}) : res.send({'error': 'error'});
+	}
 
 	const profileActualization = async function(req, res) {
-		const id = await customersProfiles.getProfileID(req.user);
-		const result = await customersProfiles.updateProfile(id, req.body);
+		const { id, ...data } = req.body;
+		const profiles = await customersProfiles.getProfiles(req.user);
+
+		const isOwner = profiles.find(profile => profile.unique_ID === id);
+		if (!isOwner) res.send({'error': 'error'})
+
+		const result = await customersProfiles.updateProfile(id, data);
 		const files = req.files;
 
 		if (files) {
@@ -46,6 +56,7 @@ module.exports = function({ api, services }) {
 	return {
 		userProfileCodeAuth,
 		profilePreview,
+		profileCreation,
 		profileActualization
 	}
 

@@ -1,0 +1,42 @@
+{{> header this.menu }}
+{{> video-bg }}
+<main>
+    <div class="container dashboard">
+        <div class="row">
+            <div class="col-12 fh flex in-column center-center light">
+                <div class="company-logo">
+                    <img src="/images/logo.png" alt="{{logo.alt}}" title="{{logo.title}}" />
+                </div>
+                <div class="company-description">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 flex center-center">
+                            <p class="sentence">Wybierz swój profil</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-profiles">
+                    <div class="row justify-content-center">
+                        <div id="add-profile" class="col-md-4 col-sm-12 profile-action">
+                            <div class="avatar">
+                                <img src="/images/dummyAdd.jpg"/>
+                            </div>
+                            <h2>Dodaj</h2>
+                            <p>nowy profil</p>
+                        </div>
+                        {{#each main.profiles}}
+                        <div class="col-md-4 col-sm-12 profile-action">
+                            <a href="/memorium/{{unique_ID}}">
+                                <div class="avatar">
+                                    <img src="{{#if avatar}}{{avatar}}{{else}}/images/dummy.jpg{{/if}}"/>
+                                </div>
+                                <h2>{{#if name}}{{name}}{{else}}Imię i nazwisko{{/if}}</h2>
+                                <p>{{birth}} - {{death}}</p>
+                            </a>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

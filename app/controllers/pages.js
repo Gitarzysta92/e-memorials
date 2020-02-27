@@ -27,29 +27,6 @@ module.exports = function({ api, services }) {
 		res.render(pageName, data);
 	}
 
-
-	// Render user profile
-	const userProfile = async function(req, res) {
-		const [ id, code ] = req.params.id.split('&');
-		const url = req.originalUrl;
-
-		const { 
-			userID, 
-			data: userData,
-			accessRestricted,
-			...att 
-		} = await customersProfiles.getProfileData(id, code) || {};
-
-		if (accessRestricted) {
-			return res.redirect(`/memorium/${id}/auth`);
-		}
-
-		const pageName = 'user-profile';
-		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ userData, att	]);
-		res.render(pageName, data);
-	}
-
-
 	// Render code auth page
 	const userProfileCodeAuthPage = async function(req, res) {
 		const id = req.params.id;
@@ -61,44 +38,72 @@ module.exports = function({ api, services }) {
 	}
 
 
-	// Render user panel page
-	const userPanel = async function(req, res) {
-		const id = await customersProfiles.getProfileID(req.user);
+	// Render user dashboard
+	const userDashboard = async function(req, res) {
+		let profilesData = await customersProfiles.getProfiles({ username: 'm.lukasiewicz92@gmail.com'});
 		const url = req.originalUrl;
-
-		const { 
-			userID, 
-			data: userData, 
-			...att 
-		} = await customersProfiles.getProfileData(id, null) || {};
-
-
-		if (!userData) {
-			const user = 	await customersProfiles.getUserID(req.user);
-			customersProfiles.createNewProfile(user);
-			return res.redirect('/memorium/edit-profile')
-		};
-
 	
-		const pageName = 'user-panel'
-		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ userData, att	]);
+		for (let i = 0; i < profilesData.length; i++) {
+			const avatar = await attachments.getAttachment(profilesData[i].panel_ID, 'avatar');
+			avatar[0] && (profilesData[i].avatar = avatar[0].url)
+		}
+
+		const pageName = 'user-dashboard'
+		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ {profiles: profilesData}]);
+		console.log(data);
 		res.render(pageName, data);
 	}
 
 
-	// Render edit profile page
-	const editProfile = async function(req, res) {
-		const id = await customersProfiles.getProfileID(req.user);
+	// Render user profile
+	const userProfile = async function(req, res) {
+		const authUserId = await customersProfiles.getUserID(req.user);
+		const [ id, code ] = req.params.id.split('&');
 		const url = req.originalUrl;
 
 		const { 
-			userID, 
+			userID,
+			data: userData,
+			accessRestricted,
+			...att 
+		} = await customersProfiles.getProfileData(id, code) || {};
+
+		const isAuthUserProfile = (authUserId === userID); 
+
+		if (accessRestricted && !isAuthUserProfile) {
+			return res.redirect(`/memorium/${id}/auth`);
+		}
+
+		let pageName = 'user-profile';
+		if (isAuthUserProfile) pageName = 'user-panel';
+
+		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ userData, att	]);
+		res.render(pageName, data);
+	}
+	
+
+	// Render edit profile page
+	const editProfile = async function(req, res) {
+		const profiles = await customersProfiles.getProfiles(req.user);
+		const profileId = req.params.id;
+		const url = req.originalUrl;
+
+		const isOwner = profiles.find(profile => profile.unique_ID === profileId);
+
+		if (!isOwner) {
+			return res.redirect(`/memorium/dashboard`);
+		}
+
+		const { 
+			userID,
+			uniqueID,
 			data: userData, 
 			...att 
-		} = await customersProfiles.getProfileData(id, null) || {};
+		} = await customersProfiles.getProfileData(profileId, null) || {};
 
 		const pageName = 'edit-profile';
-		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ userData, att	]);
+		const { data } = await pages.getPageDataModel(url, user.auth.isAuth(req), [ {uniqueID}, userData, att	]);
+		console.log(data);
 		res.render(pageName, data);
 	}
 
@@ -117,7 +122,7 @@ module.exports = function({ api, services }) {
 		staticPage,
 		userProfile,
 		userProfileCodeAuthPage,
-		userPanel,
+		userDashboard,
 		editProfile,
 		profilePreviewPage,
 		resetPasswordPage

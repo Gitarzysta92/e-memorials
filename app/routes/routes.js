@@ -15,15 +15,17 @@ module.exports = function(controller, server) {
 	// User profile
 	// GET
 	server.get('/memorium/profile-preview/:id', isAuthenticated, controller.profilePreviewPage);
-	server.get('/memorium/edit-profile', isAuthenticated, controller.editProfile);
+	server.get('/memorium/dashboard', isAuthenticated, controller.userDashboard);
+	server.get('/memorium/edit-profile/:id', isAuthenticated, controller.editProfile);
 	server.get('/memorium/:id/auth', controller.userProfileCodeAuthPage);
 	server.get('/memorium/:id', controller.userProfile);
-	server.get('/memorium', isAuthenticated, controller.userPanel);	
-	
+	//server.get('/memorium', isAuthenticated, controller.userPanel);	
+
 	
 	// POST
 	server.post('/memorium/profile-access', controller.userProfileCodeAuth);
 	server.post('/memorium/edit-profile', isAuthenticated, controller.profileActualization);
+	server.post('/memorium/create-profile', isAuthenticated, controller.profileCreation);
 	server.post('/memorium/profile-preview', isAuthenticated, controller.profilePreview);
 
 

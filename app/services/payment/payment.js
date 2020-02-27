@@ -6,7 +6,7 @@ module.exports = function({paymentHandler, core, registrationOptions, database})
 	const initPaymentTransaction = function(id, regData, plan) {
 		// TO DO: props validation
 		const params = {
-			amount: plan.price * 100,
+			amount: plan.price,
 			email: regData.email,
 			client: `${regData.name} ${regData.surname}`,
 			adress: regData.street,

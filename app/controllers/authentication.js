@@ -6,7 +6,7 @@ module.exports = function({ api, services }) {
 		user.auth.authenticate(req, res, next, function({ error }) {
 			console.log(error);
 			if (error) return res.send({'error': 'Nieprawidłowy login lub hasło'});
-			res.send({'redirect': '/memorium'});
+			res.send({'redirect': '/memorium/dashboard'});
 		})
 	}
 

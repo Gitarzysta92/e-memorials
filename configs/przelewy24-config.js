@@ -1,13 +1,13 @@
 
 module.exports = function(domain) {
     const urlStatus = `${domain}/register/status`;
-    const urlReturn = `${domain}`
+    const urlReturn = `${domain}`;
 
-    const prividerUrl = 'secure.przelewy24.pl';
+    const providerUrl = 'secure.przelewy24.pl';
     const testUrl = 'sandbox.przelewy24.pl'
 
     return {
-        url: testUrl,
+        url: true ? providerUrl : testUrl,
         crc: '997b8c11d25d47f7',
         secret: 'memorium',
         options: {

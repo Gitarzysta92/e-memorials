@@ -48,6 +48,7 @@ class _Process {
 				basic: pricing.basic.price,
 				premium: pricing.premium.price
 			}
+			console.log(initProps);
 			this._discounts = {
 				basic: pricing.basic.discount,
 				premium: pricing.basic.discount

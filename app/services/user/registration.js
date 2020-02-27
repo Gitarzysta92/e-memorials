@@ -26,7 +26,7 @@ module.exports = function({core, database, registrationOptions}) {
 
 	// Initialize registration process with given token
 	const registrationFirstStep = function(regToken = '', formData) {
-		console.log('first step', formData);
+		console.log('first step', formData, userPlans);
 		const { basic, premium } = userPlans;
 		const expTime = sessionTimeout;
 		// TO DO: props validation
@@ -65,7 +65,6 @@ module.exports = function({core, database, registrationOptions}) {
 	// for given client session token
 	const isRegSessionExists = function(regToken) {
 		const process = core.getRegProcess(regToken);
-		console.log('service',process);
 		return process ? true : false;
 	}
 

@@ -29,6 +29,7 @@ main.disable-video {
   position: fixed;
   opacity: 0.4;
   min-width: 100%;
+  min-height: 100%;
 }
 
 .container {
@@ -447,6 +448,39 @@ footer {
 .company-steps .step:last-child .circle {
   background-color: #4d7b86;
   color: #dcdbdb;
+}
+
+.dashboard-profiles {
+  width: 100%;
+  margin-top: 40px;
+}
+.dashboard-profiles .profile-action {
+  padding: 30px 0;
+  text-align: center;
+  border-radius: 40px;
+}
+.dashboard-profiles .profile-action:hover, .dashboard-profiles .profile-action.active, .dashboard-profiles .profile-action:nth-child(2) {
+  background-color: #0f8ea5;
+}
+.dashboard-profiles .profile-action h2 {
+  font-size: 2rem;
+}
+.dashboard-profiles .profile-action .avatar {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 30px auto;
+  border-radius: 400px;
+  overflow: hidden;
+  background-color: #dcdbdb;
+}
+.dashboard-profiles .profile-action .avatar img {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  margin: auto;
+  max-width: 200%;
+  height: 100%;
 }
 
 .sentence {
